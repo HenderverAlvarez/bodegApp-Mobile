@@ -1,0 +1,18 @@
+.menu-icon-container{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 30px;
+    height: 100%;
+    font-size: 20px!important;
+    background-color: var(--ion-color-tertiary);
+    padding:.5rem;
+    border-radius: 1rem;
+}
+
+.menu-icon-container:hover{
+    background-color: var(--ion-color-primary);
+    padding:.5rem;
+    border-radius: 1rem;
+    animation: ease-in-out 0.5s;
+}

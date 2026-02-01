@@ -1,0 +1,85 @@
+/* text-styles.css */
+
+.font-title{
+
+    font-size: 25px!important;
+    color: var(--ion-color-primary)!important;
+    font-weight: bold;
+
+}
+
+/* Alineación de texto */
+.text-center {
+    text-align: center;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+/* Estilos de texto */
+.text-bold {
+    font-weight: bold;
+}
+
+.text-italic {
+    font-style: italic;
+}
+
+.text-underline {
+    text-decoration: underline;
+}
+
+.text-strike {
+    text-decoration: line-through;
+}
+
+/* Tamaños de texto */
+.text-small {
+    font-size: 0.8rem;
+}
+
+.text-medium {
+    font-size: 1rem;
+}
+
+.text-large {
+    font-size: 1.5rem;
+}
+
+.text-xlarge {
+    font-size: 2rem;
+}
+
+/* Color de texto */
+.text-primary {
+    color: #007bff; /* Color primario */
+}
+
+.text-secondary {
+    color: #6c757d; /* Color secundario */
+}
+
+.text-success {
+    color: #28a745; /* Color éxito */
+}
+
+.text-danger {
+    color: #dc3545; /* Color peligro */
+}
+
+.text-warning {
+    color: #ffc107; /* Color advertencia */
+}
+
+.text-info {
+    color: #17a2b8; /* Color información */
+}
+
+.text-light {
+    color: #f8f9fa; /* Color claro */
+}
+
+.text-dark {
+    color: #343a40; /* Color oscuro */
+}

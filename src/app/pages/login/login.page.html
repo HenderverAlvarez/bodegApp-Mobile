@@ -1,0 +1,48 @@
+<ion-content [fullscreen]="true" >
+  <div class="login-background">
+    <ion-grid class="padding-top-6">
+      <ion-row>
+          <ion-col>
+            <ion-card class="form-card">
+              <ion-card-header>
+                <ion-card-title class="text-center font-title margin-top-2">Inicio de sesión</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+
+                <form [formGroup]="profileForm">
+                  <div class="input-container">
+                    <ion-icon name="person" color="primary"></ion-icon>
+                    <ion-input fill="outline" label="Usuario" labelPlacement="floating" type="text" class="custom-input" formControlName="user"></ion-input>
+                  </div>
+  
+                  <div class="input-container">
+                    <ion-icon name="lock-closed" color="primary"></ion-icon>
+                    <ion-input fill="outline" label="Contraseña" labelPlacement="floating" class="custom-input" type="password" placeholder="" formControlName="password"></ion-input>
+                  </div>
+
+                  <ion-label class="ion-text-center margin-top-1" color="danger" *ngIf="error != ''">{{error}}</ion-label>
+
+                  
+                  <button expand="full" class="button-app full-width margin-top-1 margin-bottom-2" [disabled]="profileForm.status == 'INVALID'" (click)="logIn()">Ingresar</button>
+
+                  
+                </form>
+
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+      </ion-row>
+
+      <ion-row class="margin-top-1">
+        <ion-col>
+          <ion-card class="form-card">
+            <ion-card-content class="ion-text-center">
+              <ion-label>No tienes una cuenta?. <a href="/recover">Registrate</a></ion-label> <br>
+              <ion-label>Olvidaste tu contraseña?. <a href="/recover">Ingresa Aqui</a></ion-label>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+    </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
