@@ -81,6 +81,24 @@
   --border-color: var(--ion-color-primary)!important;
 }
 
+.button-add{
+    display: flex;
+    justify-content: space-around;
+    --color: var(--ion-color-tertiary);      
+    font-family: inherit;
+    padding: .8rem;
+    background-color: var(--ion-color-primary);
+    overflow: hidden;
+    cursor: pointer;
+    font-size: 17px;
+    width: 100%;
+    color: var(--ion-color-light);
+    border: 2px solid var(--color);
+    border-radius: 6px;
+    align-items: center;
+   
+}
+
 .button-app {
     --color: var(--ion-color-primary);      
     font-family: inherit;
@@ -96,7 +114,7 @@
     position: relative;
   }
   
-  button::before {
+  button.button-app::before {
     position: absolute;
     content: "";
     background: var(--color);
@@ -106,18 +124,64 @@
     border-radius: 50%;
   }
   
-  button:hover {
+  button.button-app:hover {
     color: white;
   }
   
-  button:before {
+  button.button-app:before {
     top: 100%;
     left: 100%;
     transition: 0.3s all;
   }
   
-  button:hover::before {
+  button.button-app:hover::before {
     top: -30px;
     left: -30px;
   }
   
+
+  .chart-container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chart-title{
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 2.5rem;
+    color: var(--ion-color-primary);
+}
+
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
+
+
+/* styles.css o styles.scss */
+.slide-in-left {
+  animation: slideInLeft 0.5s ease-in-out forwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(100%); /* Comienza fuera de la pantalla a la derecha */
+    opacity: 0; /* Comienza invisible */
+  }
+  to {
+    transform: translateX(0); /* Termina en su posición original */
+    opacity: 1; /* Termina visible */
+  }
+}

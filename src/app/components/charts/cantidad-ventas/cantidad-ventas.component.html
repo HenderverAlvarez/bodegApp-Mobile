@@ -1,12 +1,15 @@
-<ngx-charts-bar-vertical
-  [results]="single"
-  [legend]="false"
-  [gradient]="gradient"
-  [xAxis]="true"
-  [yAxis]="true"
-  [showDataLabel]="true"
-  [animations]="true"
-  [customColors]="colorScheme"
-  [showGridLines]="false">
 
-</ngx-charts-bar-vertical>
+<div class="chart-container">
+    <ion-label class="chart-title">Ingresos en Ventas / Pedidos</ion-label>
+  <ngx-charts-bar-vertical
+    [view]="view"
+    [results]="single"
+    [legend]="false"
+    [xAxis]="true"
+    [yAxis]="false"
+    [showDataLabel]="true"
+    [animations]="true"
+    [customColors]="colorScheme"
+    [showGridLines]="false">
+  </ngx-charts-bar-vertical>
+</div>

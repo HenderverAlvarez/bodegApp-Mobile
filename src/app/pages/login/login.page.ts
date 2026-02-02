@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IonContent, IonInput, IonLabel, IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonCardTitle, IonCardHeader, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonInput, IonLabel, IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonCardTitle, IonCardHeader, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { person, lockClosed } from 'ionicons/icons';
@@ -14,7 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonSpinner, 
     IonIcon,
     IonCardHeader,
     IonCol,
@@ -37,6 +37,7 @@ export class LoginPage implements OnInit {
   constructor(private router: Router, private authService: AuthService, private formBuilder: FormBuilder,) { 
     addIcons({person, lockClosed});
   }
+  loading:boolean=false;
   error:string="";
   profileForm = this.formBuilder.group({
     password: ['', Validators.required],
@@ -47,19 +48,31 @@ export class LoginPage implements OnInit {
   }
 
   async logIn() {
+    this.loading = true;
     let data = {
       "usuario": this.profileForm.controls.user.value,
       "password": this.profileForm.controls.password.value,
       "rol": "tienda"
     }
-    this.authService.logIn(data).subscribe((response:any) => {
-      if (response.status_code == 200) {
-        localStorage.setItem('token', response.data.access_token);
-        this.redirecTo('/inicio/home');
-      } else {
-        this.error = response.detail;
+
+  
+      this.authService.logIn(data).subscribe((response:any) => {
+        this.loading = false;
+        if (response.status_code == 200) {
+          localStorage.setItem('token', response.data.access_token);
+          this.redirecTo('/inicio/home');
+        } else {
+          this.error = response.detail;
+        }
+      },
+      (error:any) =>{
+        this.loading = false;
+        this.error = "Error de conexión con el servidor";
       }
-    });
+      );
+  
+
+    
   }
 
   redirecTo(url: string) {

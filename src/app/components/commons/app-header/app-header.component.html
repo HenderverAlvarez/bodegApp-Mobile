@@ -25,10 +25,12 @@
 </ion-menu>
 
 <div class="ion-page" id="main-content">
+
   <ion-header>
-    <ion-toolbar>
+    <ion-toolbar  slot="header">
       <ion-buttons slot="start">
         <ion-menu-button color="primary"></ion-menu-button>
+        <ion-label>{{title}}</ion-label>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>

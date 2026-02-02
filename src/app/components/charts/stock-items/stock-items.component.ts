@@ -3,25 +3,25 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { IonLabel } from "@ionic/angular/standalone";
 
 @Component({
-  selector: 'cantidad-ventas',
-  templateUrl: './cantidad-ventas.component.html',
-  styleUrls: ['./cantidad-ventas.component.scss'],
-  standalone: true,
-  imports: [IonLabel, NgxChartsModule],
+  selector: 'stock-items',
+  templateUrl: './stock-items.component.html',
+  styleUrls: ['./stock-items.component.scss'],
+  standalone:true,
+  imports: [IonLabel, NgxChartsModule]
 })
-export class CantidadVentasComponent  implements OnInit {
+export class StockItemsComponent  implements OnInit {
   single: any[] = [
     {
-      "name": "Ventas",
-      "value": 89400
+      "name": "Vendidos",
+      "value": 80
     },
     {
-      "name": "Pedidos",
-      "value": 50000
+      "name": "Stock",
+      "value": 20
     },
   ];
 
-  view:[number, number] = [100,200];
+  view:[number, number] = [200,300];
 
   // options
   showLegend = true;

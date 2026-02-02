@@ -53,7 +53,7 @@
 
 /* Color de texto */
 .text-primary {
-    color: #007bff; /* Color primario */
+    color: var(--ion-color-primary); /* Color primario */
 }
 
 .text-secondary {

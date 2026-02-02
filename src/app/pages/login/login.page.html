@@ -23,9 +23,10 @@
                   <ion-label class="ion-text-center margin-top-1" color="danger" *ngIf="error != ''">{{error}}</ion-label>
 
                   
-                  <button expand="full" class="button-app full-width margin-top-1 margin-bottom-2" [disabled]="profileForm.status == 'INVALID'" (click)="logIn()">Ingresar</button>
-
-                  
+                  <button expand="full" class="button-app full-width margin-top-1 margin-bottom-2" [disabled]="profileForm.status == 'INVALID' || loading" (click)="logIn()">
+                    <span *ngIf="!loading">Ingresar</span>
+                    <ion-spinner color="light" size="small" name="circles" *ngIf="loading"></ion-spinner>
+                  </button>                  
                 </form>
 
               </ion-card-content>

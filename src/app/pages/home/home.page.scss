@@ -1,4 +1,12 @@
 .card-pub{
-    height: 100px;
+    height: 200px;
     background-color: var(--ion-color-light);
+    margin: unset;
+}
+.rate-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+    margin-top: 10px;
 }

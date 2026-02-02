@@ -1,30 +1,68 @@
 
 <ion-row>
-  <ion-col size="auto">
-    <ion-card>
-      <ion-card-content>
-         Cerrar Tienda
-      </ion-card-content>
-    </ion-card>
+  <ion-col size="12" class="padding-0 margin-0">
+    <div class="card work">
+      <div class="img-section">
+      </div>
+      <div class="card-desc">
+      <div class="card-header">
+      <div class="card-title">Tiempo de actividad</div>
+      <div class="card-menu">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      </div>
+      </div>
+      <div class="card-time">20hrs</div>
+
+    </div></div>
+  </ion-col>
+
+  <ion-col size-sm="6" size-xs="6" class="padding-0 margin-0">
+    <div class="card work">
+      <div class="img-section">
+      </div>
+      <div class="card-desc">
+      <div class="card-header">
+      <div class="card-title">Ventas del día</div>
+      </div>
+      <div class="card-time">10</div>
+    </div></div>
+  </ion-col>
+
+  <ion-col size-sm="6" size-xs="6" class="padding-0 margin-0">
+    <div class="card work">
+      <div class="img-section">
+      </div>
+      <div class="card-desc">
+      <div class="card-header">
+      <div class="card-title">Mora del día</div>
+      </div>
+      <div class="card-time">2510,00 Bs.</div>
+    </div></div>
   </ion-col>
 
   <ion-col size="12">
-    <ion-accordion-group [value]="['first',]">
+    <ion-accordion-group [value]="'first'">
       <ion-accordion value="first">
         <ion-item slot="header" color="light">
           <ion-label>Estadisticas</ion-label>
         </ion-item>
-        <div class="ion-padding" slot="content">
-              <ion-row>
-                  <ion-col>
+        <div class="margin-top-3" slot="content">
+              <ion-row class="ion-align-items-start">
+                  <ion-col class="chart-container" size-sm="6" size-xs="12">
                     <cantidad-ventas></cantidad-ventas>
+                  </ion-col>
+
+                  <ion-col class="chart-container" size-sm="6" size-xs="12">
+                    <stock-items></stock-items>
                   </ion-col>
               </ion-row>
         </div>
       </ion-accordion>
       <ion-accordion value="second" [disabled]="true">
         <ion-item slot="header" color="light">
-          <ion-label>Estadisticas</ion-label>
+          <ion-label>Estadisticas +</ion-label>
         </ion-item>
         <div class="ion-padding" slot="content">Second Content</div>
       </ion-accordion>
@@ -32,3 +70,5 @@
   </ion-col>
 
 </ion-row>
+
+
