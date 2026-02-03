@@ -1,15 +1,17 @@
 
 <div class="chart-container">
-    <ion-label class="chart-title">Ingresos en Ventas / Pedidos</ion-label>
+    <ion-label class="chart-title">{{title}}</ion-label>
   <ngx-charts-bar-vertical
+    
     [view]="view"
-    [results]="single"
+    [results]="data"
     [legend]="false"
     [xAxis]="true"
     [yAxis]="false"
     [showDataLabel]="true"
     [animations]="true"
-    [customColors]="colorScheme"
-    [showGridLines]="false">
+    [scheme]="colorScheme"
+    [gradient]="false"
+    [showGridLines]="false"> 
   </ngx-charts-bar-vertical>
 </div>

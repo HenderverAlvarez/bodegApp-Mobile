@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { Color,ScaleType  } from '@swimlane/ngx-charts';
+
 import { IonLabel } from "@ionic/angular/standalone";
 
 @Component({
@@ -29,8 +31,11 @@ export class StockItemsComponent  implements OnInit {
   showLabels = true;
   isDoughnut = false;
 
-  colorScheme = {
-    domain: ['#039D45', '#26a828', '#40c543', '#1dc9ac'] // Cambia estos colores según sea necesario
+  colorScheme: Color = {
+    name: 'custom', // Nombre del esquema de color
+    selectable: true, // Si se puede seleccionar
+    group: ScaleType.Ordinal, // Grupo de colores
+    domain: ['#1dc9ac', "#1a62d6"], // Colores en formato hexadecimal
   };
 
   constructor() { }

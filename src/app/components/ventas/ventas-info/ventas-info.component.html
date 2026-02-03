@@ -1,18 +1,19 @@
-<ion-grid class="margin-top-4">
 
-  <ion-row class="ion-justify-content-space-between">
-    <ion-col size="6">
-      <button class="button-add" (click)="navigate('/new-venta')">Registrar Venta <ion-icon name="add-circle"></ion-icon></button>
-    </ion-col>
+<ion-refresher slot="fixed" (ionRefresh)="navigate('/new-venta')">
+  <ion-refresher-content></ion-refresher-content>
+</ion-refresher>
 
-    <ion-col size="auto">
-      <ion-icon name="funnel-outline" color="primary" size="large"></ion-icon>
+<ion-grid class="margin-top-3">
+
+  <ion-row class="ion-justify-content-center">
+    <ion-col size="8">
+      <button class="button-more" (click)="navigate('/new-venta')">Registrar Venta <ion-icon name="add-circle"></ion-icon></button>
     </ion-col>
   </ion-row>
 
   <ion-row class="ion-justify-content-center margin-top-2">
     <ion-col size="auto">
-      <ion-label class="text-primary text-center text-large text-bold" >Ventas del Día: 01-02-2026</ion-label>
+      <ion-label class="text-primary text-center text-large text-bold" >Tus últimas ventas</ion-label>
     </ion-col>
   </ion-row>
 
@@ -23,9 +24,9 @@
         <ion-card-header>
           <ion-card-title class="text-left text-primary text-small">ID: {{venta.uuid}} 
 
-            <ion-chip  [color]="venta.estado == 'Completada' ? 'primary' : 'warning'" class="margin-left-1">{{venta.estado}}</ion-chip>
+            <ion-chip *ngIf="!venta.mora" [color]="venta.estado == 'Pagada' ? 'primary' : 'warning'" class="margin-left-1">{{venta.estado}}</ion-chip>
 
-            <ion-chip *ngIf="venta.mora" class="chip-mora margin-left-1">Mora</ion-chip>
+            <ion-chip *ngIf="venta.mora" color="warning" class="margin-left-1">Pendiente</ion-chip>
           
           </ion-card-title> 
         </ion-card-header>
@@ -44,7 +45,7 @@
               <ion-label class="text-small text-left">Total Bs.: <span class=" text-primary">{{venta.total}}</span></ion-label>
             </ion-col>
             <ion-col size="6">
-              <ion-label class="text-small text-right">Total $: <span class=" text-primary">{{venta.total_usd}}</span></ion-label>
+              <ion-label class="text-small text-right">Cantidad Items: <span class=" text-primary">{{venta.items}}</span></ion-label>
             </ion-col>
           </ion-row>  
           
@@ -54,7 +55,17 @@
     </ion-col>
 
   </ion-row>
+
   <ion-row class="ion-justify-content-center margin-top-2">
+    <ion-col size="6">
+      <button class="button-more">
+        <ion-label>Ver más ventas</ion-label>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </button>
+    </ion-col>
+
+  </ion-row>
+  <!--ion-row class="ion-justify-content-center margin-top-2">
     <ion-col size="auto">
       <div class="paginator-container">
         <button class="button-app margin-right-1">«</button>
@@ -62,5 +73,5 @@
         <button class="button-app margin-left-1">»</button>
       </div>
     </ion-col>
-  </ion-row>
+  </ion-row-->
 </ion-grid>

@@ -11,34 +11,103 @@
        </ion-col>
     </ion-row>
 
-    <ion-row class="ion-justify-content-center margin-top-2">
-      <ion-col size="auto">
-         <ion-label class="text-center text-primary text-large text-bold">Registrar Venta</ion-label>
-      </ion-col>
-    </ion-row>
+
 
     <ion-row class="ion-justify-content-center margin-top-2">
       <ion-col size="12">
-         <form action="">
-
-            <ion-row>
-                <ion-col size="6">
-                      <ion-input type="text" label="Cliente" required></ion-input>
-                </ion-col>
-  
-                <ion-col size="6">
-                      <ion-datetime-button datetime="datetime"></ion-datetime-button>
-
-                      <ion-modal [keepContentsMounted]="true">
-                        <ng-template>
-                          <ion-datetime presentation="date" id="datetime"></ion-datetime>
-                        </ng-template>
-                      </ion-modal>
-         
-                </ion-col>
+        <ion-card>
+          <div class="wave-inv"></div>
+          <ion-card-header>
+            <ion-row class="ion-justify-content-center margin-top-2">
+              <ion-col size="auto">
+                 <ion-label class="text-center text-primary text-large text-bold">Nueva Venta</ion-label>
+              </ion-col>
             </ion-row>
-         </form>
+          </ion-card-header>
+          <ion-card-content>
+            <form action="" [formGroup]="formVenta" class="ion-padding">
+
+              <ion-row class="ion-justify-content-center margin-top-2">
+                  <ion-col size="auto">
+                    <ion-toggle [formControlName]="'mora'"
+                    color="primary"
+                    helperText="Marcar la venta como NO pagada creara una mora automaticamente"
+                    justify="space-between"
+                    
+                    >Venta Pagada</ion-toggle>
+                  </ion-col>
+              </ion-row>
+
+              
+              <ion-row *ngIf="formVenta.controls['mora'].value == false" class="ion-justify-content-start margin-top-2 slide-in-left">
+                  <ion-col size="12">
+                      <app-input label="Nombre del deudor" type="text" [controlName]="formVenta.controls['cliente']"></app-input>
+                  </ion-col>
+              </ion-row>
+
+
+              <ion-row *ngIf="formVenta.controls['mora'].value == false" class="ion-justify-content-start margin-top-2 slide-in-right">
+                <ion-col size="12">
+                    <app-input label="Contacto del deudor" type="number" [controlName]="formVenta.controls['cliente']"></app-input>
+                </ion-col>
+              </ion-row>
+
+              <ion-row class="ion-justify-content-start margin-top-2">
+                <ion-col size="12">
+                    <ion-label color="primary">
+                      Producto(s) a vender
+                    </ion-label>
+
+                    <ion-label class="margin-top-1 d-block" *ngIf="items.length == 0" color="danger">
+                      Registra algún producto primero.
+                    </ion-label>
+
+
+                   <ion-list *ngIf="items.length > 0">
+                      <ion-row>
+                        <ion-col *ngFor="let item of items" size="11">
+                          <product-card [product]="item" [hover]="false"></product-card>
+                        </ion-col>
+                      </ion-row>
+                   </ion-list>
+
+                   <ion-row *ngIf="items.length > 0" class="row-total">
+                    <ion-col size="11">
+                      <ion-label class="text-bold text-large">Total: {{ calcularTotal()}} Bs.</ion-label>
+                    </ion-col>
+                  </ion-row> 
+
+                </ion-col>
+              </ion-row>
+
+
+              <ion-row class="ion-justify-content-center margin-top-2">
+                <ion-col size="10">
+                  <button class="button-more" (click)="openModal()">Agregar Item<ion-icon name="add-circle"></ion-icon></button>
+                </ion-col>
+              </ion-row>
+           </form>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-row class="ion-justify-content-center margin-top-2">
+          <ion-col size="10">
+            <button class="button-more" disabled (click)="registrarVenta()">Registrar Venta</button>
+          </ion-col>
+        </ion-row>
+        
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
+
+<!--ion-row class="ion-justify-content-center">
+    <ion-col size="8">
+          <ion-datetime-button datetime="datetime"></ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime presentation="date" id="datetime"></ion-datetime>
+            </ng-template>
+          </ion-modal>
+    </ion-col>
+</ion-row-->

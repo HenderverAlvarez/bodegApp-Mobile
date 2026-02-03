@@ -11,9 +11,29 @@ import { StockItemsComponent } from '../../charts/stock-items/stock-items.compon
   styleUrls: ['./home-buttons.component.scss'],
 })
 export class HomeButtonsComponent  implements OnInit {
-
+  date: string = new Intl.DateTimeFormat('en-GB').format(new Date());
   constructor() { }
 
-  ngOnInit() {}
+  dataVentas: any[] = [];
+  dataPedidos: any[] = [];
+
+  ngOnInit() {
+    this.getData();
+  }
+
+  getData(){
+    this.dataPedidos=[
+      {
+        "name": "Pedidos",
+        "value": 5180.00
+      }
+    ]
+    this.dataVentas=[
+      {
+        "name": "Ventas",
+        "value": 89400.00
+      }
+    ]
+  }
 
 }

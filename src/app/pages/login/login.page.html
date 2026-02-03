@@ -4,8 +4,11 @@
       <ion-row>
           <ion-col>
             <ion-card class="form-card">
+              <div class="wave-inv">
+
+              </div>
               <ion-card-header>
-                <ion-card-title class="text-center font-title margin-top-2">Inicio de sesión</ion-card-title>
+                <ion-card-title class="text-center font-title margin-top-3">Inicio de sesión</ion-card-title>
               </ion-card-header>
               <ion-card-content>
 
@@ -23,13 +26,17 @@
                   <ion-label class="ion-text-center margin-top-1" color="danger" *ngIf="error != ''">{{error}}</ion-label>
 
                   
-                  <button expand="full" class="button-app full-width margin-top-1 margin-bottom-2" [disabled]="profileForm.status == 'INVALID' || loading" (click)="logIn()">
+                  <button expand="full" class="button-app full-width margin-top-1 margin-bottom-3" [disabled]="profileForm.status == 'INVALID' || loading" (click)="logIn()">
                     <span *ngIf="!loading">Ingresar</span>
                     <ion-spinner color="light" size="small" name="circles" *ngIf="loading"></ion-spinner>
                   </button>                  
                 </form>
-
+                
               </ion-card-content>
+
+              <div class="wave wave-1">
+                
+              </div>
             </ion-card>
           </ion-col>
       </ion-row>

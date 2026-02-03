@@ -40,6 +40,15 @@
     width: 100%!important;
 }
 
+.d-block{
+  display: block!important;
+}
+.xs-hide{
+    @media (max-width: 300px) {
+        display: none!important;
+    }
+}
+
 .login-background {
   background-image: url('/assets/images/fondo_tienda2.png'); /* Ruta de tu imagen */
   background-size: cover; /* Asegura que la imagen cubra todo el contenido */
@@ -114,33 +123,68 @@
     position: relative;
   }
   
-  button.button-app::before {
-    position: absolute;
-    content: "";
-    background: var(--color);
-    width: 100%!important;
-    height: 200px;
-    z-index: -1;
-    border-radius: 50%;
-  }
+button.button-app::before {
+  position: absolute;
+  content: "";
+  background: var(--color);
+  width: 100%!important;
+  height: 200px;
+  z-index: -1;
+  border-radius: 50%;
+}
   
-  button.button-app:hover {
-    color: white;
-  }
+button.button-app:hover {
+  color: white;
+}
   
-  button.button-app:before {
-    top: 100%;
-    left: 100%;
-    transition: 0.3s all;
-  }
+button.button-app:before {
+  top: 100%;
+  left: 100%;
+  transition: 0.3s all;
+}
   
-  button.button-app:hover::before {
-    top: -30px;
-    left: -30px;
-  }
-  
+button.button-app:hover::before {
+  top: -30px;
+  left: -30px;
+}
 
-  .chart-container{
+.button-more{
+  padding: 1rem;
+  width: 100%;
+  background-color: var(--ion-color-tertiary);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+  border-radius: 10px;
+  ion-icon{
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--ion-color-light);
+  }
+}
+
+.button-more:hover{
+    background-color: var(--ion-color-primary)!important;
+}
+  
+.close-btn{
+  background-color: var(--ion-color-light);
+  color: var(--ion-color-light);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  ion-icon{
+    color: var(--ion-color-primary);
+    font-size: 20px;
+  }
+}
+
+.chart-container{
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -170,7 +214,6 @@
 }
 
 
-/* styles.css o styles.scss */
 .slide-in-left {
   animation: slideInLeft 0.5s ease-in-out forwards;
 }
@@ -183,5 +226,108 @@
   to {
     transform: translateX(0); /* Termina en su posición original */
     opacity: 1; /* Termina visible */
+  }
+}
+
+.slide-in-right {
+  animation: slideInRight 0.5s ease-in-out forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(-100%); /* Comienza fuera de la pantalla a la izquierda */
+    opacity: 0; /* Comienza invisible */
+  }
+  to {
+    transform: translateX(0); /* Termina en su posición original */
+    opacity: 1; /* Termina visible */
+  }
+}
+
+
+.my-custom-modal {
+  --width: 90%; // Ancho del modal
+  --height: 500px; // Alto del modal
+  overflow: scroll;
+}
+
+.wave-1{
+  height: 10%!important;
+}
+.wave-2{
+  height: 20%;
+}
+.wave-3{
+  height: 30%;
+}
+.wave-4{
+  height: 40%;
+}
+.wave-5{
+  height: 50%;
+}
+.wave-6{
+  height: 60%;
+}
+.wave-7{
+  height: 70%;
+}
+.wave-8{
+  height: 80%;
+}
+.wave-9{
+  height: 90%;
+}
+.wave-10{
+  height: 100%;
+}
+
+.wave{
+  position: absolute;
+  width: 100%;
+  background: url("/assets/images/wave.svg");
+  background-size: 200% 100%;
+  bottom: 0%;
+  left: 0%;
+  animation: wave 4s linear infinite;
+  transition: .5s;
+  z-index: 1;
+}
+
+
+.wave-inv{
+  position: absolute;
+  width: 100%;
+  background: url("/assets/images/wave.svg");
+  background-size: 200% 100%;
+  top: 0%;
+  left: 0%;
+  height: 50px;
+  animation: wave 4s linear infinite;
+  transition: .5s;
+  z-index: 1!important;
+  transform: rotate(180deg);
+}
+
+.wave-right{
+  position: absolute;
+  width: 100%; /* Mantener el ancho completo */
+  background: url(/assets/images/wave.svg);
+  background-size: 200% 100%;
+  top: 0; /* Mantener en la parte superior */
+  right: -52%; /* Ajustar para que esté completamente a la derecha */
+  height: 50px;
+  animation: wave 4s linear infinite;
+  transition: 0.5s;
+  z-index: 1 !important;
+  transform: rotate(270deg) translateY(-50%);
+}
+
+@keyframes wave{
+  from{
+      background-position-x: 0;
+  }
+  to{
+      background-position-x: 200%;
   }
 }

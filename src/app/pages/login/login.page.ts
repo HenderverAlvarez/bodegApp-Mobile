@@ -5,7 +5,7 @@ import { IonContent, IonInput, IonLabel, IonGrid, IonRow, IonCol, IonCard, IonCa
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { person, lockClosed } from 'ionicons/icons';
-import { AuthService } from 'src/services/auth_service';
+import { AuthService } from 'src/app/services/auth_service';
 import {FormGroup, FormControl, Validators, FormBuilder, } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 

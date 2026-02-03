@@ -14,7 +14,7 @@ import { HomeButtonsComponent } from 'src/app/components/home/home-buttons/home-
 })
 export class HomePage implements OnInit {
 
-  date: string = new Intl.DateTimeFormat('en-GB').format(new Date());
+
   constructor() {
   }
 
