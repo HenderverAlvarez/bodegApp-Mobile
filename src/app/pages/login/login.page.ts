@@ -8,13 +8,14 @@ import { person, lockClosed } from 'ionicons/icons';
 import { AuthService } from 'src/app/services/auth_service';
 import {FormGroup, FormControl, Validators, FormBuilder, } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
+import { AppInputComponent } from 'src/app/components/commons/app-input/app-input.component';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
   imports: [IonSpinner, 
+    AppInputComponent,
     IonIcon,
     IonCardHeader,
     IonCol,

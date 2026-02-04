@@ -1,58 +1,55 @@
 import { Component, OnInit } from '@angular/core';
-import { IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonLabel, IonChip, IonIcon, IonRefresher, IonRefresherContent } from "@ionic/angular/standalone";
+import { RefresherCustomEvent, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonLabel, IonChip, IonIcon, IonRefresher, IonRefresherContent } from "@ionic/angular/standalone";
 import { CommonModule } from '@angular/common';
 import { funnel, funnelOutline, add, addOutline, addCircle, chevronDownOutline, chevronForwardOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { Router } from '@angular/router';
-
+import { VentasService } from 'src/app/services/ventas_service';
+import { HttpClientModule } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'ventas-info',
   templateUrl: './ventas-info.component.html',
   styleUrls: ['./ventas-info.component.scss'],
   standalone: true,
-  imports: [IonRefresherContent, IonRefresher, IonIcon, IonChip, IonLabel, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonCol, IonRow, IonGrid,CommonModule, ]
+  imports: [DatePipe, IonRefresherContent, IonRefresher,  IonIcon, IonChip, IonLabel, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonCol, IonRow, IonGrid,CommonModule, HttpClientModule]
 })
 export class VentasInfoComponent  implements OnInit {
 
-  constructor(private router : Router) { 
+  constructor(private router : Router, private ventasSvc: VentasService) { 
     addIcons({addCircle,funnelOutline,chevronForwardOutline,chevronDownOutline,addOutline,add,funnel});
   }
-  ventasData: any[]= [
-    {
-      uuid: "3as2d1a",
-      fecha: "2024-06-01 4:15PM",
-      total: 150.75,
-      estado: "Pagada",
-      total_usd: "4",
-      mora: false,
-      items: 4
-    },
-    {
-      uuid: "3as2d1a",
-      fecha: "2024-06-01 4:15PM",
-      total: 150.75,
-      estado: "Pendiente",
-      total_usd: "4",
-      mora: true,
-      cliente: "Juan Perez",
-      items: 2
-    },
-    {
-      uuid: "3as2d1a",
-      fecha: "2024-06-01 4:15PM",
-      total: 150.75,
-      estado: "Pagada",
-      total_usd: "4",
-      mora: false,
-      items: 1
-    },    
-  ];
+  ventasData: any[]= [];
   loading: boolean = false;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getVentas()
+  }
 
+  async getVentas(event?:RefresherCustomEvent){
+    this.ventasSvc.getVentasDia().subscribe(
+      (res:any)=>{
+        console.log(res)
+        if(event){
+          event.target.complete();
+        }
+        if(res.status_code == 200){
+          this.ventasData = res.data
+          
+        }
+      },
+      (error:any)=>{
+        if(event){
+          event.target.complete();
+        }
+      })
+      
+  }
+
+  ionViewWillEnter(){
+    this.getVentas();
+  }
   navigate(url: string){
     this.router.navigateByUrl(url);
-
   }
 }

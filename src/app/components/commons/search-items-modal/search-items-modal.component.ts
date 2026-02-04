@@ -21,9 +21,9 @@ export class SearchItemsModalComponent  implements OnInit {
   }
 
   products: any[] = [
-    {"descripcion":"Harina Pan", "precio":100, "uuid": "5a6s4d8a9sd1asd8"},
-    {"descripcion":"Harina Mary", "precio":200, "uuid": "7f6g5h9j0kl2mno3"},
-    {"descripcion":"Harina De Trigo", "precio":300, "uuid": "1q2w3e4r5t6y7u8i9"},
+    {"descripcion":"Harina Pan", "precio_item":100, "uuid": "5a6s4d8a9sd1asd8", cantidad:0, disponible:10},
+    {"descripcion":"Harina Mary", "precio_item":200, "uuid": "7f6g5h9j0kl2mno3", cantidad:0, disponible:1},
+    {"descripcion":"Harina De Trigo", "precio_item":300, "uuid": "1q2w3e4r5t6y7u8i9", cantidad:0, disponible:5},
   ];
 
   loading: boolean = false;
@@ -36,6 +36,7 @@ export class SearchItemsModalComponent  implements OnInit {
   }
   
   sendData(data:any) {
+    data.cantidad = 1;
     this.modalController.dismiss({data:data}); // Cerrar el modal
   }
 

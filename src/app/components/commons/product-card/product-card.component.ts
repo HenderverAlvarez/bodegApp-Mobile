@@ -13,6 +13,7 @@ export class ProductCardComponent  implements OnInit {
   @Input() product:any;
   @Input() hover?:boolean;
   @Input() wave?:boolean;
+  @Input() noImg?:boolean;
   
 
   constructor() { }

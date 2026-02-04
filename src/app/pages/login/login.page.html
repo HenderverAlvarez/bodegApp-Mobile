@@ -15,12 +15,15 @@
                 <form [formGroup]="profileForm">
                   <div class="input-container">
                     <ion-icon name="person" color="primary"></ion-icon>
-                    <ion-input fill="outline" label="Usuario" labelPlacement="floating" type="text" class="custom-input" formControlName="user"></ion-input>
+
+
+                    <app-input label="Usuario" type="text" [controlName]="profileForm.controls['user']"></app-input>
                   </div>
   
                   <div class="input-container">
                     <ion-icon name="lock-closed" color="primary"></ion-icon>
-                    <ion-input fill="outline" label="Contraseña" labelPlacement="floating" class="custom-input" type="password" placeholder="" formControlName="password"></ion-input>
+
+                    <app-input label="Contraseña" type="password" [controlName]="profileForm.controls['password']"></app-input>
                   </div>
 
                   <ion-label class="ion-text-center margin-top-1" color="danger" *ngIf="error != ''">{{error}}</ion-label>
