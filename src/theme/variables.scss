@@ -63,5 +63,9 @@
 	--ion-color-dark-contrast-rgb: 255,255,255;
 	--ion-color-dark-shade: #005e06;
 	--ion-color-dark-tint: #1a7a20;
-
 }
+$breakpoint-xs: 380px !default; // Extra small
+$breakpoint-sm: 576px !default; // Small
+$breakpoint-md: 768px !default; // Medium
+$breakpoint-lg: 992px !default; // Large
+$breakpoint-xl: 1200px !default;

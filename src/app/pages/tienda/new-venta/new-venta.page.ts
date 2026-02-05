@@ -13,13 +13,13 @@ import { IonicModule } from '@ionic/angular';
 import { ProductCardComponent } from 'src/app/components/commons/product-card/product-card.component';
 import {VentasService} from 'src/app/services/ventas_service';
 import { HttpClientModule } from '@angular/common/http';
-
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-new-venta',
   templateUrl: './new-venta.page.html',
   styleUrls: ['./new-venta.page.scss'],
   standalone: true,
-  imports: [IonicModule, AppInputComponent, AppHeaderComponent, CommonModule, FormsModule,ReactiveFormsModule, HttpClientModule, ProductCardComponent]
+  imports: [RouterLink, IonicModule, AppInputComponent, AppHeaderComponent, CommonModule, FormsModule,ReactiveFormsModule, HttpClientModule, ProductCardComponent]
 })
 export class NewVentaPage implements OnInit {
   @ViewChild('popover') popover!: HTMLIonPopoverElement;

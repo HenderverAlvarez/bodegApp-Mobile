@@ -22,6 +22,10 @@ export const routes: Routes = [
         ]
       },
       {
+        path: 'inventario',
+        loadComponent: () => import('./pages/inventario/inventario.page').then( m => m.InventarioPage)
+      },
+      {
         path: '',
         redirectTo: '/inicio/home',
         pathMatch: 'full', 
@@ -48,4 +52,9 @@ export const routes: Routes = [
     path: 'new-venta',
     loadComponent: () => import('./pages/tienda/new-venta/new-venta.page').then( m => m.NewVentaPage)
   },
+  {
+    path: 'ventas-lista',
+    loadComponent: () => import('./pages/tienda/ventas-lista/ventas-lista.page').then( m => m.VentasListaPage)
+  },
+
 ];

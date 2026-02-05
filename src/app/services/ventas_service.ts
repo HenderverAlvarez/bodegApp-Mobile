@@ -30,5 +30,9 @@ export class VentasService {
       let headers = this.getHeaders();
       return this.http.get<any>(`${this.apiUrl}/ventas/get_by_tienda/dia`, { headers });
     }
+    getVentasFiltros(params:string): Observable<any>{
+      let headers = this.getHeaders();
+      return this.http.get<any>(`${this.apiUrl}/ventas/get_by_tienda` + params, { headers });
+    }
 
 }
