@@ -1,12 +1,13 @@
 <ion-card [class]="hover ? 'card-product' : 'card-product-no-hover'" >
-  <div class="wave-right xs-hide" *ngIf="wave"></div>
-
   <ion-row class="ion-justify-content-space-around ion-align-items-center">
+
+    <div class="cantidad" *ngIf="!hideCantidad">
+      <p class="text-small text-bold">x{{ product.cantidad }} {{product.unidad_medida}}</p>
+    </div>
+
     <ion-col *ngIf="!noImg" size="10">
       <div class="img-container">
-
-          <img class="product-img" alt="Silhouette of mountains" src="assets/images/producto.png" />
-
+          <img class="product-img" alt="imagen del producto" [src]="product.imagen" />
       </div>
       
     </ion-col>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -10,6 +10,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ProductCardComponent } from '../../commons/product-card/product-card.component';
 import { addIcons } from 'ionicons';
 import { arrowBackCircleOutline } from 'ionicons/icons';
+import { helpCircleOutline } from 'ionicons/icons';
 @Component({
   selector: 'app-form-producto-modal',
   templateUrl: './form-producto-modal.component.html',
@@ -21,8 +22,9 @@ import { arrowBackCircleOutline } from 'ionicons/icons';
 })
 export class FormProductoModalComponent  implements OnInit {
 
+  @ViewChild('popover') popover!: HTMLIonPopoverElement;
   constructor(private modalController: ModalController, private router: Router, private formBuilder: FormBuilder,) { 
-    addIcons({arrowBackCircleOutline});
+    addIcons({arrowBackCircleOutline, helpCircleOutline});
   }
   products:any[]=[
     {
@@ -45,15 +47,18 @@ export class FormProductoModalComponent  implements OnInit {
     },
   ]
   recomendados: any[] = [];
-
+  isOpen: boolean = false;
   formProducto: FormGroup = this.formBuilder.group({
-    nombre: new FormControl('', [Validators.required]),
-    recomendados: new FormControl(true, [Validators.required]),
-    unidad_medida: new FormControl(true, [Validators.required]),
+    descripcion: new FormControl('', [Validators.required]),
+    cantidad: new FormControl(0, [Validators.required]),
+    unidad_medida: new FormControl('unidades', [Validators.required]),
+    precio_bs: new FormControl(0, [Validators.required]),
+    precio_usd: new FormControl(0, [Validators.required]),
+    imagen: new FormControl(null)
   });
 
   step:string = 'descripcion';
-
+  imagePreview:any;
   ngOnInit() {}
 
   nextStep(){
@@ -62,23 +67,36 @@ export class FormProductoModalComponent  implements OnInit {
         this.step = 'unidad_medida';
         break;
       case 'unidad_medida':
-        this.step = 'cantidad';
-        break;
-      case 'cantidad':
         this.step = 'precio';
+        break;
+      case 'precio':
+        this.step = 'imagen';
+        break;
+      case 'imagen':
+        this.step = 'confirmar';
         break;
     }
   }
+  presentPopover(e: Event) {
+    this.popover.event = e;
+    this.isOpen = true;
+  }
   prevStep(){ 
     switch(this.step){
+      case 'descripcion':
+        this.step = 'descripcion';
+        break;
       case 'unidad_medida':
         this.step = 'descripcion';
         break;
-      case 'cantidad':
+      case 'precio':
         this.step = 'unidad_medida';
         break;
-      case 'precio':
-        this.step = 'cantidad';
+      case 'imagen':
+        this.step = 'precio';
+        break;
+      case 'confirmar':
+        this.step = 'imagen';
         break;
     }
   }
@@ -89,6 +107,32 @@ export class FormProductoModalComponent  implements OnInit {
     this.recomendados = this.products.filter(product => 
         product.descripcion.toLowerCase().includes(searchTerm)
     );
+  }
+
+  setImage(event:any){
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.imagePreview = e.target?.result; // Guardar la vista previa de la imagen
+      };
+      reader.readAsDataURL(file);
+      this.formProducto.patchValue({
+        image: file
+      });
+    }
+  }
+  calcularUSD(){
+    const precioBs = this.formProducto.get('precio_bs')?.value || 0;
+    const tipoCambio = 390; // Ejemplo de tipo de cambio
+    const precioUsd = precioBs / tipoCambio;
+    this.formProducto.get('precio_usd')?.setValue(precioUsd.toFixed(2));
+  }
+  calcularBs(){
+    const precioUsd = this.formProducto.get('precio_usd')?.value || 0;
+    const tipoCambio = 390; // Ejemplo de tipo de cambio
+    const precioBs = precioUsd * tipoCambio;
+    this.formProducto.get('precio_bs')?.setValue(precioBs.toFixed(2));
   }
 
 }

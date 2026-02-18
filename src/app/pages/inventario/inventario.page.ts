@@ -66,7 +66,7 @@ export class InventarioPage implements OnInit {
   async openModal() {
     const modal = await this.modalController.create({
       component: FormProductoModalComponent,
-      cssClass: 'my-custom-modal', // Clase CSS opcional para personalizar el estilo
+      cssClass: 'modal-xl', // Clase CSS opcional para personalizar el estilo
     });
     
     modal.onDidDismiss().then((result) => {

@@ -260,6 +260,12 @@ button.button-app:hover::before {
   overflow: scroll;
 }
 
+.modal-xl {
+  --width: 90%; // Ancho del modal
+  --height: 90vh; // Alto del modal
+  overflow: scroll;
+}
+
 .wave-1{
   height: 10%!important;
 }

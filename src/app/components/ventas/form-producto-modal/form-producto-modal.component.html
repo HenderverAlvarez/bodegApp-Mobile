@@ -11,95 +11,119 @@
         <ion-col size="12">
             <form action="" [formGroup]="formProducto">
 
-              <ion-row class="ion-justify-content-center slide-in-left">
+              <ion-row class="ion-justify-content-center slide-in-left" *ngIf="step == 'descripcion'">
                 <ion-col size="10">
-                    <app-input label="Nombre Producto" (input)="getRecomendados($event)" type="text" [controlName]="formProducto.controls['nombre']"></app-input>
+                    <app-input label="Nombre Producto" (input)="getRecomendados($event)" type="text" [controlName]="formProducto.controls['descripcion']"></app-input>
                 </ion-col>
               </ion-row>
 
-              <ion-row class="ion-justify-content-center margin-top-1 slide-in-right" *ngIf="recomendados.length > 0">
+              <ion-row class="ion-justify-content-center margin-top-1 slide-in-right" *ngIf="recomendados.length > 0 && step == 'descripcion'">
                 <ion-col size="10">
-                  <ion-label class="text-center" color="primary">Productos recomendados: </ion-label>
+                  <ion-popover #popover [isOpen]="isOpen" side="top" alignment="center" (didDismiss)="isOpen = false">
+                    <ng-template>
+                      <ion-content class="ion-padding">
+                        <ion-label class="ion-text-center" color="primary">Si el producto que quieres cargar a tu inventario aparece en esta lista puedes seleccionarlo y solo cargar tu precio!</ion-label>
+                        
+                      </ion-content>
+                    </ng-template>
+                  </ion-popover>
+                  <ion-label class="text-center text-recomendados" color="primary">Productos recomendados </ion-label> <ion-icon (click)="presentPopover($event)" size="small" color="primary" name="help-circle-outline"></ion-icon>
                   <swiper-container bulletActiveClass="swiperPrimary" pagination="true" autoplay="true" delay="1000" class="carrusel">
                     <swiper-slide *ngFor="let producto of recomendados">
-                      <product-card [product]="producto"></product-card>
+                      <product-card [hideCantidad]="true" [product]="producto"></product-card>
                     </swiper-slide>
                   </swiper-container>
                 </ion-col>
               </ion-row>
 
-              <ion-row class="ion-justify-content-center margin-top-2 slide-in-right">
-                <ion-col size="5" *ngIf="step != 'descripcion'">
-                  <div class="card-nav-xs" (click)="prevStep()">
-                    <p class="card-title">Anterior</p>
-                    <div class="go-corner-inverse">
-                      <div class="go-arrow">
-                        <ion-icon name="arrow-back-circle-outline"></ion-icon>
-                      </div>
-                    </div>
-                  </div>
-                </ion-col>
 
-                <ion-col size="5">
-                  <div class="card-nav-xs" (click)="nextStep()">
-                    <p class="card-title">Siguiente</p>
-                    <div class="go-corner">
-                      <div class="go-arrow">
-                        <ion-icon name="arrow-forward-circle-outline"></ion-icon>
-                      </div>
-                    </div>
-                  </div>
-                </ion-col>
-              </ion-row>
-
-              <ion-row class="ion-justify-content-space-around slide-in-left margin-top-2">
-                <ion-col size="4">
-                    <app-input label="Cantidad" type="number" [controlName]="formProducto.controls['nombre']"></app-input>
-                </ion-col>
-
-                <ion-col size="5">
-                  <ion-select fill="solid" label="Unidad Med." interface="popover" [formControlName]="'unidad_medida'" label-placement="stacked">
+              <ion-row class="ion-justify-content-space-around slide-in-left" *ngIf="step == 'unidad_medida'">
+                <ion-col size="10">
+                  <ion-select fill="outline" label="Unidad Med."interface="popover" [formControlName]="'unidad_medida'" label-placement="stacked">
                     <ion-select-option value="kg">Kg</ion-select-option>
                     <ion-select-option value="unidades">Unidades</ion-select-option>
                   </ion-select>
                 </ion-col>
-              </ion-row>
 
-              <ion-row class="ion-justify-content-space-around slide-in-left margin-top-2">
-                <ion-col size="11">
-                  <ion-segment value="first" scrollable="true" color="primary">
-                    
-                    <ion-segment-button value="first" content-id="first">
-                      <ion-label>Precio Bs.</ion-label>
-                    </ion-segment-button>
-                    <ion-segment-button value="second" content-id="second">
-                      <ion-label>Precio $</ion-label>
-                    </ion-segment-button>
-                  </ion-segment>
-                  <ion-segment-view>
-                    <ion-segment-content id="first">
-                      <ion-row class="ion-justify-content-space-around slide-in-left margin-top-2">
-                        <ion-col size="8">
-                            <app-input label="Precio Bs." type="number" [controlName]="formProducto.controls['nombre']"></app-input>
-                        </ion-col>
-                      </ion-row>
-                    </ion-segment-content>
-                    <ion-segment-content id="second">
-                      <ion-row class="ion-justify-content-space-around slide-in-left margin-top-2">
-                        <ion-col size="8">
-                            <app-input label="Precio USD" type="number" [controlName]="formProducto.controls['nombre']"></app-input>
-                        </ion-col>
-                      </ion-row>
-                    </ion-segment-content>
-                  </ion-segment-view>
+                <ion-col size="10" class="margin-top-1" >
+                    <app-input label="Cantidad"   type="number" [controlName]="formProducto.controls['cantidad']"></app-input>
                 </ion-col>
 
+                
               </ion-row>
 
-              
+
+              <ion-row class="ion-justify-content-space-around slide-in-left margin-top-2" *ngIf="step == 'precio'">
+                  <ion-col size="10">
+                    <app-input label="Precio unit. USD" type="number" min="0" (input)="calcularBs()" [controlName]="formProducto.controls['precio_usd']"></app-input>
+                  </ion-col>
+
+                  <ion-col size="10" class="margin-top-1">
+                      <app-input label="Precio unit. Bs." type="number" min="0" (input)="calcularUSD()" [controlName]="formProducto.controls['precio_bs']"></app-input>
+                      <ion-label class="text-center text-recomendados" color="primary">Tasa de conversión: 390 BS</ion-label>
+                  </ion-col>
+              </ion-row>
 
 
+              <ion-row class="ion-justify-content-space-around slide-in-left margin-top-2" *ngIf="step == 'imagen'">
+                <ion-col size="10">
+                  <label for="file" class="custum-file-upload">
+                    <div class="icon" *ngIf="imagePreview">
+                      <img [src]="imagePreview" style="max-width: 100%;" />
+                    </div>
+                    <div class="icon" *ngIf="!imagePreview">
+                      <svg viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M10 1C9.73478 1 9.48043 1.10536 9.29289 1.29289L3.29289 7.29289C3.10536 7.48043 3 7.73478 3 8V20C3 21.6569 4.34315 23 6 23H7C7.55228 23 8 22.5523 8 22C8 21.4477 7.55228 21 7 21H6C5.44772 21 5 20.5523 5 20V9H10C10.5523 9 11 8.55228 11 8V3H18C18.5523 3 19 3.44772 19 4V9C19 9.55228 19.4477 10 20 10C20.5523 10 21 9.55228 21 9V4C21 2.34315 19.6569 1 18 1H10ZM9 7H6.41421L9 4.41421V7ZM14 15.5C14 14.1193 15.1193 13 16.5 13C17.8807 13 19 14.1193 19 15.5V16V17H20C21.1046 17 22 17.8954 22 19C22 20.1046 21.1046 21 20 21H13C11.8954 21 11 20.1046 11 19C11 17.8954 11.8954 17 13 17H14V16V15.5ZM16.5 11C14.142 11 12.2076 12.8136 12.0156 15.122C10.2825 15.5606 9 17.1305 9 19C9 21.2091 10.7909 23 13 23H20C22.2091 23 24 21.2091 24 19C24 17.1305 22.7175 15.5606 20.9844 15.122C20.7924 12.8136 18.858 11 16.5 11Z"></path> </g></svg>
+                    </div>
+                    <div class="text">
+                       <span >Cargar imagen del producto</span>
+                       </div>
+                       <input (input)="setImage($event)" id="file" type="file">
+                    </label>                    
+                </ion-col>
+            </ion-row>
 
+
+            <ion-row class="ion-justify-content-space-around slide-in-left margin-top-2" *ngIf="step == 'confirmar'">
+              <ion-col size="10" class="margin-top-1">
+                <ion-label class="text-center" color="primary">Confirmar Datos</ion-label>
+
+                <product-card 
+                  [product]="{
+                    imagen: imagePreview, 
+                    descripcion: formProducto.controls['descripcion'].value, 
+                    precio_bs: formProducto.controls['precio_bs'].value , 
+                    precio_usd: formProducto.controls['precio_usd'].value,
+                    cantidad: formProducto.controls['cantidad'].value,
+                    unidad_medida: formProducto.controls['unidad_medida'].value
+                    }"
+                ></product-card>
+              </ion-col>
+            </ion-row>
+
+
+              <ion-row class="ion-justify-content-space-between margin-top-1 slide-in-right">
+                <ion-col size="5" >
+                  <ion-button  *ngIf="step != 'descripcion'" color="tertiary" (click)="prevStep()" expand="full" size="small">
+                    <ion-label class="btn-text">
+                      Anterior
+                    </ion-label>
+                  </ion-button>
+                </ion-col>
+
+                <ion-col size="6">
+                  <ion-button color="tertiary" (click)="nextStep()" expand="full" size="small"
+                   [disabled]=" 
+                    (step == 'descripcion' && formProducto.controls['descripcion'].value == '') ||
+                    (step == 'cantidad' && formProducto.controls['cantidad'].value == '' || formProducto.controls['cantidad'].value == 0 || formProducto.controls['unidad_medida'].value == '') ||                
+                    (step == 'precio' && (formProducto.controls['precio_bs'].value == 0 || formProducto.controls['precio_usd'].value == 0))  ||
+                    (step == 'imagen' && (!imagePreview)) 
+                    " >
+                    <ion-label class="btn-text">
+                      Siguiente
+                    </ion-label>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
             </form>
         </ion-col>
       </ion-row>

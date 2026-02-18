@@ -1,0 +1,56 @@
+ion-button{
+}
+.btn-text{
+    color: #fff;
+    text-transform: capitalize;
+    font-size: 12px;
+}
+.text-recomendados{
+    font-size: 12px;
+}
+
+/* From Uiverse.io by csemszepp */ 
+.custum-file-upload {
+    min-height: 200px;
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: space-between;
+    gap: 20px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #e8e8e8;
+    text-align: center;
+    background-color: var(--ion-color-light);
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0px 48px 35px -48px #e8e8e8;
+  }
+  
+  .custum-file-upload .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .custum-file-upload .icon svg {
+    height: 80px;
+    fill: #e8e8e8;
+  }
+  
+  .custum-file-upload .text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .custum-file-upload .text span {
+    font-weight: 400;
+    color: var(--ion-color-tertiary);
+  }
+  
+  .custum-file-upload input {
+    display: none;
+  }

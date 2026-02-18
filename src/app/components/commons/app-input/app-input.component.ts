@@ -13,6 +13,7 @@ export class AppInputComponent  implements OnInit {
   @Input() label: string = '';
   @Input() controlName: any;
   @Input() type: string = '';
+  @Input() min: string = "";
 
   constructor() { }
 
