@@ -8,12 +8,14 @@ import { VentasService } from 'src/app/services/ventas_service';
 import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { IonicModule } from "@ionic/angular";
+import { CardVentaComponent } from '../card-venta/card-venta.component';
+
 @Component({
   selector: 'ventas-info',
   templateUrl: './ventas-info.component.html',
   styleUrls: ['./ventas-info.component.scss'],
   standalone: true,
-  imports: [DatePipe, IonRefresherContent, IonRefresher, IonIcon, IonChip, IonLabel, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonCol, IonRow, IonGrid, CommonModule, HttpClientModule]
+  imports: [DatePipe,CardVentaComponent, IonRefresherContent, IonRefresher, IonIcon, IonChip, IonLabel, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonCol, IonRow, IonGrid, CommonModule, HttpClientModule]
 })
 export class VentasInfoComponent  implements OnInit {
 
@@ -24,19 +26,18 @@ export class VentasInfoComponent  implements OnInit {
   loading: boolean = false;
 
   ngOnInit() {
-  
+    this.getVentas()
   }
 
   async getVentas(event?:RefresherCustomEvent){
     this.ventasSvc.getVentasDia().subscribe(
       (res:any)=>{
-        console.log(res)
+        
         if(event){
           event.target.complete();
         }
         if(res.status_code == 200){
           this.ventasData = res.data
-          
         }
       },
       (error:any)=>{

@@ -1,6 +1,4 @@
 .card-venta{
-    border-bottom: 4px solid var(--ion-color-primary-shade);
-    border-right: 1px solid var(--ion-color-primary-shade);
     transition: 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border-radius: 10px;
 }
@@ -13,11 +11,18 @@
 
 .more{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     gap: 10px;
     color: var(--ion-color-primary);
     font-weight: 600;
-    font-size: 20px;
+    font-size: 18px;
+}
+.text-no-data{
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center!important;
+    width: 100%;
+    display: inline-block;
 }

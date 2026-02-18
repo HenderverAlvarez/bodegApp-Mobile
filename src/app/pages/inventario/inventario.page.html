@@ -1,13 +1,70 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>inventario</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">inventario</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+  <app-header title="Inventario"></app-header>
+
+  <ion-grid class="margin-top-4 text-center">
+
+
+    <ion-row *ngIf="!showInventario" class="ion-justify-content-center margin-top-1 slide-in-left">
+      <ion-col size="10">
+
+        <div class="card-nav" (click)="openModal()" >
+          <p class="card-title">Registrar Producto</p>
+          <p class="small-desc">
+            Registra un nuevo producto en tu inventario.
+          </p>
+          <div class="go-corner">
+            <div class="go-arrow">
+              <ion-icon size="large" name="arrow-forward-circle-outline"></ion-icon>
+            </div>
+          </div>
+        </div>
+
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="!showInventario" class="ion-justify-content-center margin-top-1 slide-in-right">
+      <ion-col size="10">
+
+        <div class="card-nav" (click)="setShowInventario()">
+          <p class="card-title">Inventario</p>
+          <p class="small-desc">
+            Consulta Los productos de tu inventario y modifica detalles.
+          </p>
+          <div class="go-corner">
+            <div class="go-arrow">
+              <ion-icon size="large" name="arrow-forward-circle-outline"></ion-icon>
+            </div>
+          </div>
+        </div>
+     
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="showInventario"  class="ion-justify-content-space-between margin-top-1">
+      <ion-col size="auto">
+         <div>
+           <ion-chip (click)="setShowInventario()" color="primary"><ion-icon class="margin-right-2" name="arrow-back"></ion-icon> Regresar</ion-chip>
+         </div>
+      </ion-col>
+   </ion-row>
+
+    <ion-row *ngIf="showInventario" class="ion-justify-content-space-around ion-align-items-center">
+      <ion-col size="10">
+        <ion-searchbar class="search" placeholder="Buscar producto"></ion-searchbar>
+      </ion-col>
+    </ion-row>
+
+
+    <ion-row *ngIf="showInventario" class="ion-justify-content-space-around">
+      <ion-col *ngFor="let producto of productos" size="8">
+        <product-card [product]="producto"></product-card>
+      </ion-col>
+    </ion-row>
+
+
+
+  </ion-grid>
+
+
 </ion-content>

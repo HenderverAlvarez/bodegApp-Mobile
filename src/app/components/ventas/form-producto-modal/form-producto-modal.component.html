@@ -1,0 +1,107 @@
+<ion-content>
+    <div class="wave-inv"></div>
+    <ion-grid>
+      <ion-row class="ion-justify-content-center ion-align-items-center margin-top-4">
+        <ion-col size="auto">
+            <ion-label class="text-center text-primary text-large text-bold">Registrar producto</ion-label>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="ion-justify-content-center ion-align-items-center margin-top-1">
+        <ion-col size="12">
+            <form action="" [formGroup]="formProducto">
+
+              <ion-row class="ion-justify-content-center slide-in-left">
+                <ion-col size="10">
+                    <app-input label="Nombre Producto" (input)="getRecomendados($event)" type="text" [controlName]="formProducto.controls['nombre']"></app-input>
+                </ion-col>
+              </ion-row>
+
+              <ion-row class="ion-justify-content-center margin-top-1 slide-in-right" *ngIf="recomendados.length > 0">
+                <ion-col size="10">
+                  <ion-label class="text-center" color="primary">Productos recomendados: </ion-label>
+                  <swiper-container bulletActiveClass="swiperPrimary" pagination="true" autoplay="true" delay="1000" class="carrusel">
+                    <swiper-slide *ngFor="let producto of recomendados">
+                      <product-card [product]="producto"></product-card>
+                    </swiper-slide>
+                  </swiper-container>
+                </ion-col>
+              </ion-row>
+
+              <ion-row class="ion-justify-content-center margin-top-2 slide-in-right">
+                <ion-col size="5" *ngIf="step != 'descripcion'">
+                  <div class="card-nav-xs" (click)="prevStep()">
+                    <p class="card-title">Anterior</p>
+                    <div class="go-corner-inverse">
+                      <div class="go-arrow">
+                        <ion-icon name="arrow-back-circle-outline"></ion-icon>
+                      </div>
+                    </div>
+                  </div>
+                </ion-col>
+
+                <ion-col size="5">
+                  <div class="card-nav-xs" (click)="nextStep()">
+                    <p class="card-title">Siguiente</p>
+                    <div class="go-corner">
+                      <div class="go-arrow">
+                        <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+                      </div>
+                    </div>
+                  </div>
+                </ion-col>
+              </ion-row>
+
+              <ion-row class="ion-justify-content-space-around slide-in-left margin-top-2">
+                <ion-col size="4">
+                    <app-input label="Cantidad" type="number" [controlName]="formProducto.controls['nombre']"></app-input>
+                </ion-col>
+
+                <ion-col size="5">
+                  <ion-select fill="solid" label="Unidad Med." interface="popover" [formControlName]="'unidad_medida'" label-placement="stacked">
+                    <ion-select-option value="kg">Kg</ion-select-option>
+                    <ion-select-option value="unidades">Unidades</ion-select-option>
+                  </ion-select>
+                </ion-col>
+              </ion-row>
+
+              <ion-row class="ion-justify-content-space-around slide-in-left margin-top-2">
+                <ion-col size="11">
+                  <ion-segment value="first" scrollable="true" color="primary">
+                    
+                    <ion-segment-button value="first" content-id="first">
+                      <ion-label>Precio Bs.</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="second" content-id="second">
+                      <ion-label>Precio $</ion-label>
+                    </ion-segment-button>
+                  </ion-segment>
+                  <ion-segment-view>
+                    <ion-segment-content id="first">
+                      <ion-row class="ion-justify-content-space-around slide-in-left margin-top-2">
+                        <ion-col size="8">
+                            <app-input label="Precio Bs." type="number" [controlName]="formProducto.controls['nombre']"></app-input>
+                        </ion-col>
+                      </ion-row>
+                    </ion-segment-content>
+                    <ion-segment-content id="second">
+                      <ion-row class="ion-justify-content-space-around slide-in-left margin-top-2">
+                        <ion-col size="8">
+                            <app-input label="Precio USD" type="number" [controlName]="formProducto.controls['nombre']"></app-input>
+                        </ion-col>
+                      </ion-row>
+                    </ion-segment-content>
+                  </ion-segment-view>
+                </ion-col>
+
+              </ion-row>
+
+              
+
+
+
+            </form>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+</ion-content>

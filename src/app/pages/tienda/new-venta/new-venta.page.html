@@ -6,7 +6,7 @@
     <ion-row class="ion-justify-content-space-between">
        <ion-col size="auto">
           <div>
-            <ion-chip [routerLink]="['/inicio/tienda']" color="primary"><ion-icon class="margin-right-2" name="arrow-back"></ion-icon> Regresar</ion-chip>
+            <ion-chip [routerLink]="['/inicio/tienda']" color="primary"><ion-icon class="margin-right-1" name="arrow-back"></ion-icon> Regresar</ion-chip>
           </div>
        </ion-col>
     </ion-row>
@@ -71,7 +71,7 @@
                     </ion-popover>
 
                     <ion-row class="ion-justify-content-center margin-top-2">
-                      <ion-col size="10">
+                      <ion-col size="11">
                         <button class="button-more" (click)="openModal()">Agregar Item<ion-icon name="add-circle"></ion-icon></button>
                       </ion-col>
                     </ion-row>
@@ -114,22 +114,21 @@
                 </ion-col>
               </ion-row>
 
+              <ion-row class="ion-justify-content-center margin-top-2">
+                <ion-col size="12">
+                  <button class="button-more" [disabled]="items.length == 0 || 
+                    (formVenta.controls['mora'].value == false 
+                    && formVenta.controls['cliente'].value == '' 
+                    && formVenta.controls['contacto_cliente'].value == '' )" 
+                  (click)="registrarVenta()">Registrar Venta</button>
+                </ion-col>
+              </ion-row>
+
 
               
            </form>
           </ion-card-content>
-        </ion-card>
-
-        <ion-row class="ion-justify-content-center margin-top-2">
-          <ion-col size="10">
-            <button class="button-more" [disabled]="items.length == 0 || 
-              (formVenta.controls['mora'].value == false 
-              && formVenta.controls['cliente'].value == '' 
-              && formVenta.controls['contacto_cliente'].value == '' )" 
-            (click)="registrarVenta()">Registrar Venta</button>
-          </ion-col>
-        </ion-row>
-        
+        </ion-card>        
       </ion-col>
     </ion-row>
   </ion-grid>

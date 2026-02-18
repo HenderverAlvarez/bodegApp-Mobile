@@ -3,24 +3,26 @@
   <ion-refresher-content></ion-refresher-content>
 </ion-refresher>
 
-<ion-grid class="margin-top-3">
-
-  <ion-row class="ion-justify-content-center">
-    <ion-col size="8">
-      <button class="button-more" (click)="navigate('/new-venta')">Registrar Venta <ion-icon name="add-circle"></ion-icon></button>
-    </ion-col>
-  </ion-row>
-
-  <ion-row class="ion-justify-content-center margin-top-2">
+<ion-grid class="margin-top-1">
+  <ion-row class="ion-justify-content-start margin-bottom-2">
     <ion-col size="auto">
-      <ion-label class="text-primary text-center text-large text-bold" >Tus últimas ventas</ion-label>
+      <ion-label class="text-primary text-left text-large text-bold" >Ventas Recientes</ion-label>
     </ion-col>
   </ion-row>
 
 
-  <ion-row>
-    <ion-col size="12"> 
-      <ion-card *ngFor="let venta of ventasData" class="card-venta slide-in-left">
+  <ion-row class="ion-align-items-center">
+    <ion-col size="12" class=""> 
+      <ion-card *ngIf="ventasData.length == 0"class="card-venta slide-in-left">
+        <ion-card-header>
+          <ion-card-title class="text-center text-primary text-small ">No has registrado ventas aún. ¡Comienza a registrar tus ventas para verlas aquí!</ion-card-title> 
+        </ion-card-header>
+      </ion-card>
+
+
+      <card-venta *ngFor="let venta of ventasData" [venta]="venta"></card-venta>
+
+      <!--ion-card  class="card-venta slide-in-left">
         <ion-card-header>
           <ion-card-title class="text-left text-primary text-small">ID: {{venta.uuid}} 
 
@@ -60,16 +62,20 @@
           
           
         </ion-card-content>
-      </ion-card>
+      </ion-card-->
     </ion-col>
 
   </ion-row>
 
-  <ion-row class="ion-justify-content-center margin-top-2">
-    <ion-col size="6">
-      <div class="more" (click)="navigate('/ventas-lista')">
-        <ion-label class="text-center" >Ver más ventas</ion-label>
-        <ion-icon name="chevron-down-outline"></ion-icon>
+  <ion-row class="ion-justify-content-center margin-top-2 slide-in-right">
+    <ion-col size="10">
+      <div class="card-nav-sm" (click)="navigate('/ventas-lista')">
+        <p class="card-title">Ver más ventas</p>
+        <div class="go-corner">
+          <div class="go-arrow">
+            <ion-icon size="large" name="arrow-forward-circle-outline"></ion-icon>
+          </div>
+        </div>
       </div>
     </ion-col>
 

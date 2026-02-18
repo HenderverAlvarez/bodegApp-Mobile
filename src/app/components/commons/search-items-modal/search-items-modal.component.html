@@ -24,7 +24,7 @@
 
     <ion-row *ngIf="!loading && products.length > 0" class="ion-justify-content-center">
       <ion-col size="11" *ngFor="let item of products" >
-            <product-card (click)="sendData(item)" [hover]="true" [wave]="true" class="slide-in-right"  [product]="item" (selectProduct)="selectProduct($event)"></product-card>
+            <product-card (click)="sendData(item)"  class="slide-in-right"  [product]="item" (selectProduct)="selectProduct($event)"></product-card>
       </ion-col>
     </ion-row>
 

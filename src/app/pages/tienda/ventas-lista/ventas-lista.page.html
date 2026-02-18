@@ -1,30 +1,33 @@
 
-
 <ion-content [fullscreen]="true">
+  
+<ion-refresher slot="fixed" (ionRefresh)="getVentas($event)">
+  <ion-refresher-content></ion-refresher-content>
+</ion-refresher>
   <app-header title="Todas las ventas"></app-header>
   
   <ion-grid class="margin-top-4">
-    <ion-row class="ion-justify-content-space-between">
-       <ion-col size="auto">
-          <div>
-            <ion-chip [routerLink]="['/inicio/tienda']" color="primary"><ion-icon class="margin-right-2" name="arrow-back"></ion-icon> Regresar</ion-chip>
-          </div>
-       </ion-col>
-    </ion-row>
-
-    <ion-row class="ion-justify-content-end margin-top-2 position-relative">
+    <ion-row class="ion-justify-content-space-between position-relative">
       <div class="wave-inv"></div>
-      <ion-col size="auto" class="margin-top-3">
+
+      <ion-col size="auto" class="margin-top-4">
+        <div>
+          <ion-chip [routerLink]="['/inicio/tienda']" color="primary"><ion-icon class="margin-right-1" name="arrow-back"></ion-icon> Regresar</ion-chip>
+        </div>
+     </ion-col>
+
+
+      <ion-col size="auto" class="margin-top-4">
         <ion-icon (click)="showHideFilters()" name="funnel-outline" size="large" color="primary"></ion-icon>
       </ion-col>
     </ion-row>
 
-    <ion-row class="ion-justify-content-space-between margin-top-1" *ngIf="showFilters">
+    <ion-row class="ion-justify-content-space-between margin-top-1" *ngIf="!showFilters">
       <ion-col size="auto" class="slide-in-right">
         <div class="filter-container">
           <ion-list>
             <ion-item>
-              <ion-select interface="action-sheet" [value]="selectedDate" (ionChange)="filter({'type': 'time','value': $event.target.value})" aria-label="Tiempo" placeholder="Tiempo">
+              <ion-select interface="popover" [value]="selectedDate" (ionChange)="filter({'type': 'time','value': $event.target.value})" aria-label="Tiempo" placeholder="Tiempo">
                 <ion-select-option value="">Hoy</ion-select-option>
                 <ion-select-option value="dia">Ayer</ion-select-option>
                 <ion-select-option value="semana">Esta semana</ion-select-option>
@@ -38,9 +41,10 @@
       <ion-col size="auto" class="slide-in-left">
         <ion-list>
           <ion-item>
-            <ion-select interface="action-sheet" [value]="selectedEstado" (ionChange)="filter({'type': 'estado','value': $event.target.value})" aria-label="Estado" placeholder="Estado de pago">
-              <ion-select-option value="Pagado">Pagado</ion-select-option>
-              <ion-select-option value="Pendiente">Pendiente</ion-select-option>
+            <ion-select interface="popover" [value]="selectedEstado" 
+            (ionChange)="filter({'type': 'estado','value': $event.target.value})" aria-label="Estado" placeholder="Estado de pago">
+              <ion-select-option value="Pagado">Completado</ion-select-option>
+              <ion-select-option value="Pendiente">Deuda</ion-select-option>
               <ion-select-option value="">Todos</ion-select-option>
             </ion-select>
           </ion-item>
@@ -54,9 +58,17 @@
       </ion-col>
     </ion-row>
 
-    <ion-row class="ion-justify-content-center margin-top-2">
-      <ion-col size="12">
-        <ion-card *ngFor="let venta of ventas" class="card-venta slide-in-left">
+    <ion-row class="ion-justify-content-center margin-top-4">
+      <ion-col size="12" *ngIf="!loading">
+        <ion-card *ngIf="!ventas" class="card-venta slide-in-left">
+          <ion-card-header>
+            <ion-card-title class="text-center text-primary text-small ">No se encontraron ventas con los criterios seleccionados</ion-card-title> 
+          </ion-card-header>
+        </ion-card>
+
+        <card-venta *ngFor="let venta of ventas" [venta]="venta"></card-venta>
+
+        <!--ion-card *ngFor="let venta of ventas" class="card-venta slide-in-left">
           <ion-card-header>
             <ion-card-title class="text-left text-primary text-small">ID: {{venta.uuid}} 
   
@@ -96,7 +108,11 @@
             
             
           </ion-card-content>
-        </ion-card>
+        </ion-card-->
+      </ion-col>
+
+      <ion-col size="auto" *ngIf="loading">
+        <ion-spinner color="primary" name="crescent" ></ion-spinner>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -20,12 +20,33 @@ export class SearchItemsModalComponent  implements OnInit {
     addIcons({closeCircle,closeCircleOutline});
   }
 
-  products: any[] = [
-    {"descripcion":"Harina Pan", "precio_item":100, "uuid": "5a6s4d8a9sd1asd8", cantidad:0, disponible:10},
-    {"descripcion":"Harina Mary", "precio_item":200, "uuid": "7f6g5h9j0kl2mno3", cantidad:0, disponible:1},
-    {"descripcion":"Harina De Trigo", "precio_item":300, "uuid": "1q2w3e4r5t6y7u8i9", cantidad:0, disponible:5},
-  ];
-
+  products:any[]=[
+    {
+      id:1,
+      nombre:'Producto 1',
+      descripcion:'Harina 1',
+      precio:10.99,
+      cantidad:5,
+      imagen:'https://via.placeholder.com/150'
+    },
+    {
+      id:2,
+      nombre:'Producto 2',
+      descripcion:'Harina 2',
+      precio:15.99,
+      cantidad:5,
+      imagen:'https://via.placeholder.com/150'
+    },
+    {
+      id:3,
+      nombre:'Producto 3',
+      descripcion:'Harina 3',
+      precio:20.99,
+      cantidad:5,
+      imagen:'https://via.placeholder.com/150'
+    }
+  ]
+  
   loading: boolean = false;
 
   ngOnInit(){

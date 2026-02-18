@@ -9,7 +9,7 @@
     <ion-row>
        <ion-col size="12">
 
-        <ion-segment value="first" scrollable>
+        <ion-segment value="first">
           <ion-segment-button value="first" content-id="first">
             <ion-label>Ventas</ion-label>
           </ion-segment-button>
@@ -20,7 +20,50 @@
         <ion-segment-view>
 
           <ion-segment-content id="first">
-            <ventas-info [ventasData]="ventasData"></ventas-info>
+            <ion-row *ngIf="!showVenta" class="ion-justify-content-center margin-top-1 slide-in-left">
+              <ion-col size="10">
+
+                <div class="card-nav" (click)="navigate('/new-venta')">
+                  <p class="card-title">Registrar Venta</p>
+                  <p class="small-desc">
+                    Registra tus ventas de manera rápida y sencilla.
+                  </p>
+                  <div class="go-corner">
+                    <div class="go-arrow">
+                      <ion-icon size="large" name="arrow-forward-circle-outline"></ion-icon>
+                    </div>
+                  </div>
+                </div>
+
+              </ion-col>
+            </ion-row>
+
+            <ion-row *ngIf="!showVenta" class="ion-justify-content-center margin-top-1 slide-in-right">
+              <ion-col size="10">
+
+                <div class="card-nav" (click)="showVentas()">
+                  <p class="card-title">Ver Ventas</p>
+                  <p class="small-desc">
+                    Consulta el historial de tus ventas y detalles de cada una.
+                  </p>
+                  <div class="go-corner">
+                    <div class="go-arrow">
+                      <ion-icon size="large" name="arrow-forward-circle-outline"></ion-icon>
+                    </div>
+                  </div>
+                </div>
+             
+              </ion-col>
+            </ion-row>
+            
+            <ion-row *ngIf="showVenta"  class="ion-justify-content-space-between margin-top-1">
+              <ion-col size="auto">
+                 <div>
+                   <ion-chip (click)="showVentas()" color="primary"><ion-icon class="margin-right-2" name="arrow-back"></ion-icon> Regresar</ion-chip>
+                 </div>
+              </ion-col>
+           </ion-row>
+            <ventas-info *ngIf="showVenta"></ventas-info>
           </ion-segment-content>
 
           <ion-segment-content id="second">

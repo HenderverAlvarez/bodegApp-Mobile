@@ -1,3 +1,52 @@
-<p>
-  card-venta works!
-</p>
+<div class="card-venta">
+  <div class="wave wave-1"></div>
+  <div class="contenido">
+    <ion-grid>
+      <ion-row>
+        <ion-col class="date">
+          Fecha: {{venta.fecha_creacion | date: 'short'}}
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="ion-justify-content-space-between margin-top-2">
+        <ion-col size="auto">
+          Cliente: {{venta.nombre_cliente || "N/A"}}
+        </ion-col>
+
+        <ion-col size="auto">
+          Contacto: {{venta.contacto_cliente || "N/A"}}
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="ion-justify-content-space-between">
+        <ion-col size="auto">
+          Total Bs: {{venta.total || "N/A"}}
+        </ion-col>
+
+        <ion-col size="auto">
+          Total USD: {{venta.total || "N/A"}}
+        </ion-col>
+      </ion-row>
+
+
+      <ion-row class="margin-top-1 margin-bottom-2 border-top padding-top-1">
+        <ion-col>
+          
+        </ion-col>
+
+        <ion-col size="auto">
+          Items Vendidos: {{venta.lines || "N/A"}}
+        </ion-col>
+      </ion-row>
+
+
+    </ion-grid>
+  </div>
+   
+
+
+  <div class="solapa" [ngClass]="venta.estado == 'Pagado' ? 'pagado' : 'pendiente'" >
+    <p class="text-small">{{venta.estado}}</p>
+  </div>
+
+</div>
