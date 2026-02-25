@@ -2,10 +2,11 @@ import { Component, OnInit,Output,EventEmitter } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonIcon, IonRow, IonGrid, IonCol, IonSearchbar, IonSpinner, IonList, IonItem, IonLabel } from "@ionic/angular/standalone";
 import { ModalController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { closeCircleOutline,closeCircle } from 'ionicons/icons';
+import { closeCircleOutline,closeCircle, arrowForwardCircleOutline } from 'ionicons/icons';
 import { CommonModule } from '@angular/common';
 import { ProductCardComponent } from '../product-card/product-card.component';
-
+import { InventarioService } from 'src/app/services/inventario_service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-items-modal',
@@ -16,42 +17,17 @@ import { ProductCardComponent } from '../product-card/product-card.component';
 })
 export class SearchItemsModalComponent  implements OnInit {
   @Output() dataSent = new EventEmitter<any>();
-  constructor(private modalController: ModalController) {
-    addIcons({closeCircle,closeCircleOutline});
+  constructor(private modalController: ModalController, private inventarioSvc: InventarioService, private router: Router) {
+    addIcons({closeCircle,arrowForwardCircleOutline,closeCircleOutline});
   }
 
-  products:any[]=[
-    {
-      id:1,
-      nombre:'Producto 1',
-      descripcion:'Harina 1',
-      precio:10.99,
-      cantidad:5,
-      imagen:'https://via.placeholder.com/150'
-    },
-    {
-      id:2,
-      nombre:'Producto 2',
-      descripcion:'Harina 2',
-      precio:15.99,
-      cantidad:5,
-      imagen:'https://via.placeholder.com/150'
-    },
-    {
-      id:3,
-      nombre:'Producto 3',
-      descripcion:'Harina 3',
-      precio:20.99,
-      cantidad:5,
-      imagen:'https://via.placeholder.com/150'
-    }
-  ]
+  products:any[]=[]
   
   loading: boolean = false;
+  mensaje:string="";
 
-  ngOnInit(){
+  ngOnInit(){}
 
-  }
   selectProduct(event: any){
 
   }
@@ -63,12 +39,30 @@ export class SearchItemsModalComponent  implements OnInit {
 
   filterItems($event:any){
     this.loading = true;
-    setTimeout(() => {
-      this.loading = false;
-    }, 5000);
+    this.products = []
+    this.inventarioSvc.getItems(1, $event.target.value).subscribe(
+      (res:any)=>{
+        console.log(res)
+        if(res.status_code == 200){
+          this.products=res.data
+          this.mensaje= ''
+        }
+        else{
+          this.mensaje = res.detail
+        }
+        this.loading = false;
+      }, 
+      (error:any)=>{
+        this.loading = false;
+      })
   }
 
+  navigate(route:string){
+    this.router.navigateByUrl(route)
+    this.closeModal()
+  }
   closeModal() {
     this.modalController.dismiss();
   }
+
 }

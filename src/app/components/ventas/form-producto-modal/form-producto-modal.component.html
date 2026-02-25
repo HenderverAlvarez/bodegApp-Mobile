@@ -30,7 +30,7 @@
                   <ion-label class="text-center text-recomendados" color="primary">Productos recomendados </ion-label> <ion-icon (click)="presentPopover($event)" size="small" color="primary" name="help-circle-outline"></ion-icon>
                   <swiper-container bulletActiveClass="swiperPrimary" pagination="true" autoplay="true" delay="1000" class="carrusel">
                     <swiper-slide *ngFor="let producto of recomendados">
-                      <product-card [hideCantidad]="true" [product]="producto"></product-card>
+                      <product-card [hideCantidad]="true" [hideDisponible]="true" [hidePrice]="true" (click)="selectInfo(producto)" [product]="producto"></product-card>
                     </swiper-slide>
                   </swiper-container>
                 </ion-col>
@@ -38,7 +38,7 @@
 
 
               <ion-row class="ion-justify-content-space-around slide-in-left" *ngIf="step == 'unidad_medida'">
-                <ion-col size="10">
+                <ion-col size="10" *ngIf="recomendadoSelected == null">
                   <ion-select fill="outline" label="Unidad Med."interface="popover" [formControlName]="'unidad_medida'" label-placement="stacked">
                     <ion-select-option value="kg">Kg</ion-select-option>
                     <ion-select-option value="unidades">Unidades</ion-select-option>
@@ -82,14 +82,18 @@
                 </ion-col>
             </ion-row>
 
+            <ion-row *ngIf="errorImagen != '' && step == 'imagen'">
+              <ion-label color="warning" size="large" class="ion-text-center">{{errorImagen}}</ion-label>
+            </ion-row>
 
             <ion-row class="ion-justify-content-space-around slide-in-left margin-top-2" *ngIf="step == 'confirmar'">
               <ion-col size="10" class="margin-top-1">
                 <ion-label class="text-center" color="primary">Confirmar Datos</ion-label>
 
                 <product-card 
+                  [hideDisponible]="true"
                   [product]="{
-                    imagen: imagePreview, 
+                    foto_url: recomendadoSelected ? recomendadoSelected.foto_url : formProducto.controls['imagen'], 
                     descripcion: formProducto.controls['descripcion'].value, 
                     precio_bs: formProducto.controls['precio_bs'].value , 
                     precio_usd: formProducto.controls['precio_usd'].value,
@@ -100,6 +104,9 @@
               </ion-col>
             </ion-row>
 
+            <ion-row *ngIf="errorProducto != '' && step == 'confirmar'">
+              <ion-label color="warning" size="large" class="ion-text-center">{{errorProducto}}</ion-label>
+            </ion-row>
 
               <ion-row class="ion-justify-content-space-between margin-top-1 slide-in-right">
                 <ion-col size="5" >
@@ -111,15 +118,16 @@
                 </ion-col>
 
                 <ion-col size="6">
-                  <ion-button color="tertiary" (click)="nextStep()" expand="full" size="small"
-                   [disabled]=" 
-                    (step == 'descripcion' && formProducto.controls['descripcion'].value == '') ||
-                    (step == 'cantidad' && formProducto.controls['cantidad'].value == '' || formProducto.controls['cantidad'].value == 0 || formProducto.controls['unidad_medida'].value == '') ||                
-                    (step == 'precio' && (formProducto.controls['precio_bs'].value == 0 || formProducto.controls['precio_usd'].value == 0))  ||
-                    (step == 'imagen' && (!imagePreview)) 
-                    " >
+                  <ion-button *ngIf="step != 'confirmar'" color="tertiary" (click)="nextStep()" expand="full" size="small"
+                    [disabled]="isNextStepDisabled()" >
                     <ion-label class="btn-text">
                       Siguiente
+                    </ion-label>
+                  </ion-button>
+
+                  <ion-button *ngIf="step == 'confirmar'" color="tertiary" (click)="confirmar()" expand="full" size="small">
+                    <ion-label class="btn-text" [disabled]="errorProducto == '' || loading">
+                      Confirmar
                     </ion-label>
                   </ion-button>
                 </ion-col>
@@ -128,4 +136,6 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+
+    <ion-toast color="tertiary" [isOpen]="isToastOpen"  (didDismiss)="setOpen()" message="Producto Agregado al inventario!" [duration]="5000"></ion-toast>
 </ion-content>

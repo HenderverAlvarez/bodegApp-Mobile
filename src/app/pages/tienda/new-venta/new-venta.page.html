@@ -65,7 +65,7 @@
                     <ion-popover  #popover [isOpen]="isOpenPop" (didDismiss)="isOpenPop = false" side="top" alignment="center">
                       <ng-template>
                         <ion-content class="ion-padding text-center text-primary">
-                          No quedan más de este producto en el inventario.
+                          No queda suficiente de este producto en el inventario.
                         </ion-content>
                       </ng-template>
                     </ion-popover>
@@ -86,18 +86,47 @@
 
 
                         <ion-col  size-sm="8" size-xs="12">
-                          <product-card [product]="item" [noImg]="true" [hover]="false"></product-card>
+                          <product-card [product]="item" [hover]="false"></product-card>
                         </ion-col>
 
                         <ion-col size-sm="2" size-xs="12">
-                          <div class="quantity-badge">
+                          <div class="quantity-badge" *ngIf="item.unidad_medida == 'unidades'">
                             <ion-icon name="add-circle-outline" (click)="add(item, $event)" color="primary"></ion-icon>
-                            
-
                             <ion-label class="text-bold text-primary">x {{ item.cantidad }}</ion-label>
                             <ion-icon name="remove-circle-outline" color="primary" (click)="remove(item)"></ion-icon>
                           </div>
-                           
+                        </ion-col>
+
+                        <ion-col size-sm="2" size-xs="12"  *ngIf="item.unidad_medida == 'kg'">
+
+                          <ion-segment value="first">
+                            <ion-segment-button [value]="'first'+item.id" [contentId]="'first'+item.id">
+                              <ion-label>Peso</ion-label>
+                            </ion-segment-button>
+                            <ion-segment-button [value]="'second'+item.id" [contentId]="'second'+item.id">
+                              <ion-label>Precio</ion-label>
+                            </ion-segment-button>
+                          </ion-segment>
+                          <ion-segment-view>
+                            <ion-segment-content [id]="'first'+item.id">
+                              <div class="quantity-badge margin-top-1">                            
+                                <ion-label class="text-bold text-primary">Kg</ion-label>
+                                <ion-input type="number" step="0.01" (input)="calcularCantidad($event, item)"  [placeholder]="item.cantidad" min="0.01" [max]="item.stock" [value]="item.cantidad"></ion-input>
+                              </div>
+                            </ion-segment-content>
+
+                            <ion-segment-content [id]="'second'+item.id">
+                              <div class="quantity-badge margin-top-1">                            
+                                <ion-label class="text-bold text-primary">Bs</ion-label>
+                                <ion-input type="number" step="10"  (input)="calcularPrecio($event, item)" label="Precio BS" labelPlacement="stacked" [placeholder]="item.precio_bs" min="1"></ion-input>
+                              </div>
+
+                              <div>
+                                Cantidad: {{item.cantidad}} Kg
+                              </div>
+                            </ion-segment-content>
+                          </ion-segment-view>
+                          
                         </ion-col>
 
                        

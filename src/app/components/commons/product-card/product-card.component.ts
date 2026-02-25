@@ -19,6 +19,7 @@ export class ProductCardComponent  implements OnInit {
   @Input() showPriceUsd?:boolean;
   @Input() hidePrice?:boolean;
   @Input() hideCantidad?:boolean;
+  @Input() hideDisponible?:boolean;
   
   constructor() { }
 

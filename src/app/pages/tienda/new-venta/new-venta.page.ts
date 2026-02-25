@@ -14,6 +14,7 @@ import { ProductCardComponent } from 'src/app/components/commons/product-card/pr
 import {VentasService} from 'src/app/services/ventas_service';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
+
 @Component({
   selector: 'app-new-venta',
   templateUrl: './new-venta.page.html',
@@ -32,7 +33,7 @@ export class NewVentaPage implements OnInit {
     mora: new FormControl(true, []),
   });
   items:any[]=[]
-  tasa: number = 370.00;
+  tasa: number = 390.00;
 
   isOpenPop = false;
 
@@ -83,7 +84,7 @@ export class NewVentaPage implements OnInit {
         if (this.items.find(i => i.uuid === result.data.data.uuid)){
           this.items.forEach(i => {
             if(i.uuid === result.data.data.uuid){
-              if(i.cantidad < i.disponible)i.cantidad += 1;
+              if(i.cantidad < i.stock)i.cantidad += 1;
               else this.presentPopover(event)
             }
           });
@@ -102,7 +103,7 @@ export class NewVentaPage implements OnInit {
   calcularTotal(){
     let total = 0;
     this.items.forEach(item => {
-      total += item.precio_item * item.cantidad;
+      total += item.precio_bs * item.cantidad;
     });
     return total;
   }
@@ -110,9 +111,28 @@ export class NewVentaPage implements OnInit {
   calcularTotalUsd(){
     let total = 0;
     this.items.forEach(item => {
-      total += (item.precio_item / this.tasa) * item.cantidad;
+      total += item.precio_usd  * item.cantidad;
     });
     return parseFloat(total.toFixed(2));
+  }
+
+  calcularPrecio(event:any, item:any){
+    let monto = event.target.value;
+    let bs_kg = item.precio_usd * this.tasa
+
+    console.log(bs_kg)
+
+    if(monto > 0) item.cantidad =   (monto / bs_kg).toFixed(2)
+  }
+  calcularCantidad(event:any, item:any){
+    let cantidad = event.target.value
+    console.log(item.stock)
+    if(cantidad > parseFloat(item.stock)){
+      this.isOpenPop=true;
+      console.log("Si es mayor")
+    }
+
+    if(event.target.value > 0){item.cantidad=event.target.value}
   }
 
   eliminarItem(item:any){
@@ -123,7 +143,7 @@ export class NewVentaPage implements OnInit {
   add(item:any, event?: Event){
     this.items.forEach(i => {
       if(i === item){
-        if(item.cantidad < item.disponible)i.cantidad += 1;
+        if(item.cantidad < item.stock)i.cantidad += 1;
         else this.presentPopover(event)
       }
     }

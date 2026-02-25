@@ -1,13 +1,21 @@
 <ion-card [class]="hover ? 'card-product' : 'card-product-no-hover'" >
   <ion-row class="ion-justify-content-space-around ion-align-items-center">
 
-    <div class="cantidad" *ngIf="!hideCantidad">
-      <p class="text-small text-bold">x{{ product.cantidad }} {{product.unidad_medida}}</p>
+    <div class="cantidad" *ngIf="!hideCantidad && product.estado != 'Agotado'">
+      <p class="text-small text-bold">x{{ product.cantidad? product.cantidad : product.stock }} {{product.unidad_medida}}</p>
+    </div>
+
+    <div [class]="hideCantidad ? 'disponible-top' : 'disponible'" *ngIf="!hideDisponible && product.estado != 'Agotado'">
+      <p class="text-small text-bold">Disponible: {{product.stock }} {{product.unidad_medida}}</p>
+    </div>
+
+    <div class="agotado" *ngIf="product.estado == 'Agotado'">
+      <p class="text-small text-bold">Agotado</p>
     </div>
 
     <ion-col *ngIf="!noImg" size="10">
       <div class="img-container">
-          <img class="product-img" alt="imagen del producto" [src]="product.imagen" />
+          <img class="product-img" alt="imagen del producto" [src]="'http://localhost:8000/'+ product.foto_url" />
       </div>
       
     </ion-col>
@@ -28,7 +36,7 @@
         </ion-col>
       </ion-row>
       
-      <p class="product-name" *ngIf="showDisponible">Disponible: {{product.disponible}}</p>
+      <p class="product-name" *ngIf="showDisponible">Disponible: {{product.stock}}</p>
     </ion-col>
   </ion-row>
   

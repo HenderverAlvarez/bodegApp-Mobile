@@ -11,7 +11,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ion-searchbar placeholder="Buscar producto..." debounce="500" (ionInput)="filterItems($event)"></ion-searchbar>
+        <ion-searchbar placeholder="Buscar producto..." debounce="700" (ionInput)="filterItems($event)"></ion-searchbar>
       </ion-col>
     </ion-row>
 
@@ -20,11 +20,32 @@
         <ion-spinner name="crescent" color="primary" ></ion-spinner>
       </ion-col>
     </ion-row>
+
+    <ion-row class="ion-justify-content-center margin-top-2" *ngIf="mensaje != ''">
+      <ion-col size="auto">
+        <ion-label  color="tertiary" class="ion-text-center text-bold d-block" >{{mensaje}}</ion-label>
+      </ion-col>
+
+
+      <ion-col size="10">
+        <div class="card-nav" (click)="navigate('/inicio/inventario')">
+          <p class="card-title">Ir a Inventario</p>
+          <p class="small-desc">
+            Si no encuentras tu producto verifica todo tu inventario o registra un nuevo producto!.
+          </p>
+          <div class="go-corner">
+            <div class="go-arrow">
+              <ion-icon size="large" name="arrow-forward-circle-outline"></ion-icon>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
   
 
     <ion-row *ngIf="!loading && products.length > 0" class="ion-justify-content-center">
       <ion-col size="11" *ngFor="let item of products" >
-            <product-card (click)="sendData(item)"  class="slide-in-right"  [product]="item" (selectProduct)="selectProduct($event)"></product-card>
+            <product-card (click)="sendData(item)" [hideCantidad]="true" class="slide-in-right"  [product]="item" (selectProduct)="selectProduct($event)"></product-card>
       </ion-col>
     </ion-row>
 
