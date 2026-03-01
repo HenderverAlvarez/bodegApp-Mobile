@@ -1,5 +1,5 @@
 import { Component, OnInit,Output,EventEmitter } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonIcon, IonRow, IonGrid, IonCol, IonSearchbar, IonSpinner, IonList, IonItem, IonLabel } from "@ionic/angular/standalone";
+import { IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonIcon, IonRow, IonGrid, IonCol, IonSearchbar, IonSpinner, IonList, IonItem, IonLabel, IonToast } from "@ionic/angular/standalone";
 import { ModalController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { closeCircleOutline,closeCircle, arrowForwardCircleOutline } from 'ionicons/icons';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   templateUrl: './search-items-modal.component.html',
   styleUrls: ['./search-items-modal.component.scss'],
   standalone: true,
-  imports: [IonLabel, ProductCardComponent, IonItem, IonList, CommonModule, IonSpinner, IonSearchbar, IonCol, IonGrid, IonRow, IonIcon, IonContent, IonButtons, IonTitle, IonToolbar, IonHeader, ]
+  imports: [IonToast, IonLabel, ProductCardComponent, IonItem, IonList, CommonModule, IonSpinner, IonSearchbar, IonCol, IonGrid, IonRow, IonIcon, IonContent, IonButtons, IonTitle, IonToolbar, IonHeader, ]
 })
 export class SearchItemsModalComponent  implements OnInit {
   @Output() dataSent = new EventEmitter<any>();
@@ -22,9 +22,10 @@ export class SearchItemsModalComponent  implements OnInit {
   }
 
   products:any[]=[]
-  
+  isToastOpen:boolean=false
   loading: boolean = false;
-  mensaje:string="";
+  mensaje:string="Ingresa el nombre del producto que buscas vender.";
+  mensajeToast:string="";
 
   ngOnInit(){}
 
@@ -33,6 +34,12 @@ export class SearchItemsModalComponent  implements OnInit {
   }
   
   sendData(data:any) {
+
+    if(data.estado == "Agotado"){
+        this.mensajeToast="Este producto esta Agotado!";
+        this.isToastOpen=true;
+        return
+    }
     data.cantidad = 1;
     this.modalController.dismiss({data:data}); // Cerrar el modal
   }
@@ -64,5 +71,7 @@ export class SearchItemsModalComponent  implements OnInit {
   closeModal() {
     this.modalController.dismiss();
   }
-
+  setOpen(){
+    this.isToastOpen = !this.isToastOpen
+  }
 }

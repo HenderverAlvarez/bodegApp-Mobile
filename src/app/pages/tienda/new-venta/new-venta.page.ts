@@ -34,7 +34,7 @@ export class NewVentaPage implements OnInit {
   });
   items:any[]=[]
   tasa: number = 390.00;
-
+  step:string='productos'
   isOpenPop = false;
 
   ngOnInit() {
@@ -119,10 +119,18 @@ export class NewVentaPage implements OnInit {
   calcularPrecio(event:any, item:any){
     let monto = event.target.value;
     let bs_kg = item.precio_usd * this.tasa
+    let cantidad;
 
-    console.log(bs_kg)
+    if(monto > 0){
+      cantidad = (monto / bs_kg).toFixed(2)
 
-    if(monto > 0) item.cantidad =   (monto / bs_kg).toFixed(2)
+      if(parseFloat(cantidad) > parseFloat(item.stock)){
+        this.isOpenPop=true;
+        item.cantidad = item.stock
+        event.preventDefault()
+      }else item.cantidad = cantidad
+      
+    }
   }
   calcularCantidad(event:any, item:any){
     let cantidad = event.target.value
@@ -130,9 +138,12 @@ export class NewVentaPage implements OnInit {
     if(cantidad > parseFloat(item.stock)){
       this.isOpenPop=true;
       console.log("Si es mayor")
+      item.cantidad = item.stock
+    }else{
+      if(event.target.value > 0){item.cantidad=event.target.value}
     }
 
-    if(event.target.value > 0){item.cantidad=event.target.value}
+    
   }
 
   eliminarItem(item:any){

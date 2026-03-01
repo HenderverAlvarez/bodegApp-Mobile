@@ -51,4 +51,6 @@
 
 
   </ion-grid>
+
+  <ion-toast color="tertiary" cssClass="toast" [isOpen]="isToastOpen"  (didDismiss)="setOpen()" [message]="mensajeToast" [duration]="2500"></ion-toast>
 </ion-content>

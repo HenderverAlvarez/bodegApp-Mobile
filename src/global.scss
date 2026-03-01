@@ -39,9 +39,15 @@
 .full-width{
     width: 100%!important;
 }
-
+.toast{
+  color: #ffffff;
+  text-align: center;
+}
 .d-block{
   display: block!important;
+}
+.d-flex{
+  display: flex!important;
 }
 .xs-hide{
     @media (max-width: 300px) {

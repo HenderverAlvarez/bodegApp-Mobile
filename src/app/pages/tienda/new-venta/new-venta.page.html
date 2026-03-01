@@ -15,7 +15,7 @@
 
     <ion-row class="ion-justify-content-center margin-top-2">
       <ion-col size="12">
-        <ion-card>
+        <ion-card class="margin-0">
           <div class="wave-inv"></div>
           <ion-card-header>
             <ion-row class="ion-justify-content-center margin-top-2">
@@ -25,33 +25,9 @@
             </ion-row>
           </ion-card-header>
           <ion-card-content>
-            <form action="" [formGroup]="formVenta" class="ion-padding">
-
-              <ion-row class="ion-justify-content-center margin-top-2">
-                  <ion-col size="auto">
-                    <ion-toggle [formControlName]="'mora'"
-                    color="primary"
-                    helperText="Marcar la venta como NO pagada creara una mora automaticamente"
-                    justify="space-between"
-                    
-                    >Venta Pagada</ion-toggle>
-                  </ion-col>
-              </ion-row>
-
-              
-              <ion-row *ngIf="formVenta.controls['mora'].value == false" class="ion-justify-content-start margin-top-2 slide-in-left">
-                  <ion-col size="12">
-                      <app-input label="Nombre del deudor" type="text" [controlName]="formVenta.controls['cliente']"></app-input>
-                  </ion-col>
-              </ion-row>
-
-
-              <ion-row *ngIf="formVenta.controls['mora'].value == false" class="ion-justify-content-start margin-top-2 slide-in-right">
-                <ion-col size="12">
-                    <app-input label="Contacto del deudor" type="number" [controlName]="formVenta.controls['contacto_cliente']"></app-input>
-                </ion-col>
-              </ion-row>
-
+            <form action="" [formGroup]="formVenta" class="">
+              <div *ngIf="step == 'productos'">
+                  
               <ion-row class="ion-justify-content-start margin-top-2">
                 <ion-col size="12">
                     <ion-label color="primary">
@@ -80,8 +56,9 @@
                     
                       <ion-row *ngFor="let item of items" class="ion-justify-content-space-between ion-align-items-center slide-in-left item-product">
 
-                        <ion-col size="auto" size-xs="12">
-                          <ion-icon color="primary" name="close-outline" size="large" (click)="eliminarItem(item)"></ion-icon>
+                        <ion-col size="auto" size-xs="12" class="ion-align-items-end d-flex">
+                          <ion-icon color="primary" class="icon-trash" name="trash-bin" (click)="eliminarItem(item)"></ion-icon>
+                          <ion-label color="primary" class="margin-left-1">Eliminar de la venta</ion-label>
                         </ion-col>
 
 
@@ -99,7 +76,11 @@
 
                         <ion-col size-sm="2" size-xs="12"  *ngIf="item.unidad_medida == 'kg'">
 
-                          <ion-segment value="first">
+                          <ion-label color="primary" class="margin-bottom-1 d-block margin-top-1">
+                            Cantidad a Vender (Por Peso o Precio).
+                          </ion-label>
+
+                          <ion-segment value="first" [scrollable]="true">
                             <ion-segment-button [value]="'first'+item.id" [contentId]="'first'+item.id">
                               <ion-label>Peso</ion-label>
                             </ion-segment-button>
@@ -111,14 +92,14 @@
                             <ion-segment-content [id]="'first'+item.id">
                               <div class="quantity-badge margin-top-1">                            
                                 <ion-label class="text-bold text-primary">Kg</ion-label>
-                                <ion-input type="number" step="0.01" (input)="calcularCantidad($event, item)"  [placeholder]="item.cantidad" min="0.01" [max]="item.stock" [value]="item.cantidad"></ion-input>
+                                <ion-input type="number" fill="outline" color="primary" (input)="calcularCantidad($event, item)"  [placeholder]="item.cantidad" min="0.01" [max]="item.stock" [placeholder]="item.cantidad" [value]="item.cantidad"></ion-input>
                               </div>
                             </ion-segment-content>
 
                             <ion-segment-content [id]="'second'+item.id">
                               <div class="quantity-badge margin-top-1">                            
                                 <ion-label class="text-bold text-primary">Bs</ion-label>
-                                <ion-input type="number" step="10"  (input)="calcularPrecio($event, item)" label="Precio BS" labelPlacement="stacked" [placeholder]="item.precio_bs" min="1"></ion-input>
+                                <ion-input type="number"  (input)="calcularPrecio($event, item)" label="Precio BS" labelPlacement="stacked" [placeholder]="calcularTotal().toFixed(2)" min="1" [value]="calcularTotal().toFixed(2)"></ion-input>
                               </div>
 
                               <div>
@@ -135,13 +116,37 @@
 
                    <ion-row *ngIf="items.length > 0" class="row-total margin-top-2">
                     <ion-col size="11">
-                      <ion-label class="text-bold text-large">Total Bs. {{ calcularTotal()}}</ion-label><br>
-                      <ion-label class="text-bold text-large">Total $ {{ calcularTotalUsd()}}</ion-label>
+                      <ion-label class="text-bold text-large">Total Bs. {{ calcularTotal().toFixed(2)}}</ion-label><br>
+                      <ion-label class="text-bold text-large">Total $ {{ calcularTotalUsd().toFixed(2)}}</ion-label>
                     </ion-col>
                   </ion-row> 
 
                 </ion-col>
               </ion-row>
+              </div>
+
+              <div *ngIf="step == 'pago'">
+                <ion-row class="ion-justify-content-center margin-top-2">
+                  <ion-col size="auto">
+                    <ion-toggle [formControlName]="'mora'"
+                    color="primary"
+                    helperText="Marcar la venta como NO pagada creara una mora automaticamente"
+                    justify="space-between"
+                    
+                    >Venta Pagada</ion-toggle>
+                  </ion-col>
+              </ion-row>              
+              <ion-row *ngIf="formVenta.controls['mora'].value == false" class="ion-justify-content-start margin-top-2 slide-in-left">
+                  <ion-col size="12">
+                      <app-input label="Nombre del deudor" type="text" [controlName]="formVenta.controls['cliente']"></app-input>
+                  </ion-col>
+              </ion-row>
+              <ion-row *ngIf="formVenta.controls['mora'].value == false" class="ion-justify-content-start margin-top-2 slide-in-right">
+                <ion-col size="12">
+                    <app-input label="Contacto del deudor" type="number" [controlName]="formVenta.controls['contacto_cliente']"></app-input>
+                </ion-col>
+              </ion-row>
+              </div>
 
               <ion-row class="ion-justify-content-center margin-top-2">
                 <ion-col size="12">
@@ -149,7 +154,7 @@
                     (formVenta.controls['mora'].value == false 
                     && formVenta.controls['cliente'].value == '' 
                     && formVenta.controls['contacto_cliente'].value == '' )" 
-                  (click)="registrarVenta()">Registrar Venta</button>
+                  (click)="registrarVenta()">Siguiente</button>
                 </ion-col>
               </ion-row>
 
