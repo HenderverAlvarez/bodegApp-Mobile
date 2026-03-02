@@ -1,0 +1,20 @@
+.edit-pop{
+    margin: 0px;
+    --color: var(--ion-color-tertiary);
+    padding: 0px;
+    font-size: .8rem;
+    ion-icon{
+        font-size: 1rem;
+        margin-right: 1rem;
+        color: var(--ion-color-tertiary);
+    }
+}
+
+.edit-pop:hover{
+    --background: var(--ion-color-tertiary);
+    --color: #fff!important;
+    ion-icon{
+        color: #fff!important;
+    }
+    
+}

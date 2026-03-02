@@ -11,6 +11,7 @@ import { ProductCardComponent } from 'src/app/components/commons/product-card/pr
 import { Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { InventarioService } from 'src/app/services/inventario_service';
+import { InventarioListaComponent } from 'src/app/components/inventario/inventario-lista/inventario-lista.component';
 
 
 @Component({
@@ -18,39 +19,11 @@ import { InventarioService } from 'src/app/services/inventario_service';
   templateUrl: './inventario.page.html',
   styleUrls: ['./inventario.page.scss'],
   standalone: true,
-  imports: [IonicModule, AppHeaderComponent,  CommonModule, FormsModule, ProductCardComponent, HttpClientModule]
+  imports: [IonicModule, AppHeaderComponent,  CommonModule, FormsModule, ProductCardComponent, InventarioListaComponent, HttpClientModule]
 })
 export class InventarioPage implements OnInit {
 
-  productos:any[]=[
-    {
-      id:1,
-      nombre:'Producto 1',
-      descripcion:'Harina 1',
-      precio_bs:10.99,
-      precio_usd:10.99,
-      cantidad:5,
-      imagen:'https://via.placeholder.com/150'
-    },
-    {
-      id:1,
-      nombre:'Producto 1',
-      descripcion:'Harina 1',
-      precio_bs:10.99,
-      precio_usd:10.99,
-      cantidad:5,
-      imagen:'https://via.placeholder.com/150'
-    },
-    {
-      id:1,
-      nombre:'Producto 1',
-      descripcion:'Harina 1',
-      precio_bs:10.99,
-      precio_usd:10.99,
-      cantidad:5,
-      imagen:'https://via.placeholder.com/150'
-    },
-  ]
+  productos:any[]=[]
   mensaje:string=""
   showInventario:boolean=false;
   showCategorias:boolean=false;
@@ -60,40 +33,7 @@ export class InventarioPage implements OnInit {
     addIcons({create,addCircleOutline,removeCircleOutline,arrowForwardCircleOutline,arrowBack,trashBin});
   }
 
-  ngOnInit() {
-    this.getInventario();
-  }
-
-  getInventario(){
-    this.inventarioSvc.getItems(1).subscribe(
-    (res:any)=>{
-      if(res.status_code == 200){
-        this.productos = res.data
-        this.mensaje= ''
-      }
-    }, 
-    (error:any)=>{
-
-    })
-  }
-  filterItems($event:any){
-    this.loading = true;
-    this.productos = []
-    this.inventarioSvc.getItems(1, $event.target.value).subscribe(
-      (res:any)=>{
-        if(res.status_code == 200){
-          this.productos=res.data
-          this.mensaje= ''
-        }
-        else{
-          this.mensaje = res.detail
-        }
-        this.loading = false;
-      }, 
-      (error:any)=>{
-        this.loading = false;
-      })
-  }
+  ngOnInit() {  }
 
   setShowInventario(){
     this.showInventario=!this.showInventario;

@@ -1,0 +1,37 @@
+<ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Editar producto</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="dismissModal()">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="ion-padding">
+    <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+      <ion-item>
+        <ion-label position="floating">Stock</ion-label>
+        <ion-input formControlName="stock"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Descripción</ion-label>
+        <ion-input formControlName="descripcion"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Precio</ion-label>
+        <ion-input type="number" formControlName="precio"></ion-input>
+      </ion-item>
+
+      <div class="button-group">
+        <ion-button type="submit" color="primary" [disabled]="editForm.invalid">Guardar cambios</ion-button>
+        <ion-button color="medium" (click)="dismissModal()">Cancelar</ion-button>
+      </div>
+    </form>
+    <div class="wave wave-2"></div>
+  </ion-content>
+</ion-content>

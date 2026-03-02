@@ -124,33 +124,7 @@
       </ion-col>
    </ion-row>
 
-    <ion-row *ngIf="showInventario" class="ion-justify-content-space-around ion-align-items-center">
-      <ion-col size="12">
-        <ion-searchbar (input)="filterItems($event)" debounce="700" class="ion-text-left" show-clear-button="always" clear-icon="trash-bin" placeholder="Buscar producto"></ion-searchbar>
-      </ion-col>
-    </ion-row>
-
-
-    <ion-row class="ion-justify-content-center margin-top-2" *ngIf="loading && showInventario">
-      <ion-col size="auto">
-        <ion-spinner name="crescent" color="primary" ></ion-spinner>
-      </ion-col>
-    </ion-row>
-
-    <ion-row class="ion-justify-content-center margin-top-3" *ngIf="mensaje != '' && showInventario">
-      <ion-col size="auto">
-        <ion-label  color="tertiary" class="ion-text-center text-bold d-block" >{{mensaje}}</ion-label>
-      </ion-col>
-    </ion-row>
-    
-    <ion-row *ngIf="showInventario" class="ion-justify-content-space-around">
-      <ion-col *ngFor="let producto of productos" size="8">
-        <product-card [product]="producto" [hideCantidad]="true"></product-card>
-      </ion-col>
-    </ion-row>
-
-
-
+    <inventario-lista *ngIf="showInventario" ></inventario-lista>
   </ion-grid>
 
 

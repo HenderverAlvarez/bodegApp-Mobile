@@ -14,6 +14,7 @@ import { ProductCardComponent } from 'src/app/components/commons/product-card/pr
 import {VentasService} from 'src/app/services/ventas_service';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
+import { ModalConfirmationComponent } from 'src/app/components/commons/modal-confirmation/modal-confirmation.component';
 
 @Component({
   selector: 'app-new-venta',
@@ -31,11 +32,15 @@ export class NewVentaPage implements OnInit {
     cliente: new FormControl('', [Validators.required]),
     contacto_cliente: new FormControl('', [Validators.required]),
     mora: new FormControl(true, []),
+    metodo: new FormControl('',  [Validators.required]),
   });
+
   items:any[]=[]
   tasa: number = 390.00;
   step:string='productos'
   isOpenPop = false;
+  modalSearch=SearchItemsModalComponent;
+  modalConfirmation=ModalConfirmationComponent;
 
   ngOnInit() {
   }
@@ -55,12 +60,17 @@ export class NewVentaPage implements OnInit {
       lines: this.items,
       nombre_cliente: this.formVenta.value.cliente,
       contacto_cliente: this.formVenta.value.contacto_cliente,
+      metodo_pago: this.formVenta.value.metodo
     }
 
     this.ventasSvc.insertVenta(data).subscribe({
       next: (res) => {
         if(res.status_code == 200){
-          this.router.navigate(['/inicio/tienda']);
+            this.openModal(this.modalConfirmation, 'modal-sm').then(() => {
+              setTimeout(() => {
+                this.router.navigate(['/inicio/tienda']);
+              }, 1000);
+            });
         }
         console.log(res);
       },
@@ -71,21 +81,26 @@ export class NewVentaPage implements OnInit {
 
 }
 
-  async openModal() {
+  async openModal(component:any, modalClass:string) {
+    let data = {}
+    if(modalClass === 'modal-sm'){data = {mensaje: "Venta cargada con exito!", icon: "checkmark-circle-outline"}}
+
     const modal = await this.modalController.create({
-      component: SearchItemsModalComponent,
-      cssClass: 'my-custom-modal', // Clase CSS opcional para personalizar el estilo
+      component: component,
+      cssClass: modalClass,
+      componentProps: data,
+      // Clase CSS opcional para personalizar el estilo
     });
     
     modal.onDidDismiss().then((result) => {
       if (result.data) {
 
-        //si existe el item sumamos +1
+        //si existe el item sumamos +cantidad del item
         if (this.items.find(i => i.uuid === result.data.data.uuid)){
           this.items.forEach(i => {
             if(i.uuid === result.data.data.uuid){
-              if(i.cantidad < i.stock)i.cantidad += 1;
-              else this.presentPopover(event)
+              if(i.cantidad < i.stock && i.cantidad + result.data.data.cantidad < i.stock)i.cantidad += result.data.data.cantidad;
+              else this.isOpenPop=true;
             }
           });
           this.calcularTotal();
@@ -146,6 +161,16 @@ export class NewVentaPage implements OnInit {
     
   }
 
+  nextStep(){
+    if(this.step === 'productos') this.step = 'pago';
+    else this.step = 'productos';
+  }
+
+  prevStep(){
+    if(this.step === 'pago') this.step = 'productos';
+    else this.step = 'pago';
+  }
+
   eliminarItem(item:any){
     this.items = this.items.filter(i => i !== item);
     this.calcularTotal();
@@ -176,6 +201,7 @@ export class NewVentaPage implements OnInit {
     this.isOpenPop = true;
   }
   ionViewWillLeave(){
+    this.step = "productos";
     this.items = [];
     this.formVenta.reset();
     this.formVenta.controls['mora'].setValue(true);

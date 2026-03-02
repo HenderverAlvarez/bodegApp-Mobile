@@ -180,6 +180,11 @@ button.button-app:hover::before {
   }
 }
 
+.button-more-sm{
+  @extend .button-more;
+  padding: .5rem!important;
+}
+
 .button-more:hover{
     background-color: var(--ion-color-primary)!important;
 }
@@ -265,12 +270,17 @@ button.button-app:hover::before {
   --height: 500px; // Alto del modal
   overflow: scroll;
 }
-
+.modal-sm{
+  --width: 90%; // Ancho del modal
+  --height: 200px; // Alto del modal
+  overflow: scroll;
+}
 .modal-xl {
   --width: 90%; // Ancho del modal
   --height: 90vh; // Alto del modal
   overflow: scroll;
 }
+
 
 .wave-1{
   height: 10%!important;

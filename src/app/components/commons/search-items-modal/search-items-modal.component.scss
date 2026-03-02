@@ -2,3 +2,66 @@ ion-spinner {
     width: 50px;
     height: 50px;
 }
+.quantity-badge{
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    gap: 5px;
+    @media (max-width: 575px) {
+        margin-bottom: 1rem;
+        flex-direction: row-reverse!important;;
+        gap: 0px;
+    }
+    ion-icon{
+        font-size: 2.5rem;
+    }
+
+    ion-input{
+        --padding-bottom: 10px;
+        --padding-end: 10px;
+        --padding-start: 10px;
+        --padding-top: 10px;
+        text-align: center;
+        width: 30%;
+    }
+    .icons{
+        display: flex;
+        flex-direction: column;
+        ion-icon{
+            font-size: 1.8rem;
+        }
+    }
+    .row-cantidad{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 1rem;
+        border: solid 1px var(--ion-color-tertiary);
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        justify-content: center;
+        .width-auto{
+            width: 40%!important;
+        }
+        .input-cantidad{
+            width: 100%;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+        .text-cantidad{
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            display: block;
+            text-align: center;
+        }
+    }
+
+}
+.pricing{
+    color: var(--ion-color-tertiary);
+    font-size: .7rem;
+    text-align: center;
+    padding: 1rem;
+}

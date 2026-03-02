@@ -18,6 +18,13 @@ export class AppHeaderComponent  implements OnInit {
     addIcons({home,person,settings,helpCircle,logOut,menu,personCircle}); 
    }
 
-  ngOnInit() {}
+  ngOnInit() {
+    let token = localStorage.getItem("token")
+  }
+
+  logout(){
+    localStorage.removeItem("token");
+    window.location.href="/login";
+  }
 
 }

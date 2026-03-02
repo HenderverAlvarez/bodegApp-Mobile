@@ -59,3 +59,13 @@
   .form__field:required, .form__field:invalid {
     box-shadow: none;
   }
+  .input-icon-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    ion-icon{
+      margin-left: 1rem;
+      font-size: 1.5rem;
+      color: var(--ion-color-tertiary);
+    }
+  }
