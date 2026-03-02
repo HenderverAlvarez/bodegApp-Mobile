@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { InventarioService } from 'src/app/services/inventario_service';
-import { trashBin, pencil, cog } from 'ionicons/icons';
+import { trashBin, pencil, cog, bagAdd } from 'ionicons/icons';
 import { ProductCardComponent } from 'src/app/components/commons/product-card/product-card.component';
 import { addIcons } from 'ionicons';
 import { ModalController } from '@ionic/angular';
@@ -20,7 +20,7 @@ export class InventarioListaComponent  implements OnInit {
 
   constructor(private inventarioSvc: InventarioService, private modalController: ModalController) { 
 
-    addIcons({trashBin, pencil,cog})
+    addIcons({trashBin, pencil,cog, bagAdd})
   }
 
   productos:any[]=[]
@@ -31,20 +31,23 @@ export class InventarioListaComponent  implements OnInit {
 
   ngOnInit() {this.getInventario()}
   getInventario(){
-    this.inventarioSvc.getItems(1).subscribe(
+    this.productos = [];
+    this.loading = true;
+    this.inventarioSvc.getItems(1, '').subscribe(
     (res:any)=>{
       if(res.status_code == 200){
         this.productos = res.data
-        this.mensaje= ''
+        this.mensaje= '';
+        this.loading = false;
       }
     }, 
     (error:any)=>{
-
+      this.loading = false;
     })
   }
   filterItems($event:any){
     this.loading = true;
-    this.productos = []
+    this.productos = [];
     this.inventarioSvc.getItems(1, $event.target.value).subscribe(
       (res:any)=>{
         if(res.status_code == 200){
@@ -66,15 +69,12 @@ export class InventarioListaComponent  implements OnInit {
       component: EditItemModalComponent,
       cssClass: 'modal-xl',
       componentProps: {item:item},
-      // Clase CSS opcional para personalizar el estilo
     });
     
     modal.onDidDismiss().then((result) => {
       if (result.data) {
-
-        //si existe el item sumamos +cantidad del item
-
-
+        console.log(result.data)
+        this.getInventario();
       }
     });
 

@@ -45,4 +45,9 @@ export class InventarioService {
       }
       return this.http.get<any>(url, { headers });
     }
+
+    editItem(item:any){
+      let headers = this.getHeaders();
+      return this.http.post<any>(`${this.apiUrl}/edit`, item, { headers });
+    }
 }

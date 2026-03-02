@@ -277,7 +277,7 @@ button.button-app:hover::before {
 }
 .modal-xl {
   --width: 90%; // Ancho del modal
-  --height: 90vh; // Alto del modal
+  --max-height: 90vh; // Alto del modal
   overflow: scroll;
 }
 
@@ -539,4 +539,7 @@ button.button-app:hover::before {
 
 .border-top{
   border-top: solid 1px var(--ion-color-tertiary);
+}
+ion-popover {
+  --width: 150px!important;
 }
