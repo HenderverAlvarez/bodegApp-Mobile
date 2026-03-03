@@ -1,3 +1,55 @@
-<p>
-  recarga-stock-modal works!
-</p>
+<ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Recargar Stock</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="dismissModal()">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="ion-padding">
+    <div class="wave-inv"></div>
+    <ion-grid class="margin-top-2">
+      <ion-row>
+        <ion-col size="12">
+          <form [formGroup]="editForm">
+            <ion-item>
+              <ion-label position="floating">Stock</ion-label>
+              <ion-input formControlName="stock"></ion-input>
+            </ion-item>
+          </form>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="ion-justify-content-center margin-top-1">
+        <ion-col size="auto">
+            <ion-chip color="tertiary" (click)="add(1)">+ 1</ion-chip>
+        </ion-col>
+        <ion-col size="auto">
+          <ion-chip color="tertiary" (click)="add(5)">+ 5</ion-chip>
+        </ion-col>
+        <ion-col size="auto">
+          <ion-chip color="tertiary" (click)="add(50)">+ 50</ion-chip>
+        </ion-col>
+        <ion-col size="auto">
+          <ion-chip color="tertiary" (click)="add(100)">+ 100</ion-chip>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="justify-content-space-around ion-align-items-center margin-top-2">
+              
+        <ion-col>
+          <button class="button-more-sm"  (click)="dismissModal()">Cancelar</button>
+        </ion-col>
+
+        <ion-col>
+          <button class="button-more-sm" [disabled]="editForm.invalid" (click)="send()">Guardar Cambios</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+  <ion-toast color="tertiary" cssClass="toast" [isOpen]="isToastOpen"  (didDismiss)="setOpen()" [message]="mensajeToast" [duration]="2500"></ion-toast>
+</ion-content>

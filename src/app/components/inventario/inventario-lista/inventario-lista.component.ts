@@ -7,6 +7,7 @@ import { ProductCardComponent } from 'src/app/components/commons/product-card/pr
 import { addIcons } from 'ionicons';
 import { ModalController } from '@ionic/angular';
 import { EditItemModalComponent } from '../edit-item-modal/edit-item-modal.component';
+import { RecargaStockModalComponent } from '../recarga-stock-modal/recarga-stock-modal.component';
 
 @Component({
   selector: 'inventario-lista',
@@ -80,4 +81,23 @@ export class InventarioListaComponent  implements OnInit {
 
     return await modal.present();  
   }
+
+  async openModalStock(item:any) {
+
+    const modal = await this.modalController.create({
+      component: RecargaStockModalComponent,
+      cssClass: 'my-custom-modal',
+      componentProps: {item:item},
+    });
+    
+    modal.onDidDismiss().then((result) => {
+      if (result.data) {
+        this.getInventario();
+      }
+    });
+
+    return await modal.present();  
+  }
+
+
 }

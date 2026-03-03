@@ -50,4 +50,10 @@ export class InventarioService {
       let headers = this.getHeaders();
       return this.http.post<any>(`${this.apiUrl}/edit`, item, { headers });
     }
+
+    editStock(item:any){
+      let headers = this.getHeaders();
+      return this.http.post<any>(`${this.apiUrl}/edit_stock`, item, { headers });
+      
+    }
 }
