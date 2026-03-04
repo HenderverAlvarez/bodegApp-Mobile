@@ -3,13 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ModalConfirmationComponent } from '../components/commons/modal-confirmation/modal-confirmation.component';
 import { ModalController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'any'
 })
 
 export class CommonService {
-    constructor(private http: HttpClient, private modalCtrl:ModalController,) {}
+    constructor(private http: HttpClient, private modalCtrl:ModalController, private router: Router) {}
 
     async openModalConfirmation(mensaje:string, icon:string){
         const modal = await this.modalCtrl.create({
@@ -22,5 +23,7 @@ export class CommonService {
         return data;
     }
 
-
+    navigateTo(url:string){
+        this.router.navigate([url]);
+    }
 }

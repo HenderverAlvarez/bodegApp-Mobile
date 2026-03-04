@@ -92,8 +92,9 @@
 
                 <product-card 
                   [hideDisponible]="true"
+                  [imagen]="imagePreview ? true : false"
                   [product]="{
-                    foto_url: recomendadoSelected ? recomendadoSelected.foto_url : formProducto.controls['imagen'], 
+                    foto_url: recomendadoSelected ? recomendadoSelected.foto_url : imagePreview, 
                     descripcion: formProducto.controls['descripcion'].value, 
                     precio_bs: formProducto.controls['precio_bs'].value , 
                     precio_usd: formProducto.controls['precio_usd'].value,

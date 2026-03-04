@@ -8,21 +8,27 @@ import { addIcons } from 'ionicons';
 import { ModalController } from '@ionic/angular';
 import { EditItemModalComponent } from '../edit-item-modal/edit-item-modal.component';
 import { RecargaStockModalComponent } from '../recarga-stock-modal/recarga-stock-modal.component';
+import {FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, } from '@angular/forms';
+
 
 @Component({
   selector: 'inventario-lista',
   templateUrl: './inventario-lista.component.html',
   styleUrls: ['./inventario-lista.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, ProductCardComponent]
+  imports: [IonicModule, CommonModule, ProductCardComponent, ReactiveFormsModule]
 
 })
 export class InventarioListaComponent  implements OnInit {
 
-  constructor(private inventarioSvc: InventarioService, private modalController: ModalController) { 
+  constructor(private formBuilder: FormBuilder, private inventarioSvc: InventarioService, private modalController: ModalController) { 
 
     addIcons({trashBin, pencil,cog, bagAdd})
   }
+
+  editForm: FormGroup = this.formBuilder.group({
+    search: new FormControl('', [Validators.required]),
+  });
 
   productos:any[]=[]
   mensaje:string=""
@@ -46,10 +52,16 @@ export class InventarioListaComponent  implements OnInit {
       this.loading = false;
     })
   }
-  filterItems($event:any){
+  filterItems($event?:any){
+
+    if($event){
+      $event.preventDefault();
+      this.editForm.controls['search'].setValue($event.target.value);
+    }
+
     this.loading = true;
     this.productos = [];
-    this.inventarioSvc.getItems(1, $event.target.value).subscribe(
+    this.inventarioSvc.getItems(1, this.editForm.controls['search'].value).subscribe(
       (res:any)=>{
         if(res.status_code == 200){
           this.productos=res.data
@@ -74,8 +86,7 @@ export class InventarioListaComponent  implements OnInit {
     
     modal.onDidDismiss().then((result) => {
       if (result.data) {
-        console.log(result.data)
-        this.getInventario();
+         this.filterItems();
       }
     });
 
@@ -92,7 +103,7 @@ export class InventarioListaComponent  implements OnInit {
     
     modal.onDidDismiss().then((result) => {
       if (result.data) {
-        this.getInventario();
+        this.filterItems();
       }
     });
 

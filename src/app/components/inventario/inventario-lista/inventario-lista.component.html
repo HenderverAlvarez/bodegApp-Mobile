@@ -1,7 +1,9 @@
 
 <ion-row class="ion-justify-content-space-around ion-align-items-center">
   <ion-col size="12">
-    <ion-searchbar (input)="filterItems($event)" debounce="700" class="ion-text-left" show-clear-button="always" clear-icon="trash-bin" placeholder="Buscar producto"></ion-searchbar>
+    <form action="" [formGroup]="editForm">
+      <ion-searchbar formControlName="search" (input)="filterItems($event)" debounce="700" class="ion-text-left" show-clear-button="always" clear-icon="trash-bin" placeholder="Buscar producto"></ion-searchbar>
+    </form>
   </ion-col>
 </ion-row>
 

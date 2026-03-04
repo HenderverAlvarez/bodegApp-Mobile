@@ -80,7 +80,7 @@ export class FormProductoModalComponent  implements OnInit {
         this.step = 'precio';
         break;
       case 'precio':
-        this.recomendadoSelected ? this.step = "confirmar": this.step = 'imagen';
+        this.recomendadoSelected != null ? this.step = "confirmar" : this.step = 'imagen';
         break;
       case 'imagen':
         this.step = 'confirmar';
@@ -99,23 +99,29 @@ export class FormProductoModalComponent  implements OnInit {
         this.step = 'descripcion';
         break;
       case 'unidad_medida':
+        this.recomendadoSelected = null;
         this.step = 'descripcion';
         break;
       case 'precio':
-        this.recomendadoSelected ? this.step = "descripcion": this.step = 'unidad_medida';
+        this.recomendadoSelected != null ? this.step = "descripcion": this.step = 'unidad_medida';
         break;
       case 'imagen':
         this.step = 'precio';
+        this.imagePreview=null;
         break;
       case 'confirmar':
-        this.step = 'imagen';
+        this.recomendadoSelected != null ? this.step = "precio": this.step = 'imagen';
         break;
     }
     this.errorProducto = ''
   }
 
-  async getRecomendados(event: any) {
-    // Filtrar productos por recomendados
+  async getRecomendados(event: any) {   
+    if(event.target.value == '' || event.target.value == null || event.target.value.length < 2 || event.target.value.length > 30){
+      this.recomendadoSelected = null;
+      this.recomendados= [];
+      return
+    }
     this.inventarioSvc.getItemsInfo(1, event.target.value).subscribe(
       (res:any)=>{
         if(res.status_code == 200){
@@ -128,7 +134,6 @@ export class FormProductoModalComponent  implements OnInit {
   }
 
   selectInfo(item:any){
-    console.log(item)
     this.step = "unidad_medida"
     this.recomendadoSelected = item
     this.formProducto.controls['unidad_medida'].setValue(item.unidad_medida);
@@ -191,7 +196,7 @@ export class FormProductoModalComponent  implements OnInit {
 
   convertFileToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
-      const validFormats = ['image/png', 'image/jpeg'];
+      const validFormats = ['image/png', 'image/jpeg', 'image/webp'];
       if (!validFormats.includes(file.type)) {
         reject(new Error('El archivo debe ser de formato PNG o JPG.'));
         return;
@@ -224,7 +229,6 @@ export class FormProductoModalComponent  implements OnInit {
 
         this.inventarioSvc.insertProducto(data).subscribe(
           (res:any)=>{
-            console.log(res.status_code)
             if(res.status_code == 200){
               this.isToastOpen = true
               this.router.navigate(['/inicio/inventario']);
@@ -253,7 +257,6 @@ export class FormProductoModalComponent  implements OnInit {
 
       this.inventarioSvc.insertProducto(data).subscribe(
         (res:any)=>{
-          console.log(res.status_code)
           if(res.status_code == 200){
             this.isToastOpen = true
             this.router.navigate(['/inicio/inventario']);

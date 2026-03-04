@@ -61,8 +61,15 @@
   }
 }
 .ion-justify-content-space-around{
-  justify-content: space-around!important;
+  justify-content: space-around;
 }
+
+@media (max-width: 277px) {
+  .justify-content-center-xs{
+    justify-content: center!important;
+  }
+}
+
 
 .login-background {
   background-image: url('/assets/images/fondo_tienda2.png'); /* Ruta de tu imagen */

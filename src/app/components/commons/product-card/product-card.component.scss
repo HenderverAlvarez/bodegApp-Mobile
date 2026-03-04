@@ -73,9 +73,9 @@
     }
 }
 .product-img{
-    height: 150px;
+    height: 100px;
     width: auto;
-    object-fit: cover;
+    object-fit: contain;
 }
 .product-name{
     font-weight: 600;

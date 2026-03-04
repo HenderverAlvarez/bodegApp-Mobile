@@ -15,7 +15,8 @@
 
     <ion-col *ngIf="!noImg" size="10">
       <div class="img-container">
-          <img class="product-img" alt="imagen del producto" [src]="'http://localhost:8000/'+ product.foto_url" />
+          <img *ngIf="!imagen" class="product-img" alt="imagen del producto" [src]="'http://localhost:8000/'+ product.foto_url+ '?t='+ts" />
+          <img *ngIf="imagen" class="product-img" alt="imagen del producto" [src]="product.foto_url" />
       </div>
       
     </ion-col>

@@ -20,9 +20,12 @@ export class ProductCardComponent  implements OnInit {
   @Input() hidePrice?:boolean;
   @Input() hideCantidad?:boolean;
   @Input() hideDisponible?:boolean;
-  
+  @Input() imagen:boolean=false;
+  ts:string=new Date().getTime().toString();
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    
+  }
 
 }

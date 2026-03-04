@@ -1,18 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { IonRow, IonCol, IonCardContent, IonCard, IonAccordionGroup, IonItem, IonAccordion, IonLabel, IonButton } from "@ionic/angular/standalone";
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { CantidadVentasComponent } from '../../charts/cantidad-ventas/cantidad-ventas.component';
 import { StockItemsComponent } from '../../charts/stock-items/stock-items.component';
+import { IonicModule } from '@ionic/angular';
+import { CommonService } from 'src/app/services/common_service';
+import { HttpClientModule } from '@angular/common/http';
+import { addCircle, analyticsOutline, barChart, barChartOutline, calendarNumberOutline, walletOutline } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
+
 @Component({
   standalone: true,
-  imports: [IonLabel, IonAccordion, IonItem, IonAccordionGroup, IonRow, IonCol, NgxChartsModule,CantidadVentasComponent, StockItemsComponent],
+  imports: [ IonicModule, NgxChartsModule,CantidadVentasComponent, StockItemsComponent, HttpClientModule],
   selector: 'home-buttons',
   templateUrl: './home-buttons.component.html',
   styleUrls: ['./home-buttons.component.scss'],
 })
 export class HomeButtonsComponent  implements OnInit {
   date: string = new Intl.DateTimeFormat('en-GB').format(new Date());
-  constructor() { }
+  constructor(private commonService:CommonService) {
+    addIcons({addCircle,walletOutline, analyticsOutline, calendarNumberOutline, barChart})
+   }
 
   dataVentas: any[] = [];
   dataPedidos: any[] = [];
@@ -34,6 +41,10 @@ export class HomeButtonsComponent  implements OnInit {
         "value": 89400.00
       }
     ]
+  }
+
+  navigate(url:string){
+    this.commonService.navigateTo(url);
   }
 
 }
