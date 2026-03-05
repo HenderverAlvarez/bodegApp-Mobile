@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonContent, IonInput, IonLabel, IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonCardTitle, IonCardHeader, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { person, lockClosed } from 'ionicons/icons';
+import { person, lockClosed, personOutline, lockClosedOutline } from 'ionicons/icons';
 import { AuthService } from 'src/app/services/auth_service';
 import {FormGroup, FormControl, Validators, FormBuilder, } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -36,7 +36,7 @@ import { AppInputComponent } from 'src/app/components/commons/app-input/app-inpu
 export class LoginPage implements OnInit {
 
   constructor(private router: Router, private authService: AuthService, private formBuilder: FormBuilder,) { 
-    addIcons({person, lockClosed});
+    addIcons({personOutline,lockClosedOutline,person,lockClosed});
   }
   loading:boolean=false;
   error:string="";

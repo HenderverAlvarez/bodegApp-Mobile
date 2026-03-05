@@ -1,0 +1,124 @@
+
+<ion-content>
+  <div class="login-background">
+    <ion-grid class="padding-top-1">
+      <ion-row>
+          <ion-col>
+            <ion-card class="form-card">
+              <div class="wave-inv"></div>
+              <ion-row class="margin-top-3 ion-justify-content-space-between w-100">
+                <ion-col size="auto">
+                   <div>
+                     <ion-chip (click)="redirecTo('/login')" color="primary"><ion-icon class="margin-right-1" name="arrow-back"></ion-icon> Regresar</ion-chip>
+                   </div>
+                </ion-col>
+             </ion-row>
+              <ion-card-header>
+                <ion-card-title class="text-center font-title margin-top-1 margin-bottom-1">Formulario de Registro</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+
+                <form [formGroup]="profileForm">
+
+                  <div class="rol-selection margin-bottom-1" *ngIf="step == 'rol'">
+                    <ion-row class="ion-justify-content-center margin-top-1 slide-in-left">
+                      <ion-col size="10">
+        
+                        <div class="card-nav" (click)="setRol('cliente')">
+                          <p class="card-title">Soy Cliente.</p>
+                          <p class="small-desc">
+                            Registrate para hacer pedidos en tus tiendas favoritas y participar por recompensas!.
+                          </p>
+                          <div class="go-corner">
+                            <div class="go-arrow">
+                              <ion-icon size="large" name="arrow-forward-circle-outline"></ion-icon>
+                            </div>
+                          </div>
+                        </div>
+        
+                      </ion-col>
+                    </ion-row>
+
+                    <ion-row class="ion-justify-content-center margin-top-1 slide-in-left">
+                      <ion-col size="10">
+        
+                        <div class="card-nav" (click)="setRol('tienda')">
+                          <p class="card-title">Soy Tienda.</p>
+                          <p class="small-desc">
+                            Registrate para comenzar a gestionar tu inventario y ventas con nuestra plataforma.
+                          </p>
+                          <div class="go-corner">
+                            <div class="go-arrow">
+                              <ion-icon size="large" name="arrow-forward-circle-outline"></ion-icon>
+                            </div>
+                          </div>
+                        </div>
+        
+                      </ion-col>
+                    </ion-row>
+                  </div>
+
+                  <div class="margin-top-1 slide-in-left" *ngIf="step == 'datos'">
+                    <div class="input-container">
+                      <app-input [label]="profileForm.controls['rol'].value == 'tienda' ? 'Razon Social' : 'Nombres'" type="text" [controlName]="profileForm.controls['nombre']"></app-input>
+                    </div>
+
+                    <div class="input-container">
+                      <app-input label="Usuario de Acceso" type="text" [controlName]="profileForm.controls['user']"></app-input>
+                    </div>
+
+                    <div class="input-container">
+                      <app-input label="Email" type="text" [controlName]="profileForm.controls['email']"></app-input>
+                    </div>
+
+                    <div class="input-container">
+                      <app-input label="Teléfono de Contacto" type="number" [controlName]="profileForm.controls['phone']"></app-input>
+                    </div>
+                  </div>
+
+                  <div class="margin-top-1 slide-in-left" *ngIf="step == 'contraseña'">
+                    <div class="input-container">
+                      <app-input label="Contraseña" [type]="typeActive" [controlName]="profileForm.controls['password']"></app-input>
+                      <ion-icon name="eye-outline" class="margin-left-2" (click)="toglePass()"></ion-icon>
+                    </div>
+
+                    <div class="input-container">
+                      <app-input label="Confirmar contraseña" [type]="typeActive" [controlName]="profileForm.controls['confirmPassword']"></app-input>
+                      <ion-icon name="eye-" class="margin-left-2" (click)="toglePass()"></ion-icon>
+                    </div>
+                  </div>
+
+
+                  <ion-label class="ion-text-center margin-top-1" color="danger" *ngIf="error != ''">{{error}}</ion-label>         
+                </form>                
+              </ion-card-content>
+
+              <ion-row *ngIf="step != 'rol'"  class="ion-justify-content-space-around w-100">
+                <ion-col size="5">
+                    <button expand="full" (click)="prevStep()" class="button-more full-width margin-top-3 margin-bottom-3" [disabled]="loading">
+                      <span *ngIf="!loading">Regresar</span>
+                    </button>
+                </ion-col>
+                <ion-col size="5" *ngIf="step != 'contraseña'">
+                    <button expand="full" class="button-more full-width margin-top-3 margin-bottom-3" [disabled]="profileForm.status == 'INVALID' || loading" (click)="nextStep()">
+                      <span *ngIf="!loading">Siguiente</span>
+                    </button>
+                </ion-col>
+                <ion-col size="5" *ngIf="step == 'contraseña'">
+                  <button expand="full" class="button-more full-width margin-top-3 margin-bottom-3" 
+                  [disabled]="
+                  profileForm.status == 'INVALID' 
+                  || loading
+                  || profileForm.controls['password'].value == ''
+                  || profileForm.controls['password'].value != profileForm.controls['confirmPassword'].value"
+                   (click)="nextStep()">
+                    <span *ngIf="!loading">Confirmar</span>
+                  </button>
+              </ion-col>
+              </ion-row>
+            </ion-card>
+          </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

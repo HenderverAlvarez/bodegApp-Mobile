@@ -14,7 +14,7 @@ import { IonLabel } from "@ionic/angular/standalone";
 export class StockItemsComponent  implements OnInit {
   single: any[] = [
     {
-      "name": "Vendidos",
+      "name": "Agotados",
       "value": 80
     },
     {

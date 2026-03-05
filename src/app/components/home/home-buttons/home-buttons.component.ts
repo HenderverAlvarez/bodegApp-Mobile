@@ -5,7 +5,7 @@ import { StockItemsComponent } from '../../charts/stock-items/stock-items.compon
 import { IonicModule } from '@ionic/angular';
 import { CommonService } from 'src/app/services/common_service';
 import { HttpClientModule } from '@angular/common/http';
-import { addCircle, analyticsOutline, barChart, barChartOutline, calendarNumberOutline, walletOutline } from 'ionicons/icons';
+import { addCircle, analyticsOutline, bagAdd, barChart, barChartOutline, calendarNumberOutline, cash, statsChart, walletOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 
 @Component({
@@ -18,7 +18,7 @@ import { addIcons } from 'ionicons';
 export class HomeButtonsComponent  implements OnInit {
   date: string = new Intl.DateTimeFormat('en-GB').format(new Date());
   constructor(private commonService:CommonService) {
-    addIcons({addCircle,walletOutline, analyticsOutline, calendarNumberOutline, barChart})
+    addIcons({addCircle,walletOutline, analyticsOutline, calendarNumberOutline, barChart, cash, bagAdd, statsChart})
    }
 
   dataVentas: any[] = [];

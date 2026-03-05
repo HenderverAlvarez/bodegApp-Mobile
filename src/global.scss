@@ -70,44 +70,6 @@
   }
 }
 
-
-.login-background {
-  background-image: url('/assets/images/fondo_tienda2.png'); /* Ruta de tu imagen */
-  background-size: cover; /* Asegura que la imagen cubra todo el contenido */
-  background-position: center; /* Centra la imagen */
-  background-repeat: no-repeat; /* Evita que la imagen se repita */
-  height: 100vh; /* Asegura que el fondo cubra toda la altura de la ventana */
-  width: 100vw; /* Asegura que el fondo cubra todo el ancho de la ventana */
-}
-
-.form-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: auto;
-  border-radius: 30px;
-  background: rgba(246, 248, 252, .99);
-  .input-container{
-
-    width: 100%!important;
-    margin-bottom: 1rem!important;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-
-    ion-input{ 
-      width: 100%!important;
-      margin-top: 1rem!important;
-    }
-
-    ion-icon{
-      font-size: 30px;
-      margin-right: 1rem;
-    }
-  }
-
-}
- 
 .custom-input{
   --border-color: var(--ion-color-primary)!important;
 }
