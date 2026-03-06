@@ -8,6 +8,7 @@ import { addIcons } from 'ionicons';
 import { arrowBack, arrowForwardCircleOutline, eyeOutline, lockClosed, lockClosedOutline, person, personOutline } from 'ionicons/icons';
 import { AppInputComponent } from 'src/app/components/commons/app-input/app-input.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CommonService } from 'src/app/services/common_service';
 
 
 @Component({
@@ -19,7 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class RegisterPage implements OnInit {
 
-  constructor(private router: Router, private authService: AuthService, private formBuilder: FormBuilder,) { 
+  constructor(private router: Router, private authService: AuthService, private formBuilder: FormBuilder, private commonService: CommonService) { 
     addIcons({personOutline,lockClosedOutline,person,lockClosed, arrowForwardCircleOutline, arrowBack, eyeOutline});
   }
   loading:boolean=false;
@@ -39,11 +40,40 @@ export class RegisterPage implements OnInit {
   ngOnInit() {
   }
 
+  async register() {
+    this.loading = true;
+    this.error = "";
+
+    let data = {
+      email: this.profileForm.value.email,
+      password: this.profileForm.value.password,
+      usuario: this.profileForm.value.user,
+      rol: this.profileForm.value.rol,
+      phone: this.profileForm.value.phone,
+      nombre: this.profileForm.value.nombre
+    }
+
+    this.authService.register(data).subscribe(
+      (res:any)=>{
+        this.loading = false;
+        if(res.status_code == 200){
+          this.commonService.openModalConfirmation("Registro exitoso", "checkmark-circle-outline")
+       
+        }else{
+          this.commonService.openModalConfirmation(res.detail, "close-circle-outline")
+         
+        }
+      }, 
+      (error:any)=>{
+        this.commonService.openModalConfirmation(error.statusText, "close-circle-outline")
+        this.loading = false;
+        console.log("Error", error);
+      });
+  }
   setRol(rol:string){
     this.profileForm.controls.rol.setValue(rol);
     this.nextStep()
   }
-
   toglePass(){
     this.typeActive = this.typeActive === 'password' ? 'text' : 'password';
   }
@@ -66,10 +96,6 @@ export class RegisterPage implements OnInit {
       this.profileForm.reset();
       this.step = 'rol';
     }
-  }
-
-  async logIn() {
-
   }
   redirecTo(url: string) {
     this.router.navigateByUrl(url);

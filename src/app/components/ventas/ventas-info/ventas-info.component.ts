@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { IonicModule } from "@ionic/angular";
 import { CardVentaComponent } from '../card-venta/card-venta.component';
+import { CommonService } from 'src/app/services/common_service';
 
 @Component({
   selector: 'ventas-info',
@@ -19,7 +20,7 @@ import { CardVentaComponent } from '../card-venta/card-venta.component';
 })
 export class VentasInfoComponent  implements OnInit {
 
-  constructor(private router : Router, private ventasSvc: VentasService) { 
+  constructor(private router : Router, private ventasSvc: VentasService, private commonService: CommonService) { 
     addIcons({addCircle,funnelOutline,chevronForwardOutline,chevronDownOutline,addOutline,add,funnel});
   }
   @Input() ventasData: any[]= [];

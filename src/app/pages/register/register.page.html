@@ -111,7 +111,7 @@
                   || loading
                   || profileForm.controls['password'].value == ''
                   || profileForm.controls['password'].value != profileForm.controls['confirmPassword'].value"
-                   (click)="nextStep()">
+                   (click)="register()">
                     <span *ngIf="!loading">Confirmar</span>
                   </button>
               </ion-col>

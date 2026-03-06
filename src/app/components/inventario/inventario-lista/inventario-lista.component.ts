@@ -9,6 +9,7 @@ import { ModalController } from '@ionic/angular';
 import { EditItemModalComponent } from '../edit-item-modal/edit-item-modal.component';
 import { RecargaStockModalComponent } from '../recarga-stock-modal/recarga-stock-modal.component';
 import {FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, } from '@angular/forms';
+import { CommonService } from 'src/app/services/common_service';
 
 
 @Component({
@@ -21,7 +22,7 @@ import {FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, } 
 })
 export class InventarioListaComponent  implements OnInit {
 
-  constructor(private formBuilder: FormBuilder, private inventarioSvc: InventarioService, private modalController: ModalController) { 
+  constructor(private formBuilder: FormBuilder, private inventarioSvc: InventarioService, private modalController: ModalController, private commonService: CommonService) { 
 
     addIcons({trashBin, pencil,cog, bagAdd})
   }
@@ -50,6 +51,9 @@ export class InventarioListaComponent  implements OnInit {
     }, 
     (error:any)=>{
       this.loading = false;
+      if(error.status == 401){
+        this.commonService.closeSesionByToken();
+      }
     })
   }
   filterItems($event?:any){

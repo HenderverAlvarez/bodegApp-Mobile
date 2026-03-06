@@ -17,9 +17,50 @@
     animation: ease-in-out 0.5s;
 }
 
-ion-menu{
-    ion-content{
-        width: 230px!important;
+
+.menu-content{
+    width: 100%;
+    ion-row{
+        padding: .5rem;
+        margin-top: .5rem;
+        margin-bottom: .5rem;
+        ion-col{
+            color: var(--ion-color-tertiary);
+            align-items: center;
+            display: flex;
+            ion-icon{
+                font-size: 1.2rem;
+                margin-right: 1rem;
+            }
+            ion-label{
+                font-size: 1.2rem;
+            }
+        }
     }
-    
+
+    ion-row:hover{
+        border-radius: 10px;
+        color: #fff!important;
+        padding: .5rem;
+        background-color: var(--ion-color-tertiary);
+        ion-col{
+            ion-icon{
+                font-size: 1.2rem;
+                margin-right: 1rem;
+                color: #fff!important;
+            }
+            ion-label{
+                font-size: 1.2rem;
+                color: #fff!important;
+            }
+        }
+    }
+}
+.header-app{
+    border-radius: 0px 0px 20px 20px;
+
+}
+.icon-close{
+    font-size: 1.5rem;
+    margin: 1rem;
 }

@@ -26,4 +26,29 @@ export class CommonService {
     navigateTo(url:string){
         this.router.navigate([url]);
     }
+
+    setLocalStorage(key:string, value:any){
+        let data;
+        key == 'token' ?  data = value : data = JSON.stringify(value);
+        localStorage.setItem(key, data);
+    }
+    getLocalStorage(key:string){
+        const value = localStorage.getItem(key);
+        let data;
+        key == 'token' ?  data = value : data = value ? JSON.parse(value) : null;
+        return data;
+    }
+    deleteLocalStorage(key:string){
+        localStorage.removeItem(key);
+    }
+    clearLocalStorage(){
+        localStorage.clear();
+    }
+
+    closeSesionByToken(){
+        this.openModalConfirmation("Sesión expirada, por favor inicie sesión nuevamente", "alert-circle-outline");
+        this.deleteLocalStorage('token');
+        this.deleteLocalStorage('user');
+        this.navigateTo('/login');
+    }
 }
