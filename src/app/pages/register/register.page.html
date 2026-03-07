@@ -14,7 +14,7 @@
                 </ion-col>
              </ion-row>
               <ion-card-header>
-                <ion-card-title class="text-center font-title margin-top-1 margin-bottom-1">Formulario de Registro</ion-card-title>
+                <ion-card-title class="text-center font-title margin-top-1 margin-bottom-1">Formulario de Registro {{profileForm.controls['rol'].value}}</ion-card-title>
               </ion-card-header>
               <ion-card-content>
 
@@ -68,23 +68,24 @@
                     </div>
 
                     <div class="input-container">
-                      <app-input label="Email" type="text" [controlName]="profileForm.controls['email']"></app-input>
+                      <app-input label="Email" type="email" [controlName]="profileForm.controls['email']"></app-input>
+                      <ion-label class="label-error slide-in-right" *ngIf="profileForm.controls['email'].invalid && profileForm.controls['email'].value != ''">Ingresa un correo válido</ion-label>
                     </div>
 
                     <div class="input-container">
-                      <app-input label="Teléfono de Contacto" type="number" [controlName]="profileForm.controls['phone']"></app-input>
+                      <app-input label="Teléfono de Contacto" type="number" [placeholder]="'400 0000000'" [controlName]="profileForm.controls['phone']"></app-input>
                     </div>
                   </div>
 
                   <div class="margin-top-1 slide-in-left" *ngIf="step == 'contraseña'">
-                    <div class="input-container">
+                    <div class="input-container d-flex ion-align-items-center">
                       <app-input label="Contraseña" [type]="typeActive" [controlName]="profileForm.controls['password']"></app-input>
-                      <ion-icon name="eye-outline" class="margin-left-2" (click)="toglePass()"></ion-icon>
+                      <ion-icon name="eye-outline" class="margin-left-2 xs-hide" (click)="toglePass()"></ion-icon>
                     </div>
 
-                    <div class="input-container">
+                    <div class="input-container d-flex ion-align-items-center">
                       <app-input label="Confirmar contraseña" [type]="typeActive" [controlName]="profileForm.controls['confirmPassword']"></app-input>
-                      <ion-icon name="eye-" class="margin-left-2" (click)="toglePass()"></ion-icon>
+                      <ion-icon name="eye-" class="margin-left-2 xs-hide"></ion-icon>
                     </div>
                   </div>
 

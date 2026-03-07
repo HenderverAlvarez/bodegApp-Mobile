@@ -58,9 +58,27 @@
       </ion-col>
     </ion-row>
 
+    <ion-row class="ion-justify-content-center" *ngIf="pages.length > 1">
+      <ion-col size="auto">
+          <ion-button class="btn-pagination" (click)="prevPage()" [disabled]="actualPage == 1">
+            <ion-icon name="chevron-back"></ion-icon>
+          </ion-button>
+      </ion-col>
+      <ion-col size="auto" *ngFor="let page of pages; let i = index">
+        <ion-button class="btn-pagination" (click)="setPage(i+1)" [ngClass]="actualPage === (i+1) ? 'bg-primary' : 'bg-tertiary'">
+          <ion-label>{{i+1}}</ion-label>
+        </ion-button>
+      </ion-col>
+      <ion-col size="auto">
+        <ion-button class="btn-pagination" [disabled]="actualPage == pages.length" (click)="nextPage()">
+          <ion-icon name="chevron-forward"></ion-icon>
+        </ion-button>
+    </ion-col>
+    </ion-row>
+
     <ion-row class="ion-justify-content-center margin-top-4">
       <ion-col size="12" *ngIf="!loading">
-        <ion-card *ngIf="!ventas" class="card-venta slide-in-left">
+        <ion-card *ngIf="ventas.length == 0" class="card-venta slide-in-left">
           <ion-card-header>
             <ion-card-title class="text-center text-primary text-small ">No se encontraron ventas con los criterios seleccionados</ion-card-title> 
           </ion-card-header>

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { IonIcon } from "@ionic/angular/standalone";
+import { IonIcon, IonInput } from "@ionic/angular/standalone";
 import { addIcons } from 'ionicons';
 import { qrCodeOutline, qrCode } from 'ionicons/icons';
 import { CommonModule } from '@angular/common';
@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-input',
   templateUrl: './app-input.component.html',
   styleUrls: ['./app-input.component.scss'],
-  imports: [IonIcon, FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [IonInput, IonIcon, FormsModule, ReactiveFormsModule, CommonModule],
 })
 export class AppInputComponent  implements OnInit {
 
@@ -19,6 +19,8 @@ export class AppInputComponent  implements OnInit {
   @Input() min: string = "";
   @Input() disabled: boolean = false;
   @Input() icon: string = '';
+  @Input() errorText: string = '';
+  @Input() placeholder: string = '';
   
   constructor() { 
     addIcons({qrCodeOutline, qrCode});

@@ -6,6 +6,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
 import { CommonService } from 'src/app/services/common_service';
 import {MenuController}  from '@ionic/angular/standalone';
+import { Location } from '@angular/common';
+
 @Component({
   selector: 'app-header',
   templateUrl: './app-header.component.html',
@@ -16,13 +18,17 @@ import {MenuController}  from '@ionic/angular/standalone';
 export class AppHeaderComponent  implements OnInit {
 
   @Input() title:string="";
+  url:string="";
 
-  constructor(private authService:AuthService, private commonService:CommonService, private menuCtrl: MenuController) {
+  constructor(private authService:AuthService, private commonService:CommonService, private menuCtrl: MenuController, private location: Location) {
     addIcons({home,person,settings,helpCircle,logOut,menu,personCircle, alertCircleOutline, newspaper, closeCircle}); 
    }
 
   user:string="";
   ngOnInit() {
+    this.obtenerUrlActual();
+
+    if(this.url != "/login" && this.url != "/register"){
     this.user = this.commonService.getLocalStorage("user")?.nombre || "";
     let token = localStorage.getItem("token")
     this.authService.checkToken().then(isValid => {
@@ -31,6 +37,14 @@ export class AppHeaderComponent  implements OnInit {
       }
     });
   }
+  }
+  
+  obtenerUrlActual() {
+    const urlActual = this.location.path();
+    console.log('URL actual:', urlActual);
+    this.url = urlActual;
+  }
+
   closeMenu(){
     this.menuCtrl.close();
   }

@@ -28,8 +28,8 @@ export class RegisterPage implements OnInit {
   profileForm = this.formBuilder.group({
     rol: ['', Validators.required],
     nombre: ['', Validators.required],
-    email: ['', Validators.required],
-    phone: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    phone: ['', [Validators.required, Validators.pattern(/^[0-9]+$/), Validators.minLength(11), Validators.maxLength(11)]],
     password: [''],
     confirmPassword: [''],
     user:  ['', Validators.required],
@@ -58,6 +58,7 @@ export class RegisterPage implements OnInit {
         this.loading = false;
         if(res.status_code == 200){
           this.commonService.openModalConfirmation("Registro exitoso", "checkmark-circle-outline")
+          this.commonService.navigateTo("/login");
        
         }else{
           this.commonService.openModalConfirmation(res.detail, "close-circle-outline")
@@ -99,5 +100,12 @@ export class RegisterPage implements OnInit {
   }
   redirecTo(url: string) {
     this.router.navigateByUrl(url);
+  }
+
+  ionViewWillLeave(){
+    this.profileForm.reset();
+    this.error = "";
+    this.loading = false;
+    this.step = 'rol';
   }
 }

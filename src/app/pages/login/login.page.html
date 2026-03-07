@@ -12,12 +12,12 @@
 
                 <form [formGroup]="profileForm">
                   <div class="input-container">
-                    <ion-icon name="person-outline" color="primary"></ion-icon>
+                    <ion-icon name="person-outline" class="xs-hide" color="primary"></ion-icon>
                     <app-input label="Usuario" type="text" [controlName]="profileForm.controls['user']"></app-input>
                   </div>
   
                   <div class="input-container">
-                    <ion-icon name="lock-closed-outline" color="primary"></ion-icon>
+                    <ion-icon name="lock-closed-outline" class="xs-hide" color="primary"></ion-icon>
 
                     <app-input label="Contraseña" type="password" [controlName]="profileForm.controls['password']"></app-input>
                   </div>
@@ -39,16 +39,16 @@
       <ion-row class="margin-top-1">
         <ion-col size="12">
           <ion-card class="form-card">
-            <ion-card-content class="ion-text-center">
-              <ion-label>Olvidaste tu contraseña?. <a href="/recover">Ingresa Aqui</a></ion-label>
+            <ion-card-content  (click)="goTo('/register')" class="ion-text-center">
+              <ion-label>Olvidaste tu contraseña?. <a>Ingresa Aqui</a></ion-label>
             </ion-card-content>
           </ion-card>
         </ion-col>
 
         <ion-col>
           <ion-card class="form-card">
-            <ion-card-content class="ion-text-center">
-              <ion-label>No tienes una cuenta?. <a href="/register">Registrate</a></ion-label>
+            <ion-card-content (click)="goTo('/register')" class="ion-text-center">
+              <ion-label>No tienes una cuenta?. <a>Registrate</a></ion-label>
             </ion-card-content>
           </ion-card>
         </ion-col>

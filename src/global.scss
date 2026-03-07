@@ -233,21 +233,33 @@ button.button-app:hover::before {
   }
 }
 
+.disabled{
+  opacity: .3;
+  pointer-events: none;
+}
+
 
 .my-custom-modal {
-  --width: 90%; // Ancho del modal
-  --height: 500px; // Alto del modal
+  --width: 90%;
+  --height: 500px;
   overflow: scroll;
 }
+.modal-confirmation {
+  --width: 90%;
+  --height: 220px;
+  overflow: scroll;
+  --border-radius: 20px!important;
+}
 .modal-sm{
-  --width: 90%; // Ancho del modal
-  --height: 200px; // Alto del modal
+  --width: 90%;
+  --height: 200px;
   overflow: scroll;
 }
 .modal-xl {
-  --width: 90%; // Ancho del modal
-  --max-height: 90vh; // Alto del modal
+  --width: 90%;
+  --max-height: 90vh;
   overflow: scroll;
+  --border-radius: 20px!important;
 }
 
 
@@ -511,4 +523,15 @@ button.button-app:hover::before {
 }
 ion-popover {
   --width: 150px!important;
+}
+
+.btn-pagination{
+  --border-radius: 20px!important;
+  border-radius: 20px!important;
+  color: #fff!important;
+  --color: #fff!important;
+}
+.bg-tertiary{
+  background: var(--ion-color-tertiary)!important;
+  --background: var(--ion-color-tertiary)!important;
 }

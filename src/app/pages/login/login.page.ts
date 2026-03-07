@@ -66,6 +66,10 @@ export class LoginPage implements OnInit {
       );    
   }
 
+  goTo(url:string){
+    this.router.navigate([url]);
+  }
+
   ionViewWillChange(){
     this.profileForm.reset();
   }

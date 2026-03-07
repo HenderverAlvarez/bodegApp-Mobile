@@ -16,7 +16,7 @@ export class CommonService {
         const modal = await this.modalCtrl.create({
             component: ModalConfirmationComponent,
             componentProps: {mensaje: mensaje, icon: icon},
-            cssClass: "modal-sm"
+            cssClass: "modal-confirmation"
         });
         await modal.present();
         const { data } = await modal.onWillDismiss();

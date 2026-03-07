@@ -9,10 +9,12 @@ import { AppInputComponent } from 'src/app/components/commons/app-input/app-inpu
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ProductCardComponent } from '../../commons/product-card/product-card.component';
 import { addIcons } from 'ionicons';
-import { arrowBackCircleOutline } from 'ionicons/icons';
+import { arrowBackCircleOutline, cameraOutline } from 'ionicons/icons';
 import { helpCircleOutline } from 'ionicons/icons';
 import { InventarioService } from 'src/app/services/inventario_service';
 import { HttpClientModule } from '@angular/common/http';
+import { Camera, CameraResultType } from '@capacitor/camera';
+import { CommonService } from 'src/app/services/common_service';
 
 @Component({
   selector: 'app-form-producto-modal',
@@ -25,8 +27,8 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class FormProductoModalComponent  implements OnInit { 
   @ViewChild('popover') popover!: HTMLIonPopoverElement;
-  constructor(private modalController: ModalController, private router: Router, private formBuilder: FormBuilder, private inventarioSvc:InventarioService) { 
-    addIcons({arrowBackCircleOutline, helpCircleOutline});
+  constructor(private modalController: ModalController, private router: Router, private formBuilder: FormBuilder, private inventarioSvc:InventarioService, private commonSvc:CommonService) { 
+    addIcons({arrowBackCircleOutline, helpCircleOutline, cameraOutline});
   }
   products:any[]=[
     {
@@ -62,7 +64,7 @@ export class FormProductoModalComponent  implements OnInit {
   recomendadoSelected:any = null;
   step:string = 'descripcion';
   imagePreview:any;
-  selectedFile: File | null = null;
+  selectedFile: string = '';
   imagen_url:string=""
   isToastOpen:boolean=false
   loading:boolean=false
@@ -71,6 +73,26 @@ export class FormProductoModalComponent  implements OnInit {
 
   ngOnInit() {}
 
+
+  async takePicture(){
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: true,
+      resultType: CameraResultType.Base64
+    });
+    console.log(image)
+    var imageUrl = image.base64String;
+    const validFormats = ['png', 'jpeg', 'webp'];
+    if (!validFormats.includes(image.format)) {
+      this.errorImagen = 'El archivo debe ser de formato PNG o JPG.';
+      return;
+    }
+
+    // Can be set to the src of an image now
+    this.imagen_url = imageUrl ? imageUrl : '';
+    this.imagePreview = "data:image/png;base64," +this.imagen_url;
+    this.selectedFile = this.imagePreview;
+  };
   nextStep(){
     switch(this.step){
       case 'descripcion':
@@ -117,6 +139,7 @@ export class FormProductoModalComponent  implements OnInit {
   }
 
   async getRecomendados(event: any) {   
+    this.recomendados = []
     if(event.target.value == '' || event.target.value == null || event.target.value.length < 2 || event.target.value.length > 30){
       this.recomendadoSelected = null;
       this.recomendados= [];
@@ -126,11 +149,17 @@ export class FormProductoModalComponent  implements OnInit {
       (res:any)=>{
         if(res.status_code == 200){
           this.recomendados = res.data
-        }else{
-          this.recomendados = []
         }
+        else if (res.status_code == 401){
+          this.commonSvc.closeSesionByToken();
+        }
+
       }, 
-      (error:any)=>{this.errorProducto = error.error.detail})    
+      (error:any)=>{
+        this.errorProducto = error.error.detail;
+        if (error.status == 401){
+        this.commonSvc.closeSesionByToken();}
+      })    
   }
 
   selectInfo(item:any){
@@ -216,15 +245,15 @@ export class FormProductoModalComponent  implements OnInit {
 
   async confirmar(){
     this.loading=true
-    if (this.selectedFile && this.recomendadoSelected == null) {
-      this.convertFileToBase64(this.selectedFile).then(base64 => {
+    if (this.recomendadoSelected == null) {
+      //this.convertFileToBase64(this.selectedFile).then(base64 => {
         let data = {
           descripcion: this.formProducto.controls['descripcion'].value,
           cantidad: this.formProducto.controls['cantidad'].value,
           precio_usd: this.formProducto.controls['precio_usd'].value,
           precio_bs: this.formProducto.controls['precio_bs'].value,
           unidad_medida: this.formProducto.controls['unidad_medida'].value,
-          foto: base64
+          foto: this.selectedFile
         }
 
         this.inventarioSvc.insertProducto(data).subscribe(
@@ -235,15 +264,21 @@ export class FormProductoModalComponent  implements OnInit {
               this.modalController.dismiss()
               this.loading=false
             }
+            else if (res.status_code == 401){
+              this.commonSvc.closeSesionByToken();
+            }
           }, 
           (error:any)=>{
             console.log(error.error.detail)
             if(error.error.detail){
               this.errorProducto = error.error.detail
             }
+            if (error.status == 401){
+              this.commonSvc.closeSesionByToken();
+            }
             this.loading=false
         })  
-      });
+     // });
     } else {
       let data = {
         descripcion: this.formProducto.controls['descripcion'].value,
@@ -262,6 +297,8 @@ export class FormProductoModalComponent  implements OnInit {
             this.router.navigate(['/inicio/inventario']);
             this.modalController.dismiss()
             this.loading=false
+          }else if (res.status_code == 401){
+            this.commonSvc.closeSesionByToken();
           }
         }, 
         (error:any)=>{
@@ -270,10 +307,28 @@ export class FormProductoModalComponent  implements OnInit {
             this.errorProducto = error.error.detail
           }
           this.loading=false
+          if (error.status == 401){
+            this.commonSvc.closeSesionByToken();
+          }
       })  
     }     
   }
+  base64ToFile(base64: string, filename: string): File {
+    // Divide el string en dos partes: el tipo MIME y el contenido
+    const arr = base64.split(',');
+    const mime = arr[0].match(/:(.*?);/)![1]; // Obtiene el tipo MIME
+    const bstr = atob(arr[1]); // Decodifica el Base64
+    const n = bstr.length;
+    const u8arr = new Uint8Array(n);
 
+    // Convierte el string decodificado en un array de bytes
+    for (let i = 0; i < n; i++) {
+      u8arr[i] = bstr.charCodeAt(i);
+    }
+
+    // Crea y retorna el objeto File
+    return new File([u8arr], filename, { type: mime });
+  }
   setOpen(){
     this.isToastOpen = !this.isToastOpen
   }

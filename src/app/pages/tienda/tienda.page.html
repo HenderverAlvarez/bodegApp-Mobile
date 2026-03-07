@@ -21,7 +21,7 @@
 
           <ion-segment-content id="first">
             <ion-row *ngIf="!showVenta" class="ion-justify-content-center margin-top-1 slide-in-left">
-              <ion-col size="10">
+              <ion-col size="10" class="ion-justify-content-center d-flex">
 
                 <div class="card-nav" (click)="navigate('/new-venta')">
                   <p class="card-title">Registrar Venta</p>
@@ -39,7 +39,7 @@
             </ion-row>
 
             <ion-row *ngIf="!showVenta" class="ion-justify-content-center margin-top-1 slide-in-right">
-              <ion-col size="10">
+              <ion-col size="10" class="ion-justify-content-center d-flex">
 
                 <div class="card-nav" (click)="showVentas()">
                   <p class="card-title">Ver Ventas</p>
