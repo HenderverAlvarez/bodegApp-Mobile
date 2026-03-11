@@ -7,6 +7,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
 import { InventarioService } from 'src/app/services/inventario_service';
 import { Router } from '@angular/router';
 import { FormGroup, ReactiveFormsModule, Validators, FormBuilder } from '@angular/forms';
+import { CommonService } from 'src/app/services/common_service';
 
 
 @Component({
@@ -24,7 +25,7 @@ export class SearchItemsModalComponent  implements OnInit {
     cantidad: ['', [Validators.required]]
   });
 
-  constructor(private modalController: ModalController, private inventarioSvc: InventarioService, private router: Router) {
+  constructor(private modalController: ModalController, private inventarioSvc: InventarioService, private router: Router, private commonSvc: CommonService) {
     addIcons({closeCircle,arrowForwardCircleOutline,closeCircleOutline});
   }
 
@@ -72,7 +73,6 @@ export class SearchItemsModalComponent  implements OnInit {
     this.products = []
     this.inventarioSvc.getItems(1, $event.target.value).subscribe(
       (res:any)=>{
-        console.log(res)
         if(res.status_code == 200){
           this.products=res.data
           this.mensaje= ''
@@ -83,6 +83,9 @@ export class SearchItemsModalComponent  implements OnInit {
         this.loading = false;
       }, 
       (error:any)=>{
+        if(error.status == 401){
+          this.commonSvc.closeSesionByToken();
+        }
         this.loading = false;
       })
   }

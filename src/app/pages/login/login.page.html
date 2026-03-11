@@ -27,7 +27,7 @@
                   
                   <button expand="full" class="button-more full-width margin-top-3 margin-bottom-3" [disabled]="profileForm.status == 'INVALID' || loading" (click)="logIn()">
                     <span *ngIf="!loading">Ingresar</span>
-                    <ion-spinner size="small" name="circles" *ngIf="loading"></ion-spinner>
+                    <ion-spinner size="small" class="padding-0 button-spinner" name="circles" *ngIf="loading"></ion-spinner>
                   </button>                  
                 </form>
                 

@@ -10,7 +10,7 @@
           <ion-row class="margin-top-3 ion-justify-content-space-between">
             <ion-col size="auto">
                <div>
-                 <ion-chip [routerLink]="['/inicio/tienda']" color="primary"><ion-icon class="margin-right-1" name="arrow-back"></ion-icon> Regresar</ion-chip>
+                 <ion-chip [disabled]="loading" [routerLink]="['/inicio/tienda']" color="primary"><ion-icon class="margin-right-1" name="arrow-back"></ion-icon> Cancelar</ion-chip>
                </div>
             </ion-col>
          </ion-row>
@@ -44,21 +44,27 @@
 
                     <ion-row class="ion-justify-content-center margin-top-2">
                       <ion-col size="11">
-                        <button class="button-more" (click)="openModal(modalSearch, 'my-custom-modal')">Agregar Item<ion-icon name="add-circle"></ion-icon></button>
+                        <button class="button-more button-center" (click)="openModal(modalSearch, 'my-custom-modal')">Agregar Item<ion-icon class="margin-left-1" name="add-circle"></ion-icon></button>
                       </ion-col>
                     </ion-row>
 
                     <ion-list *ngIf="items.length > 0">             
                       <ion-row *ngFor="let item of items" class="ion-justify-content-space-between ion-align-items-center slide-in-left item-product">
 
-                        <ion-col size="auto" size-xs="12" class="ion-align-items-end d-flex">
-                          <ion-icon color="primary" class="icon-trash" name="trash-bin" (click)="eliminarItem(item)"></ion-icon>
-                          <ion-label color="primary" class="margin-left-1" (click)="eliminarItem(item)">Eliminar item</ion-label>
+                        <ion-col size="auto"  class="ion-align-items-end d-flex" (click)="eliminarItem(item)">
+                          <ion-icon color="primary" class="icon-trash" name="trash-bin"></ion-icon>
+                          <ion-label color="primary" class="margin-left-1 sm-hide">Eliminar item</ion-label>
+                        </ion-col>
+
+                        <ion-col size="auto" class="d-flex ion-align-items-center ion-justify-content-space-around">
+                          <ion-icon class="btn-cantidad" size="large" name="remove-circle-outline" (click)="remove(item)"></ion-icon>
+                          <ion-label class="text-cantidad">{{item.cantidad}}</ion-label>
+                          <ion-icon class="btn-cantidad" size="large" name="add-circle-outline" (click)="add(item, $event)"></ion-icon>
                         </ion-col>
 
 
-                        <ion-col  size-sm="8" size-xs="12">
-                          <product-card [product]="item" [hover]="false"></product-card>
+                        <ion-col  size-sm="10" size-xs="12">
+                          <product-card [sm]="true" [product]="item" [hideCantidad]="true" [hover]="false"></product-card>
                         </ion-col>                     
                       </ion-row>
                     </ion-list>
@@ -82,10 +88,16 @@
                 </ion-row>
               </div>
 
-              <div *ngIf="step == 'pago'">
+              <div *ngIf="step == 'cliente'">
                 <ion-row class="ion-justify-content-center margin-top-2">
                   <ion-col size="auto">
+
+                    <ion-label color="primary">
+                      Datos del cliente
+                    </ion-label>
+
                     <ion-toggle [formControlName]="'mora'"
+                    class="margin-top-2"
                     color="primary"
                     helperText="Marcar la venta como NO pagada creara una mora automaticamente"
                     justify="space-between"
@@ -102,24 +114,12 @@
                       <app-input label="Contacto del deudor" icon="qr-code-outline" type="number" [controlName]="formVenta.controls['contacto_cliente']"></app-input>
                   </ion-col>
                 </ion-row>
-                
-                <ion-row class="ion-justify-content-start margin-top-2 slide-in-left">
-                  <ion-col size="12">
-                      <ion-select formControlName="metodo" label="Método de Pago" label-placement="stacked">
-                        <ion-select-option value="efectivo">Efectivo</ion-select-option>
-                        <ion-select-option value="tarjeta">Tarjeta de crédito/débito</ion-select-option>
-                        <ion-select-option value="transferencia">Transferencia bancaria</ion-select-option>
-                        <ion-select-option value="otro">Pago Móvil</ion-select-option>
-                      </ion-select>
-                  </ion-col>
-                </ion-row>
 
                 <ion-row *ngIf="formVenta.controls['mora'].value == true" class="ion-justify-content-start margin-top-2 slide-in-left">
                   <ion-col size="12">
                     <app-input label="Cliente (Opcional)" type="text" max="25" icon="qr-code-outline" [controlName]="formVenta.controls['cliente']"></app-input>
                   </ion-col>
                 </ion-row>
-
 
 
                 <ion-row *ngIf="items.length > 0" class="row-total margin-top-2">
@@ -137,13 +137,105 @@
                   <ion-col size="6">
                     <button class="button-more" 
                     [disabled]="
-                      formVenta.controls['metodo'].value == '' ||
+                      loading ||
                       items.length == 0 || 
                       (formVenta.controls['mora'].value == false 
                       && formVenta.controls['cliente'].value == '' 
                       && formVenta.controls['contacto_cliente'].value == '' )
                       " 
-                    (click)="registrarVenta()">Registrar</button>
+                    (click)="nextStep()">
+                    <span *ngIf="!loading">Siguiente</span>
+                    <ion-spinner size="small" class="padding-0 button-spinner" name="circles" *ngIf="loading"></ion-spinner>
+                  </button>
+                  </ion-col>
+                </ion-row>
+              </div>
+
+
+              <div *ngIf="step == 'pago'">
+                <ion-row class="ion-justify-content-center margin-top-2">
+                  <ion-col size="12">
+                    <ion-label color="primary" class="d-block text-left">
+                      Datos de pago
+                    </ion-label>
+                  </ion-col>
+                </ion-row>  
+                
+                <ion-row *ngIf="!showPagos"  class="ion-justify-content-center margin-top-2">
+                  <ion-col size="11">
+                    <button class="button-more button-center" [disabled]="calcularPagos() == calcularTotal()" (click)="showAddPago()">Agregar Pago<ion-icon class="margin-left-1" name="add-circle"></ion-icon></button>
+                  </ion-col>
+                </ion-row>
+                
+                <ion-row *ngIf="showPagos" class="ion-justify-content-start margin-top-2 slide-in-left">
+                  <ion-col size="12">
+                      <ion-select  formControlName="metodo" label="Método de Pago" label-placement="stacked">
+                        <ion-select-option value="Efectivo">Efectivo</ion-select-option>
+                        <ion-select-option value="Tarjeta">Tarjeta de crédito/débito</ion-select-option>
+                        <ion-select-option value="Transferencia">Transferencia bancaria</ion-select-option>
+                        <ion-select-option value="Pago movil">Pago Móvil</ion-select-option>
+                      </ion-select>
+                  </ion-col>
+
+                  <ion-row class="ion-align-items-center ion-justify-content-space-between slide-in-right">
+                    <ion-col size="8">
+                      <app-input label="Monto" type="number" max="25" [controlName]="formVenta.controls['monto']"></app-input>
+                    </ion-col>
+                    <ion-col size="3">
+                      <ion-chip color="primary" (click)="setAll()">Todo</ion-chip>
+                      <ion-chip color="primary" (click)="setHalf()">Mitad</ion-chip>
+                    </ion-col>
+                  </ion-row>
+
+                  
+                </ion-row>
+                <ion-row *ngIf="showPagos" class="ion-justify-content-center margin-top-2">
+                  <ion-col size="8">
+                    <button class="button-more" [disabled]="formVenta.controls['monto'].value == '' || formVenta.controls['metodo'].value == ''" (click)="addPago()">Agregar</button>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row class="ion-justify-content-start margin-top-2" *ngIf="!showPagos && pagos.length > 0">
+                  <ion-col size="11">
+                    <ion-label (click)="clearPagos()" color="primary" class="text-underline">Limpiar métodos de pago</ion-label>
+                  </ion-col>
+                </ion-row>
+                <ion-row *ngIf="!showPagos && pagos.length > 0"  class="ion-justify-content-end margin-top-2">
+                  <ion-col size="11" *ngFor="let pago of pagos" class="pago">
+                    <ion-icon name="card-outline" *ngIf="pago.metodo == 'Tarjeta'"></ion-icon>
+                    <ion-icon name="cash-outline" *ngIf="pago.metodo == 'Efectivo'"></ion-icon>
+                    <ion-icon name="swap-horizontal-outline" *ngIf="pago.metodo == 'Transferencia'"></ion-icon>
+                    <ion-icon name="phone-portrait-outline" *ngIf="pago.metodo == 'Pago movil'"></ion-icon>
+                    <ion-label>{{pago.metodo}}: {{pago.monto.toFixed(2)}}</ion-label>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row *ngIf="items.length > 0" class="row-total margin-top-2">
+                  <ion-col size="11">
+                    <ion-label class="text-bold text-large">SubTotal Bs. {{ calcularTotal().toFixed(2)}}</ion-label><br>
+                    <ion-label class="text-bold text-large">SubTotal $ {{ calcularTotalUsd().toFixed(2)}}</ion-label>
+                  </ion-col>
+                </ion-row> 
+
+
+                <ion-row class="ion-justify-content-center margin-top-2">
+                  <ion-col size="6">
+                    <button class="button-more" (click)="prevStep()">Anterior</button>
+                  </ion-col>
+                  <ion-col size="6">
+                    <button class="button-more" 
+                    [disabled]="
+                      loading ||
+                      pagos.length == 0 ||
+                      items.length == 0 || 
+                      (formVenta.controls['mora'].value == false 
+                      && formVenta.controls['cliente'].value == '' 
+                      && formVenta.controls['contacto_cliente'].value == '' )
+                      " 
+                    (click)="registrarVenta()">
+                    <span *ngIf="loading == false">Registrar</span>
+                    <ion-spinner size="small" class="padding-0 button-spinner" name="circles" *ngIf="loading"></ion-spinner>
+                  </button>
                   </ion-col>
                 </ion-row>
               </div>

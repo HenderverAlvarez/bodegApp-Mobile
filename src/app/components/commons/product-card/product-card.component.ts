@@ -21,6 +21,10 @@ export class ProductCardComponent  implements OnInit {
   @Input() hideCantidad?:boolean;
   @Input() hideDisponible?:boolean;
   @Input() imagen:boolean=false;
+
+  @Input() sm:boolean=false;
+
+
   ts:string=new Date().getTime().toString();
   constructor() { }
 

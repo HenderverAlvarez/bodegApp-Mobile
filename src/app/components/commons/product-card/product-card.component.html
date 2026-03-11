@@ -1,4 +1,4 @@
-<ion-card [class]="hover ? 'card-product' : 'card-product-no-hover'" >
+<ion-card [class]="hover ? 'card-product' : 'card-product-no-hover'" *ngIf="!sm">
   <ion-row class="ion-justify-content-space-around ion-align-items-center">
 
     <div class="cantidad" *ngIf="!hideCantidad && product.estado != 'Agotado'">
@@ -40,5 +40,48 @@
       <p class="product-name" *ngIf="showDisponible">Disponible: {{product.stock}}</p>
     </ion-col>
   </ion-row>
+</ion-card>
+
+
+<ion-card [class]="hover ? 'card-product' : 'card-product-no-hover'" *ngIf="sm">
+  <ion-row class="ion-justify-content-space-around ion-align-items-end padding-top-1">
+
+    <div class="cantidad" *ngIf="!hideCantidad && product.estado != 'Agotado'">
+      <p class="text-small text-bold">x{{ product.cantidad? product.cantidad : product.stock }} {{product.unidad_medida}}</p>
+    </div>
+
+    <div [class]="hideCantidad ? 'disponible-top' : 'disponible'" *ngIf="!hideDisponible && product.estado != 'Agotado'">
+      <p class="text-small text-bold">Disponible: {{product.stock }} {{product.unidad_medida}}</p>
+    </div>
+
+    <div class="agotado" *ngIf="product.estado == 'Agotado'">
+      <p class="text-small text-bold">Agotado</p>
+    </div>
+
+    <ion-col *ngIf="!noImg" size="4" class="xs-hide">
+      <div class="img-container">
+          <img *ngIf="!imagen" class="product-img" alt="imagen del producto" [src]="'http://localhost:8000/'+ product.foto_url+ '?t='+ts" />
+          <img *ngIf="imagen" class="product-img" alt="imagen del producto" [src]="product.foto_url" />
+      </div>
+    </ion-col>
+
+    <ion-col  sizeSm="8">
+      <ion-row class="ion-justify-content-space-around ion-align-items-center">
+        <ion-col sizeXs="12" sizeSm="6">
+          <p class="product-name text-center">{{ product.descripcion }}</p>
+        </ion-col>
   
+        <ion-col  sizeSm="5">
+          <ion-row class="ion-justify-content-space-around" *ngIf="!hidePrice">
+            <ion-col size="auto">
+              <ion-chip color="primary">Bs. {{product.precio_bs}}</ion-chip>
+              <ion-chip color="primary">$ {{product.precio_usd}}</ion-chip>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+    </ion-row>
+    </ion-col>
+  </ion-row>
+
+
 </ion-card>

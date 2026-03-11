@@ -5,7 +5,7 @@ import { AppHeaderComponent } from 'src/app/components/commons/app-header/app-he
 import {FormGroup, FormControl, Validators, FormBuilder, } from '@angular/forms';
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { arrowBack, addCircle, trashBin, removeCircleOutline, addCircleOutline, closeOutline} from 'ionicons/icons';
+import { arrowBack, addCircle, trashBin, removeCircleOutline, addCircleOutline, closeOutline, cashOutline, phonePortraitOutline, cardOutline, swapHorizontalOutline} from 'ionicons/icons';
 import { AppInputComponent } from 'src/app/components/commons/app-input/app-input.component';
 import { SearchItemsModalComponent } from 'src/app/components/commons/search-items-modal/search-items-modal.component';
 import { ModalController } from '@ionic/angular';
@@ -26,21 +26,26 @@ import { ModalConfirmationComponent } from 'src/app/components/commons/modal-con
 export class NewVentaPage implements OnInit {
   @ViewChild('popover') popover!: HTMLIonPopoverElement;
   constructor(private router: Router, private formBuilder: FormBuilder, private modalController: ModalController, private ventasSvc:VentasService) { 
-    addIcons({arrowBack,addCircle,trashBin, removeCircleOutline, addCircleOutline, closeOutline});
+    addIcons({arrowBack,addCircle,trashBin, removeCircleOutline, addCircleOutline, closeOutline, cashOutline, phonePortraitOutline, cardOutline, swapHorizontalOutline});
   }
   formVenta: FormGroup = this.formBuilder.group({
     cliente: new FormControl('', [Validators.required]),
     contacto_cliente: new FormControl('', [Validators.required]),
     mora: new FormControl(true, []),
     metodo: new FormControl('',  [Validators.required]),
+    monto: new FormControl('',  [Validators.required]),
   });
 
+  loading:boolean=false;
   items:any[]=[]
   tasa: number = 390.00;
   step:string='productos'
   isOpenPop = false;
   modalSearch=SearchItemsModalComponent;
   modalConfirmation=ModalConfirmationComponent;
+
+  showPagos:boolean=false;
+  pagos:any[]=[];
 
   ngOnInit() {
   }
@@ -50,8 +55,8 @@ export class NewVentaPage implements OnInit {
   }
 
   registrarVenta(){
-    console.log(this.formVenta.status)
-
+    //console.log(this.formVenta.status)
+    this.loading=true;
     let mora = this.formVenta.value.mora ? 'No' : 'Si';
     let data = {
       total: this.calcularTotal(),
@@ -66,15 +71,16 @@ export class NewVentaPage implements OnInit {
     this.ventasSvc.insertVenta(data).subscribe({
       next: (res) => {
         if(res.status_code == 200){
+            this.loading=false;
             this.openModal(this.modalConfirmation, 'modal-sm').then(() => {
-              setTimeout(() => {
-                this.router.navigate(['/inicio/tienda']);
-              }, 1000);
+            this.router.navigate(['/inicio/tienda']);
+          
             });
         }
         console.log(res);
       },
       error: (err) => {
+        this.loading=false;
         console.log(err);
       }
     });
@@ -160,15 +166,63 @@ export class NewVentaPage implements OnInit {
 
     
   }
+  calcularPagos(){
+    let total = 0;
+    this.pagos.forEach(pago => {
+      total += pago.monto;
+    });
+    return total;
+  }
+  clearPagos(){
+    this.pagos = [];
+  }
+  showAddPago(){
+    this.showPagos = true;
+  }
+
+  addPago(){
+    let metodo = this.formVenta.value.metodo;
+    let monto = this.formVenta.value.monto;
+    //validar que la suma del monto que se va a ingresar sumado al resto de pagos no sea mayor al total de la venta
+    if(this.calcularPagos() + parseFloat(monto) > this.calcularTotal()){
+      this.isOpenPop = true;
+      return;
+    }
+
+    if(metodo && monto > 0){
+      this.pagos.push({metodo: metodo, monto: parseFloat(monto)});
+      this.formVenta.controls['metodo'].setValue('');
+      this.formVenta.controls['monto'].setValue('');
+      this.showPagos = false;
+    }
+  }
+  setAll(){
+    this.formVenta.controls['monto'].setValue(this.calcularTotal());
+  }
+  setHalf(){
+    this.formVenta.controls['monto'].setValue(this.calcularTotal()/2);
+  }
 
   nextStep(){
-    if(this.step === 'productos') this.step = 'pago';
-    else this.step = 'productos';
+    switch (this.step) {
+      case 'productos':
+      this.step = 'cliente';
+      break;
+      case 'cliente':
+      this.step = 'pago';
+      break;
+      default:
+      this.step = 'productos';
+      break;
+    }
   }
 
   prevStep(){
-    if(this.step === 'pago') this.step = 'productos';
-    else this.step = 'pago';
+    if (this.step === 'cliente') {
+      this.step = 'productos';
+    } else if (this.step === 'pago') {
+      this.step = 'cliente';
+    }
   }
 
   eliminarItem(item:any){
@@ -201,6 +255,9 @@ export class NewVentaPage implements OnInit {
     this.isOpenPop = true;
   }
   ionViewWillLeave(){
+    this.pagos=[];
+    this.showPagos = false;
+    this.loading=false;
     this.step = "productos";
     this.items = [];
     this.formVenta.reset();

@@ -11,6 +11,9 @@ import { RecargaStockModalComponent } from '../recarga-stock-modal/recarga-stock
 import {FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, } from '@angular/forms';
 import { CommonService } from 'src/app/services/common_service';
 import { PopoverController } from '@ionic/angular/standalone';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+
 
 @Component({
   selector: 'inventario-lista',
@@ -21,12 +24,19 @@ import { PopoverController } from '@ionic/angular/standalone';
 
 })
 export class InventarioListaComponent  implements OnInit {
-
+  private searchSubject = new Subject<string>();
+  
+  
   constructor(private formBuilder: FormBuilder, private inventarioSvc: InventarioService, private modalController: ModalController, private commonService: CommonService, private popoverController: PopoverController) { 
 
     addIcons({trashBin, pencil,cog, bagAdd, chevronBack, chevronForward})
+    this.searchSubject.pipe(
+      debounceTime(300) // Ajusta el tiempo según lo que necesites
+    ).subscribe(searchTerm => {
+      this.filterItems(searchTerm);
+    });
   }
-
+  
   editForm: FormGroup = this.formBuilder.group({
     search: new FormControl('', [Validators.required]),
   });
@@ -41,6 +51,11 @@ export class InventarioListaComponent  implements OnInit {
   pages: number[] = Array(0).fill(0);
 
   ngOnInit() {this.getInventario()}
+
+  onSearchInput(event: any) {
+    const searchTerm = event.target.value;
+    this.searchSubject.next(event);
+  }
   getInventario(){
     this.productos = [];
     this.loading = true;
@@ -50,7 +65,6 @@ export class InventarioListaComponent  implements OnInit {
         this.productos = res.data
         this.mensaje= '';
         this.pages = Array(res.total_pages).fill(0);
-        
       }else{
         this.mensaje = res.detail;
         this.commonService.openModalConfirmation(this.mensaje, "close-outline")

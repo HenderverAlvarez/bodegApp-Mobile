@@ -4,6 +4,23 @@
 
   <ion-grid class="margin-top-4 text-center">
 
+    <ion-row *ngIf="!showInventario && !showCategorias" class="ion-justify-content-center margin-top-1 slide-in-right">
+      <ion-col size="10">
+
+        <div class="card-nav" (click)="setShowCategorias()">
+          <p class="card-title">Inventario</p>
+          <p class="small-desc">
+            Consulta Los productos de tu inventario y modifica detalles.
+          </p>
+          <div class="go-corner">
+            <div class="go-arrow">
+              <ion-icon size="large" name="arrow-forward-circle-outline"></ion-icon>
+            </div>
+          </div>
+        </div>
+     
+      </ion-col>
+    </ion-row>
 
     <ion-row *ngIf="!showInventario && !showCategorias" class="ion-justify-content-center margin-top-1 slide-in-left">
       <ion-col size="10">
@@ -23,23 +40,6 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="!showInventario && !showCategorias" class="ion-justify-content-center margin-top-1 slide-in-right">
-      <ion-col size="10">
-
-        <div class="card-nav" (click)="setShowCategorias()">
-          <p class="card-title">Inventario</p>
-          <p class="small-desc">
-            Consulta Los productos de tu inventario y modifica detalles.
-          </p>
-          <div class="go-corner">
-            <div class="go-arrow">
-              <ion-icon size="large" name="arrow-forward-circle-outline"></ion-icon>
-            </div>
-          </div>
-        </div>
-     
-      </ion-col>
-    </ion-row>
 
     <ion-row *ngIf="!showInventario && showCategorias"  class="ion-justify-content-space-between margin-top-1">
       <ion-col size="auto">

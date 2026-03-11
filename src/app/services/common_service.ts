@@ -46,6 +46,7 @@ export class CommonService {
     }
 
     closeSesionByToken(){
+        this.modalCtrl.dismiss();
         this.openModalConfirmation("Sesión expirada, por favor inicie sesión nuevamente", "alert-circle-outline");
         this.deleteLocalStorage('token');
         this.deleteLocalStorage('user');

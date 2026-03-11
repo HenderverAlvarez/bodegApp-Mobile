@@ -11,7 +11,7 @@
   <ion-grid *ngIf="step == 'productos'">
     <ion-row>
       <ion-col>
-        <ion-searchbar placeholder="Buscar producto..." debounce="700" (ionInput)="filterItems($event)"></ion-searchbar>
+        <ion-searchbar class="search" placeholder="Buscar producto..." debounce="800" (ionInput)="filterItems($event)"></ion-searchbar>
       </ion-col>
     </ion-row>
 
@@ -21,7 +21,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-row class="ion-justify-content-center margin-top-2" *ngIf="mensaje != ''">
+    <ion-row class="ion-justify-content-center margin-top-2" *ngIf="mensaje != '' && !loading">
       <ion-col size="auto">
         <ion-label  color="tertiary" class="ion-text-center text-bold d-block" >{{mensaje}}</ion-label>
       </ion-col>
@@ -61,16 +61,9 @@
     </ion-popover>
     <ion-row>
       <ion-col class="ion-padding padding-bottom-0">
-        <ion-row class="ion-justify-content-space-between  margin-top-1">
-            <ion-col><ion-label color="primary" class="text-medium d-block">Producto: {{selectedProduct.descripcion}}</ion-label></ion-col>
-            <ion-col><ion-label color="primary" class="text-medium d-block text-right">Disponible: {{selectedProduct.stock}} {{selectedProduct.unidad_medida}}</ion-label></ion-col>
-        </ion-row>
-        
-        <ion-row>
-          <ion-col><ion-label color="primary" class="text-medium d-block">Cantidad a Vender: </ion-label></ion-col>
-        </ion-row>
-        
-        
+        <ion-row class="ion-justify-content-space-center  margin-top-1">
+            <ion-col><ion-label color="primary" class="text-large text-bold text-center d-block">{{selectedProduct.descripcion}}</ion-label></ion-col>
+        </ion-row>      
       </ion-col>
       <ion-col size="12" class="ion-padding"  *ngIf="selectedProduct.unidad_medida == 'kg'">
         <ion-segment value="first" [scrollable]="true">
@@ -83,9 +76,10 @@
         </ion-segment>
         <ion-segment-view>
           <ion-segment-content [id]="'first'+selectedProduct.id">
-            <div class="quantity-badge margin-top-1">                            
+            <ion-label color="primary" class="text-medium text-bold d-block text-center margin-top-1">Disponible: {{selectedProduct.stock}} {{selectedProduct.unidad_medida}}</ion-label>
+            <div class="quantity-kg margin-top-1">                            
               <ion-label class="text-bold text-primary">Kg</ion-label>
-              <ion-input type="number" class="outline" fill="outline" color="primary" (input)="calcularCantidad($event, selectedProduct)"  [placeholder]="selectedProduct.cantidad" min="0.1" [max]="selectedProduct.stock" [placeholder]="selectedProduct.cantidad" [value]="selectedProduct.cantidad"></ion-input>
+              <ion-input type="number" class="outline"  color="primary" (input)="calcularCantidad($event, selectedProduct)"  [placeholder]="selectedProduct.cantidad" min="0.1" [max]="selectedProduct.stock" [placeholder]="selectedProduct.cantidad" [value]="selectedProduct.cantidad"></ion-input>
             </div>
 
             <div class="pricing">
@@ -95,9 +89,10 @@
           </ion-segment-content>
 
           <ion-segment-content [id]="'second'+selectedProduct.id">
-            <div class="quantity-badge margin-top-1">                            
+            <ion-label color="primary" class="text-medium text-bold d-block text-center margin-top-1">Disponible: {{selectedProduct.stock}} {{selectedProduct.unidad_medida}}</ion-label>
+            <div class="quantity-kg margin-top-1">                            
               <ion-label class="text-bold text-primary">Bs</ion-label>
-              <ion-input type="number" fill="outline" (input)="calcularPrecio($event, selectedProduct)" [placeholder]="calcularTotal().toFixed(2)" min="1" [value]="precio_bs"></ion-input>
+              <ion-input type="number" (input)="calcularPrecio($event, selectedProduct)" [placeholder]="calcularTotal().toFixed(2)" min="1" [value]="calcularTotal().toFixed(2)"></ion-input>
             </div>
 
             <div class="pricing">
@@ -109,16 +104,20 @@
       </ion-col>
 
       <ion-col size="12" class="ion-padding"  *ngIf="selectedProduct.unidad_medida == 'unidades'">
-        <div class="quantity-badge">
-
+        <div class="quantity-badge">              
           <div class="row-cantidad">
-            <form action="" [formGroup]="formProducto" class="width-auto">
-              <ion-input type="number" formControlName="cantidad" [placeholder]="selectedProduct.cantidad" class="text-bold input-cantidad text-cantidad text-primary" min="0" (input)="setCantidad($event)"  [value]="selectedProduct.cantidad"></ion-input>
-            </form>
-            <div class="icons">
-              <ion-icon name="add-circle-outline" (click)="add(selectedProduct, $event)" color="primary"></ion-icon>
-              <ion-icon name="remove-circle-outline" color="primary" (click)="remove(selectedProduct)"></ion-icon>
-            </div>
+              <ion-label color="primary" class="text-medium text-bold d-block text-center margin-bottom-1">Cantidad a vender:</ion-label>
+              <div class="counter">
+                
+                <form action="" [formGroup]="formProducto" class="width-auto">
+                  <ion-input type="number" formControlName="cantidad" [placeholder]="selectedProduct.cantidad" class="text-bold input-cantidad text-cantidad text-primary" min="0" (input)="setCantidad($event)"  [value]="selectedProduct.cantidad"></ion-input>
+                </form>
+                <div class="icons">
+                  <ion-icon class="btn-cantidad" name="add-circle-outline" (click)="add(selectedProduct, $event)"></ion-icon>
+                  <ion-icon class="btn-cantidad" name="remove-circle-outline" (click)="remove(selectedProduct)"></ion-icon>
+                </div>
+              </div>
+              <ion-label color="primary" class="text-medium text-bold d-block text-center margin-top-1">Disponible: {{selectedProduct.stock}} {{selectedProduct.unidad_medida}}</ion-label>
           </div>         
           
         </div>
