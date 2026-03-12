@@ -153,6 +153,15 @@
 
 
               <div *ngIf="step == 'pago'">
+
+                <ion-popover  #popover2 [isOpen]="isOpenPop2" (didDismiss)="isOpenPop2 = false" side="top" alignment="center">
+                  <ng-template>
+                    <ion-content class="ion-padding text-center text-primary">
+                      El monto ingresado supera el total de la orden!.
+                    </ion-content>
+                  </ng-template>
+                </ion-popover>
+
                 <ion-row class="ion-justify-content-center margin-top-2">
                   <ion-col size="12">
                     <ion-label color="primary" class="d-block text-left">
@@ -169,10 +178,10 @@
                 
                 <ion-row *ngIf="showPagos" class="ion-justify-content-start margin-top-2 slide-in-left">
                   <ion-col size="12">
-                      <ion-select  formControlName="metodo" label="Método de Pago" label-placement="stacked">
+                      <ion-select  formControlName="metodo" interface="popover" label="Método de Pago" label-placement="stacked">
                         <ion-select-option value="Efectivo">Efectivo</ion-select-option>
-                        <ion-select-option value="Tarjeta">Tarjeta de crédito/débito</ion-select-option>
-                        <ion-select-option value="Transferencia">Transferencia bancaria</ion-select-option>
+                        <ion-select-option value="Tarjeta">Tarjeta de débito</ion-select-option>
+                        <ion-select-option value="Transferencia">Transferencia</ion-select-option>
                         <ion-select-option value="Pago movil">Pago Móvil</ion-select-option>
                       </ion-select>
                   </ion-col>
@@ -182,7 +191,7 @@
                       <app-input label="Monto" type="number" max="25" [controlName]="formVenta.controls['monto']"></app-input>
                     </ion-col>
                     <ion-col size="3">
-                      <ion-chip color="primary" (click)="setAll()">Todo</ion-chip>
+                      <ion-chip color="primary" (click)="setAll()">{{pagos.length > 0 ? 'Rest.' : 'Todo'}}</ion-chip>
                       <ion-chip color="primary" (click)="setHalf()">Mitad</ion-chip>
                     </ion-col>
                   </ion-row>
@@ -195,12 +204,12 @@
                   </ion-col>
                 </ion-row>
 
-                <ion-row class="ion-justify-content-start margin-top-2" *ngIf="!showPagos && pagos.length > 0">
+                <ion-row class="ion-justify-content-start margin-top-2" *ngIf="pagos.length > 0">
                   <ion-col size="11">
                     <ion-label (click)="clearPagos()" color="primary" class="text-underline">Limpiar métodos de pago</ion-label>
                   </ion-col>
                 </ion-row>
-                <ion-row *ngIf="!showPagos && pagos.length > 0"  class="ion-justify-content-end margin-top-2">
+                <ion-row *ngIf="pagos.length > 0"  class="ion-justify-content-end margin-top-2">
                   <ion-col size="11" *ngFor="let pago of pagos" class="pago">
                     <ion-icon name="card-outline" *ngIf="pago.metodo == 'Tarjeta'"></ion-icon>
                     <ion-icon name="cash-outline" *ngIf="pago.metodo == 'Efectivo'"></ion-icon>

@@ -15,6 +15,7 @@ import {VentasService} from 'src/app/services/ventas_service';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { ModalConfirmationComponent } from 'src/app/components/commons/modal-confirmation/modal-confirmation.component';
+import { CommonService } from 'src/app/services/common_service';
 
 @Component({
   selector: 'app-new-venta',
@@ -25,7 +26,7 @@ import { ModalConfirmationComponent } from 'src/app/components/commons/modal-con
 })
 export class NewVentaPage implements OnInit {
   @ViewChild('popover') popover!: HTMLIonPopoverElement;
-  constructor(private router: Router, private formBuilder: FormBuilder, private modalController: ModalController, private ventasSvc:VentasService) { 
+  constructor(private router: Router, private formBuilder: FormBuilder, private modalController: ModalController, private ventasSvc:VentasService, private commonsSvc:CommonService) { 
     addIcons({arrowBack,addCircle,trashBin, removeCircleOutline, addCircleOutline, closeOutline, cashOutline, phonePortraitOutline, cardOutline, swapHorizontalOutline});
   }
   formVenta: FormGroup = this.formBuilder.group({
@@ -41,6 +42,7 @@ export class NewVentaPage implements OnInit {
   tasa: number = 390.00;
   step:string='productos'
   isOpenPop = false;
+  isOpenPop2 = false;
   modalSearch=SearchItemsModalComponent;
   modalConfirmation=ModalConfirmationComponent;
 
@@ -65,7 +67,8 @@ export class NewVentaPage implements OnInit {
       lines: this.items,
       nombre_cliente: this.formVenta.value.cliente,
       contacto_cliente: this.formVenta.value.contacto_cliente,
-      metodo_pago: this.formVenta.value.metodo
+      metodo_pago: this.formVenta.value.metodo,
+      pagos: this.pagos
     }
 
     this.ventasSvc.insertVenta(data).subscribe({
@@ -82,6 +85,11 @@ export class NewVentaPage implements OnInit {
       error: (err) => {
         this.loading=false;
         console.log(err);
+        if(err.status == 401){
+          this.commonsSvc.closeSesionByToken();  
+        }else{
+          this.commonsSvc.openModalConfirmation("Error de conexión", "close-circle-outline")
+        }
       }
     });
 
@@ -185,22 +193,52 @@ export class NewVentaPage implements OnInit {
     let monto = this.formVenta.value.monto;
     //validar que la suma del monto que se va a ingresar sumado al resto de pagos no sea mayor al total de la venta
     if(this.calcularPagos() + parseFloat(monto) > this.calcularTotal()){
-      this.isOpenPop = true;
+      this.isOpenPop2 = true;
       return;
     }
 
+   
+    
+    
+
     if(metodo && monto > 0){
-      this.pagos.push({metodo: metodo, monto: parseFloat(monto)});
-      this.formVenta.controls['metodo'].setValue('');
-      this.formVenta.controls['monto'].setValue('');
-      this.showPagos = false;
+      //validar sumar el monto si el metodo ya existe en el array de pagos, si no existe agregarlo como nuevo pago
+      let existeMetodo = this.pagos.some((pago:any) => pago.metodo === metodo);
+      if(existeMetodo){
+        this.pagos.forEach(pago => { 
+          if(pago.metodo === metodo){
+            pago.monto += parseFloat(monto);
+            this.formVenta.controls['metodo'].setValue('');
+            this.formVenta.controls['monto'].setValue('');
+            this.showPagos = false;
+            return;
+          }
+        });
+      }else{
+        this.pagos.push({metodo: metodo, monto: parseFloat(monto)});
+        this.formVenta.controls['metodo'].setValue('');
+        this.formVenta.controls['monto'].setValue('');
+        this.showPagos = false;
+      }
+
+
     }
   }
   setAll(){
-    this.formVenta.controls['monto'].setValue(this.calcularTotal());
+    let sumaPago = 0
+    this.pagos.map(pago => {
+      sumaPago += parseFloat(pago.monto.toFixed(2));
+    });
+
+    this.formVenta.controls['monto'].setValue(this.calcularTotal()-sumaPago);
   }
   setHalf(){
-    this.formVenta.controls['monto'].setValue(this.calcularTotal()/2);
+    let sumaPago = 0
+    this.pagos.map(pago => {
+      sumaPago += parseFloat(pago.monto.toFixed(2));
+    });
+
+    this.formVenta.controls['monto'].setValue((this.calcularTotal()-sumaPago)/2);
   }
 
   nextStep(){

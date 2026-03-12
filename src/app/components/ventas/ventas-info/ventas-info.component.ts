@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { RefresherCustomEvent, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonLabel, IonChip, IonIcon, IonRefresher, IonRefresherContent } from "@ionic/angular/standalone";
+import { RefresherCustomEvent } from "@ionic/angular/standalone";
 import { CommonModule } from '@angular/common';
 import { funnel, funnelOutline, add, addOutline, addCircle, chevronDownOutline, chevronForwardOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
@@ -16,7 +16,7 @@ import { CommonService } from 'src/app/services/common_service';
   templateUrl: './ventas-info.component.html',
   styleUrls: ['./ventas-info.component.scss'],
   standalone: true,
-  imports: [DatePipe,CardVentaComponent, IonRefresherContent, IonRefresher, IonIcon, IonChip, IonLabel, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonCol, IonRow, IonGrid, CommonModule, HttpClientModule]
+  imports: [DatePipe,CardVentaComponent, IonicModule, CommonModule, HttpClientModule]
 })
 export class VentasInfoComponent  implements OnInit {
 
@@ -31,9 +31,10 @@ export class VentasInfoComponent  implements OnInit {
   }
 
   async getVentas(event?:RefresherCustomEvent){
+    this.loading = true;
     this.ventasSvc.getVentasDia().subscribe(
       (res:any)=>{
-        
+        this.loading = false;
         if(event){
           event.target.complete();
         }
@@ -42,8 +43,12 @@ export class VentasInfoComponent  implements OnInit {
         }
       },
       (error:any)=>{
+        this.loading = false;
         if(event){
           event.target.complete();
+        }
+        if(error.status== 401){
+          this.commonService.closeSesionByToken();
         }
       })
       
