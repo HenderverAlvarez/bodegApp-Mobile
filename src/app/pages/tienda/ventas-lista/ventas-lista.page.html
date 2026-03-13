@@ -39,7 +39,7 @@
         
       </ion-col>
       <ion-col size="auto" class="slide-in-left">
-        <ion-list>
+        <!--ion-list>
           <ion-item>
             <ion-select interface="popover" [value]="selectedEstado" 
             (ionChange)="filter({'type': 'estado','value': $event.target.value})" aria-label="Estado" placeholder="Estado de pago">
@@ -48,7 +48,7 @@
               <ion-select-option value="">Todos</ion-select-option>
             </ion-select>
           </ion-item>
-        </ion-list>
+        </ion-list-->
       </ion-col>
     </ion-row>
 
@@ -84,7 +84,7 @@
           </ion-card-header>
         </ion-card>
 
-        <card-venta *ngFor="let venta of ventas" [venta]="venta"></card-venta>
+        <card-venta (click)="goTo('venta-detalle/'+venta.uuid)" *ngFor="let venta of ventas" [venta]="venta"></card-venta>
 
         <!--ion-card *ngFor="let venta of ventas" class="card-venta slide-in-left">
           <ion-card-header>

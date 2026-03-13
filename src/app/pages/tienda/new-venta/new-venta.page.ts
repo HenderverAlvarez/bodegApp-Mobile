@@ -55,6 +55,13 @@ export class NewVentaPage implements OnInit {
   goBack(){
     this.router.navigate(['/inicio/tienda']);
   }
+  handleMora(){
+    if(this.formVenta.controls['mora'].value == false){
+      this.formVenta.controls['cliente'].setValue('');
+      this.formVenta.controls['contacto'].setValue('');
+    }
+    this.formVenta.controls['mora'].setValue(!this.formVenta.value.mora);
+  }
 
   registrarVenta(){
     //console.log(this.formVenta.status)

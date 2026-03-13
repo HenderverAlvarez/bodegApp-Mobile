@@ -101,6 +101,7 @@
                     color="primary"
                     helperText="Marcar la venta como NO pagada creara una mora automaticamente"
                     justify="space-between"
+                    (onChange)="handleMora()"
                     >Venta Pagada</ion-toggle>
                   </ion-col>
                 </ion-row>              
@@ -143,8 +144,11 @@
                       && formVenta.controls['cliente'].value == '' 
                       && formVenta.controls['contacto_cliente'].value == '' )
                       " 
-                    (click)="nextStep()">
-                    <span *ngIf="!loading">Siguiente</span>
+                    (click)="(formVenta.controls['mora'].value == false) ? registrarVenta() : nextStep()">
+                    <span *ngIf="!loading">
+                      {{(formVenta.controls['mora'].value == false) ?  'Registrar Venta' : 'Siguiente'}}
+                      
+                    </span>
                     <ion-spinner size="small" class="padding-0 button-spinner" name="circles" *ngIf="loading"></ion-spinner>
                   </button>
                   </ion-col>
@@ -258,14 +262,3 @@
     </ion-row>
   </ion-grid>
 </ion-content>
-
-<!--ion-row class="ion-justify-content-center">
-    <ion-col size="8">
-          <ion-datetime-button datetime="datetime"></ion-datetime-button>
-          <ion-modal [keepContentsMounted]="true">
-            <ng-template>
-              <ion-datetime presentation="date" id="datetime"></ion-datetime>
-            </ng-template>
-          </ion-modal>
-    </ion-col>
-</ion-row-->

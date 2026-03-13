@@ -57,6 +57,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/tienda/ventas-lista/ventas-lista.page').then( m => m.VentasListaPage)
   },
   {
+    path: 'venta-detalle/:id',
+    loadComponent: () => import('./pages/tienda/venta-detalle/venta-detalle.page').then( m => m.VentaDetallePage)
+  },
+  {
     path: 'recover',
     loadComponent: () => import('./pages/recover/recover.page').then( m => m.RecoverPage)
   },

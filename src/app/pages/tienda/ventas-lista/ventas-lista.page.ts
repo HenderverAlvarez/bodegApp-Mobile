@@ -160,6 +160,10 @@ export class VentasListaPage implements OnInit {
     });
   }
 
+  goTo(url:string){
+    this.commonService.navigateTo(url)
+  }
+
   ionViewWillEnter(){
     this.getVentas();
   }

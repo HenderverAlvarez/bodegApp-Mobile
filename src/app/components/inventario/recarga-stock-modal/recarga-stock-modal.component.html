@@ -46,7 +46,10 @@
         </ion-col>
 
         <ion-col>
-          <button class="button-more-sm" [disabled]="editForm.invalid" (click)="send()">Guardar Cambios</button>
+          <button class="button-more-sm" [disabled]="editForm.invalid || loading" (click)="send()">
+            <span *ngIf="!loading">Guardar Cambios</span>
+            <ion-spinner size="small" class="padding-0 button-spinner" name="circles" *ngIf="loading"></ion-spinner>
+          </button>
         </ion-col>
       </ion-row>
     </ion-grid>

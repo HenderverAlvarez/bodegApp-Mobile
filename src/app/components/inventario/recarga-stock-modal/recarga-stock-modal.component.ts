@@ -8,6 +8,7 @@ import { close } from 'ionicons/icons';
 
 import {FormGroup, FormControl, Validators, FormBuilder, } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CommonService } from 'src/app/services/common_service';
 
 @Component({
   selector: 'recarga-stock-modal',
@@ -18,13 +19,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 export class RecargaStockModalComponent  implements OnInit {
   @Input() item:any;
-  constructor(private formBuilder: FormBuilder, private modalController: ModalController, private inventarioSvc: InventarioService) { addIcons({close})}
+  constructor(private formBuilder: FormBuilder, private modalController: ModalController, private inventarioSvc: InventarioService, private commonSvc: CommonService) { addIcons({close})}
   editForm: FormGroup = this.formBuilder.group({
     stock: new FormControl('',  [Validators.required]),
   });
   isToastOpen:boolean=false
   mensajeToast:string="";
-
+  loading:boolean=false;
 
   ngOnInit() {
     this.editForm.patchValue({
@@ -33,12 +34,14 @@ export class RecargaStockModalComponent  implements OnInit {
   }
   
   send(){
+    this.loading = true
     let data = {
       stock: this.editForm.value.stock,
       uuid:this.item.uuid
     }
     this.inventarioSvc.editStock(data).subscribe(
     (res:any)=>{
+      this.loading = false;
       if (res.status_code == 200){
         this.mensajeToast="Item Modificado Exitosamente!";
         this.setOpen();
@@ -47,12 +50,15 @@ export class RecargaStockModalComponent  implements OnInit {
       
     }, 
     (error:any)=>{
-
+      this.loading = false;
+      if(error.status == 401){
+        this.commonSvc.closeSesionByToken()
+      }
     });
   }
 
   add(cantidad:number){
-    this.editForm.controls['stock'].setValue(this.editForm.value.stock + cantidad);
+    this.editForm.controls['stock'].setValue(parseFloat(this.editForm.value.stock) + cantidad);
   }
   
   setOpen(){
