@@ -93,6 +93,7 @@ export class FormProductoModalComponent  implements OnInit {
     this.imagePreview = "data:image/png;base64," +this.imagen_url;
     this.selectedFile = this.imagePreview;
   };
+  
   nextStep(){
     switch(this.step){
       case 'descripcion':

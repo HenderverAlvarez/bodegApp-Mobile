@@ -569,3 +569,29 @@ ion-popover ion-content {
   --border-radius: 10px!important;
 }
 
+.header-accordion{
+  --background-color: var(--ion-color-tertiary);
+  --background: var(--ion-color-tertiary);
+  color: #ffff;
+  font-weight: 600;
+  border-radius: 10px 10px 0px 0px;
+  ion-label{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      ion-icon{
+          margin-right: 1rem;
+          font-size: 1.3rem;
+      }
+  }
+}
+
+.header-accordion:active{
+  color: var(--ion-color-primary);
+  font-weight: 800;
+}
+
+.body-accordion{
+  background-color: var(--ion-color-light);
+}

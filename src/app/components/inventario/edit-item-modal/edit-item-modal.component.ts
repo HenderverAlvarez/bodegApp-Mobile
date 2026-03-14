@@ -4,9 +4,11 @@ import {FormGroup, FormControl, Validators, FormBuilder, } from '@angular/forms'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { close } from 'ionicons/icons';
+import { cameraOutline, close, helpCircleOutline } from 'ionicons/icons';
 import { InventarioService } from 'src/app/services/inventario_service';
 import { CommonModule } from '@angular/common';
+import { Camera, CameraResultType } from '@capacitor/camera';
+import { CommonService } from 'src/app/services/common_service';
 
 @Component({
   selector: 'edit-item-modal',
@@ -18,8 +20,8 @@ import { CommonModule } from '@angular/common';
 export class EditItemModalComponent  implements OnInit {
   @Input() item:any;
 
-  constructor(private formBuilder: FormBuilder, private modalController: ModalController, private inventarioSvc: InventarioService) { 
-    addIcons({close})
+  constructor(private formBuilder: FormBuilder, private modalController: ModalController, private inventarioSvc: InventarioService, private commonSvc: CommonService) { 
+    addIcons({close, helpCircleOutline, cameraOutline})
   }
 
   editForm: FormGroup = this.formBuilder.group({
@@ -76,9 +78,10 @@ export class EditItemModalComponent  implements OnInit {
     }
   }
   async onSubmit(){
+    this.loading= true;
     let data = {}
     if (this.selectedFile) {
-      this.convertFileToBase64(this.selectedFile).then(base64 => {
+      //this.convertFileToBase64(this.selectedFile).then(base64 => {
         data = {
           descripcion: this.editForm.value.descripcion,
           precio_bs: this.editForm.value.precio,
@@ -86,19 +89,23 @@ export class EditItemModalComponent  implements OnInit {
           stock: this.editForm.value.stock,
           unidad_medida: this.editForm.value.unidad_medida,
           uuid: this.item.uuid,
-          foto: base64
+          foto: this.selectedFile
         }
 
         this.inventarioSvc.editItem(data).subscribe(
           (res:any)=>{
+            this.loading= false;
             this.dismissModal({updated:true, mensaje: res.data})
             this.mensajeToast = "Producto editado con exito!"
             this.setOpen();
           }, 
           (error:any)=>{
-            console.log(error)
+            if(error.status == 401){
+              this.commonSvc.closeSesionByToken();
+            }
+            this.loading= false;
           })
-      })
+      //})
     }else{
       data = {
         descripcion: this.editForm.value.descripcion,
@@ -112,13 +119,17 @@ export class EditItemModalComponent  implements OnInit {
         (res:any)=>{
           
           if(res.status_code == 200){
+            this.loading= false;
             this.dismissModal({updated:true, mensaje: res.data})
             this.mensajeToast = "Producto editado con exito!"
             this.setOpen();
           }
         }, 
         (error:any)=>{
-          console.log(error)
+          this.loading= false;
+          if(error.status == 401){
+            this.commonSvc.closeSesionByToken();
+          }
         })
     }
   }
@@ -162,4 +173,23 @@ export class EditItemModalComponent  implements OnInit {
   setOpen(){
     this.isToastOpen = !this.isToastOpen
   }
+  async takePicture(){
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: true,
+      resultType: CameraResultType.Base64
+    });
+    console.log(image)
+    var imageUrl = image.base64String;
+    const validFormats = ['png', 'jpeg', 'webp'];
+    if (!validFormats.includes(image.format)) {
+      this.errorImagen = 'El archivo debe ser de formato PNG o JPG.';
+      return;
+    }
+
+    // Can be set to the src of an image now
+    this.imagen_url = imageUrl ? imageUrl : '';
+    this.imagePreview = "data:image/png;base64," +this.imagen_url;
+    this.selectedFile = this.imagePreview;
+  };
 }

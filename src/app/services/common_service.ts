@@ -26,7 +26,9 @@ export class CommonService {
     navigateTo(url:string){
         this.router.navigate([url]);
     }
-
+    goBack(){
+        this.router.navigate(['../']);
+    }
     setLocalStorage(key:string, value:any){
         let data;
         key == 'token' ?  data = value : data = JSON.stringify(value);
